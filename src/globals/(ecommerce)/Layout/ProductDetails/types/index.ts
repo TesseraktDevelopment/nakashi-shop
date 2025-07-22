@@ -22,7 +22,7 @@ export type FilledVariant = {
   pricing:
     | {
         value: number;
-        currency: "USD" | "EUR" | "GBP" | "PLN";
+        currency: "USD" | "EUR" | "GBP" | "CZK";
         id?: string | null;
       }[]
     | null

@@ -9,17 +9,17 @@ export const ProductCategories: CollectionConfig = {
     useAsTitle: "title",
     group: {
       en: "Products",
-      pl: "Produkty",
+      cs: "Produkty",
     },
   },
   labels: {
     singular: {
       en: "Product Category",
-      pl: "Kateogria produktu",
+      cs: "Kategorie produktu",
     },
     plural: {
       en: "Product Categories",
-      pl: "Kategorie produktów",
+      cs: "Kategorie produktů",
     },
   },
   access: {
@@ -30,7 +30,7 @@ export const ProductCategories: CollectionConfig = {
       name: "title",
       label: {
         en: "Category name",
-        pl: "Nazwa kategorii",
+        cs: "Název kategorie",
       },
       type: "text",
       required: true,
@@ -41,7 +41,7 @@ export const ProductCategories: CollectionConfig = {
       name: "subcategories",
       label: {
         en: "Related subcategories",
-        pl: "Powiązane podkategorie",
+        cs: "Související podkategorie",
       },
       type: "join",
       collection: "productSubCategories",
@@ -51,7 +51,7 @@ export const ProductCategories: CollectionConfig = {
       name: "products",
       label: {
         en: "Products in this category",
-        pl: "Produkty w tej kategorii",
+        cs: "Produkty v této kategorii",
       },
       type: "join",
       collection: "products",

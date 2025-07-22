@@ -8,11 +8,11 @@ export const Hotspot: Block = {
   interfaceName: "hotspotBlock",
   labels: {
     singular: {
-      pl: "Strefa hotspot",
+      cs: "Hotspot",
       en: "Hotspot",
     },
     plural: {
-      pl: "Strefy hotspot",
+      cs: "Hotspoty",
       en: "Hotspots",
     },
   },
@@ -32,14 +32,14 @@ export const Hotspot: Block = {
           name: "type",
           type: "select",
           label: {
-            pl: "Typ",
+            cs: "Typ",
             en: "Type",
           },
           required: true,
           options: [
-            { label: { pl: "Z danej kategorii", en: "From category" }, value: "category" },
-            { label: { pl: "Z danej podkategorii", en: "From subcategory" }, value: "subcategory" },
-            { label: { pl: "Ręcznie wybrane produkty", en: "Manual picked products" }, value: "manual" },
+            { label: { cs: "Z dané kategorie", en: "From category" }, value: "category" },
+            { label: { cs: "Z dané podkategorie", en: "From subcategory" }, value: "subcategory" },
+            { label: { cs: "Ručně vybrané produkty", en: "Manual picked products" }, value: "manual" },
           ],
           defaultValue: "category",
           admin: {
@@ -50,14 +50,14 @@ export const Hotspot: Block = {
           name: "appearance",
           type: "select",
           label: {
-            pl: "Wygląd",
+            cs: "Vzhled",
             en: "Appearance",
           },
           required: true,
           options: [
-            { label: { pl: "Domyślny", en: "Default" }, value: "default" },
-            { label: { pl: "Z sliderem", en: "With slider" }, value: "slider" },
-            { label: { pl: "Z zapętlonym sliderem", en: "With infinite slider" }, value: "sliderLoop" },
+            { label: { cs: "Výchozí", en: "Default" }, value: "default" },
+            { label: { cs: "Se sliderem", en: "With slider" }, value: "slider" },
+            { label: { cs: "Se smyčkovým sliderem", en: "With infinite slider" }, value: "sliderLoop" },
           ],
           defaultValue: "default",
           admin: {
@@ -94,16 +94,16 @@ export const Hotspot: Block = {
           name: "sort",
           type: "select",
           label: {
-            pl: "Sortuj według",
+            cs: "Seřaď podle",
             en: "Sort by",
           },
           options: [
-            { label: { pl: "Ilość sprzedanych", en: "Quantity sold" }, value: "-bought" },
-            { label: { pl: "Najnowsze", en: "Newest" }, value: "-createdAt" },
-            { label: { pl: "Najstarsze", en: "Oldest" }, value: "createdAt" },
-            { label: { pl: "Najtańsze", en: "Cheapest" }, value: "variants.pricing[0].value,pricing.value" },
+            { label: { cs: "Počet prodaných", en: "Quantity sold" }, value: "-bought" },
+            { label: { cs: "Nejnovější", en: "Newest" }, value: "-createdAt" },
+            { label: { cs: "Nejstarší", en: "Oldest" }, value: "createdAt" },
+            { label: { cs: "Nejlevnější", en: "Cheapest" }, value: "variants.pricing[0].value,pricing.value" },
             {
-              label: { pl: "Najdroższe", en: "Most expensive" },
+              label: { cs: "Nejdražší", en: "Most expensive" },
               value: "-variants.pricing[0].value,-pricing.value",
             },
           ],
@@ -112,7 +112,7 @@ export const Hotspot: Block = {
             width: "50%",
             description: {
               en: "Sort is applied only when type is set to 'category' or 'subcategory', in manual mode you can manually sort products in the list",
-              pl: "Sortowanie jest stosowane tylko gdy typ jest ustawiony na 'category' lub 'subcategory', w trybie manualnym możesz ręcznie sortować produkty na liście",
+              cs: "Seřazení se použije pouze v případě, že je typ nastaven na 'category' nebo 'subcategory', v manuálním režimu můžete produkty v seznamu ručně seřadit",
             },
           },
         },
@@ -129,7 +129,7 @@ export const Hotspot: Block = {
       admin: {
         condition: (_, siblingData) => siblingData.type === "manual",
         description: {
-          pl: "Kolejność produktów będzie taka jak w kolejności wybrania",
+          cs: "Kolejnost produktů bude taková, jak byla vybrána",
           en: "Products order will be the same as the order of selection",
         },
       },
@@ -138,7 +138,7 @@ export const Hotspot: Block = {
       name: "limit",
       type: "number",
       label: {
-        pl: "Limit produktów",
+        cs: "Limit produktů",
         en: "Products limit",
       },
       admin: {

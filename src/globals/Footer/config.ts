@@ -10,12 +10,12 @@ export const Footer: GlobalConfig = {
   },
   label: {
     en: "Footer",
-    pl: "Stopka",
+    cs: "Footer",
   },
   admin: {
     group: {
       en: "Page Settings",
-      pl: "Ustawienia strony",
+      cs: "Nastavení stránky",
     },
   },
   fields: [

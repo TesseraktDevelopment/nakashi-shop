@@ -6,17 +6,17 @@ export const ProductReviews: CollectionConfig = {
   admin: {
     group: {
       en: "Products",
-      pl: "Produkty",
+      cs: "Produkty",
     },
   },
   labels: {
     singular: {
       en: "Product Review",
-      pl: "Opinia o produkcie",
+      cs: "Recenze produktu",
     },
     plural: {
       en: "Product Reviews",
-      pl: "Opinie o produktach",
+      cs: "Recenze produktů",
     },
   },
   fields: [
@@ -29,7 +29,7 @@ export const ProductReviews: CollectionConfig = {
     {
       name: "author",
       label: {
-        pl: "Autor opinii",
+        cs: "Autor recenze",
         en: "Review author",
       },
       type: "relationship",
@@ -39,7 +39,7 @@ export const ProductReviews: CollectionConfig = {
     {
       name: "rating",
       label: {
-        pl: "Ocena",
+        cs: "Hodnocení",
         en: "Rating",
       },
       type: "number",
@@ -50,7 +50,7 @@ export const ProductReviews: CollectionConfig = {
     {
       name: "review",
       label: {
-        pl: "Treść opinii",
+        cs: "Obsah recenze",
         en: "Review content",
       },
       type: "richText",

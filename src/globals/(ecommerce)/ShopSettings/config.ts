@@ -7,7 +7,7 @@ export const ShopSettings: GlobalConfig = {
   slug: "shopSettings",
   label: {
     en: "General",
-    pl: "Ogólne",
+    cs: "Obecné",
   },
   access: {
     read: () => true,
@@ -15,7 +15,7 @@ export const ShopSettings: GlobalConfig = {
   admin: {
     group: {
       en: "Shop settings",
-      pl: "Ustawienia sklepu",
+      cs: "Nastavení obchodu",
     },
   },
   fields: [
@@ -24,18 +24,18 @@ export const ShopSettings: GlobalConfig = {
       type: "select",
       label: {
         en: "Available currencies",
-        pl: "Dostępne waluty",
+        cs: "Dostupné měny",
       },
       options: [
         { value: "USD", label: "USD" },
         { value: "EUR", label: "EUR" },
         { value: "GBP", label: "GBP" },
-        { value: "PLN", label: "PLN" },
+        { value: "CZK", label: "CZK" },
       ],
       admin: {
         description: {
           en: "First currency is the default one",
-          pl: "Pierwsza waluta jest walutą domyślną",
+          cs: "První měna je výchozí",
         },
       },
       hasMany: true,
@@ -61,7 +61,7 @@ export const ShopSettings: GlobalConfig = {
     {
       name: "enableOAuth",
       type: "checkbox",
-      label: { en: "Enable OAuth", pl: "Włącz OAuth" },
+      label: { en: "Enable OAuth", cs: "Povolit OAuth" },
       defaultValue: false,
       required: true,
     },

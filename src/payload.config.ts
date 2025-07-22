@@ -4,8 +4,8 @@ import { fileURLToPath } from "url";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { s3Storage } from "@payloadcms/storage-s3";
 import { buildConfig } from "payload";
+import { cs } from "payload/i18n/cs";
 import { en } from "payload/i18n/en";
-import { pl } from "payload/i18n/pl";
 import sharp from "sharp"; // sharp-import
 
 import { defaultLexical } from "@/fields/defaultLexical";
@@ -70,7 +70,7 @@ export default buildConfig({
         },
       ],
       title: "Admin Panel",
-      titleSuffix: "| Mandala SH",
+      titleSuffix: "| Nakashi",
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -100,13 +100,13 @@ export default buildConfig({
     },
   },
   i18n: {
-    supportedLanguages: { en, pl },
-    fallbackLanguage: "en",
+    supportedLanguages: { en, cs },
+    fallbackLanguage: "cs",
     translations: customTranslationsObject,
   },
   localization: {
-    locales: ["en", "pl"],
-    defaultLocale: "en",
+    locales: ["en", "cs"],
+    defaultLocale: "cs",
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,

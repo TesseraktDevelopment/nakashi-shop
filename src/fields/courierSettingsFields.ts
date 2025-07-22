@@ -1,16 +1,16 @@
 import { type Field } from "payload";
 
 export const courierSettingsFields: Field[] = [
-  { name: "label", type: "text", label: { en: "Label", pl: "Etykieta" }, localized: true, required: true },
+  { name: "label", type: "text", label: { en: "Label", cs: "Štítek" }, localized: true, required: true },
   {
     name: "description",
     type: "text",
-    label: { en: "Short description", pl: "Krótki opis" },
+    label: { en: "Short description", cs: "Krátký popis" },
     localized: true,
     admin: {
       description: {
         en: "You can provide typical delivery time or any other information",
-        pl: "Możesz podać typowy czas dostawy lub inne informacje",
+        cs: "Můžete poskytnout typický čas doručení nebo jiné informace",
       },
     },
   },

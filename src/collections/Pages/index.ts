@@ -36,11 +36,11 @@ export const Pages: CollectionConfig<"pages"> = {
   labels: {
     singular: {
       en: "Page",
-      pl: "Strona",
+      cs: "Stránka",
     },
     plural: {
       en: "Pages",
-      pl: "Strony",
+      cs: "Stránky",
     },
   },
   // This config controls what's populated by default when a page is referenced
@@ -69,7 +69,7 @@ export const Pages: CollectionConfig<"pages"> = {
     useAsTitle: "title",
     group: {
       en: "Page Settings",
-      pl: "Ustawienia strony",
+      cs: "Nastavení stránky",
     },
   },
   fields: [

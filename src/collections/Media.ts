@@ -22,17 +22,17 @@ export const Media: CollectionConfig = {
   labels: {
     singular: {
       en: "Media",
-      pl: "Plik",
+      cs: "Média",
     },
     plural: {
       en: "Media",
-      pl: "Pliki",
+      cs: "Média",
     },
   },
   admin: {
     group: {
       en: "Page Settings",
-      pl: "Ustawienia strony",
+      cs: "Nastavení stránky",
     },
   },
   fields: [

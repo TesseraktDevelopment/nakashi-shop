@@ -82,7 +82,7 @@ export const createInpostCourierPackage = async (order: Order, dimensions: Dimen
       ],
       insurance: {
         amount: order.orderDetails?.totalWithShipping ?? 0 * 2,
-        currency: order.orderDetails?.currency ?? "PLN",
+        currency: order.orderDetails?.currency ?? "CZK",
       },
       service: "inpost_courier_standard",
       reference: order.id,

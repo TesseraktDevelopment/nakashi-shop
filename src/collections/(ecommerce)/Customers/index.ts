@@ -13,17 +13,17 @@ export const Customers: CollectionConfig = {
   labels: {
     singular: {
       en: "Customer",
-      pl: "Klient",
+      cs: "Klient",
     },
     plural: {
       en: "Customers list",
-      pl: "Lista Klientów",
+      cs: "Seznam Klientů",
     },
   },
   admin: {
     group: {
       en: "Clients",
-      pl: "Klienci",
+      cs: "Klienti",
     },
     defaultColumns: ["fullName", "email", "createdAt", "updatedAt"],
     useAsTitle: "fullName",
@@ -62,7 +62,7 @@ export const Customers: CollectionConfig = {
           name: "firstName",
           label: {
             en: "First Name",
-            pl: "Imię",
+            cs: "Jméno",
           },
           type: "text",
         },
@@ -70,7 +70,7 @@ export const Customers: CollectionConfig = {
           name: "lastName",
           label: {
             en: "Last Name",
-            pl: "Nazwisko",
+            cs: "Příjmení",
           },
           type: "text",
         },
@@ -83,7 +83,7 @@ export const Customers: CollectionConfig = {
           name: "birthDate",
           label: {
             en: "Birth Date",
-            pl: "Data urodzenia",
+            cs: "Datum narození",
           },
           type: "date",
           admin: {
@@ -94,15 +94,15 @@ export const Customers: CollectionConfig = {
           name: "lastBuyerType",
           label: {
             en: "Last Buyer Type",
-            pl: "Ostatni typ kupującego",
+            cs: "Poslední typ kupujícího",
           },
           type: "select",
           admin: {
             width: "50%",
           },
           options: [
-            { value: "individual", label: { en: "Individual", pl: "Osoba fizyczna" } },
-            { value: "company", label: { en: "Company", pl: "Firma" } },
+            { value: "individual", label: { en: "Individual", cs: "Fyzická osoba" } },
+            { value: "company", label: { en: "Company", cs: "Firma" } },
           ],
         },
       ],
@@ -111,17 +111,17 @@ export const Customers: CollectionConfig = {
       name: "shippings",
       type: "array",
       label: {
-        en: "Shipping adresses",
-        pl: "Adresy dostaw",
+        en: "Shipping addresses",
+        cs: "Adresy doručení",
       },
       labels: {
         singular: {
           en: "Shipping address",
-          pl: "Adres dostawy",
+          cs: "Dodací adresa",
         },
         plural: {
           en: "Shipping addresses",
-          pl: "Adresy dostaw",
+          cs: "Dodací adresy",
         },
       },
       admin: {
@@ -137,7 +137,7 @@ export const Customers: CollectionConfig = {
           type: "text",
           label: {
             en: "Name",
-            pl: "Nazwa",
+            cs: "Název",
           },
           required: true,
         },
@@ -146,7 +146,7 @@ export const Customers: CollectionConfig = {
           type: "text",
           label: {
             en: "Address",
-            pl: "Adres",
+            cs: "Adresa",
           },
           required: true,
         },
@@ -158,7 +158,7 @@ export const Customers: CollectionConfig = {
               type: "text",
               label: {
                 en: "City",
-                pl: "Miasto",
+                cs: "Město",
               },
               admin: {
                 width: "50%",
@@ -170,7 +170,7 @@ export const Customers: CollectionConfig = {
               type: "select",
               label: {
                 en: "Country",
-                pl: "Kraj",
+                cs: "Země",
               },
               admin: {
                 width: "50%",
@@ -188,7 +188,7 @@ export const Customers: CollectionConfig = {
               type: "text",
               label: {
                 en: "Region",
-                pl: "Region",
+                cs: "Kraj",
               },
               required: true,
             },
@@ -197,7 +197,7 @@ export const Customers: CollectionConfig = {
               type: "text",
               label: {
                 en: "Postal Code",
-                pl: "Kod pocztowy",
+                cs: "PSČ",
               },
               required: true,
             },
@@ -211,7 +211,7 @@ export const Customers: CollectionConfig = {
               type: "text",
               label: {
                 en: "Phone",
-                pl: "Telefon",
+                cs: "Telefon",
               },
               required: true,
             },
@@ -220,7 +220,7 @@ export const Customers: CollectionConfig = {
               type: "text",
               label: {
                 en: "Email",
-                pl: "Email",
+                cs: "Email",
               },
               required: true,
             },
@@ -231,7 +231,7 @@ export const Customers: CollectionConfig = {
           type: "checkbox",
           label: {
             en: "Default",
-            pl: "Domyślny",
+            cs: "Výchozí",
           },
           defaultValue: false,
         },
@@ -241,7 +241,7 @@ export const Customers: CollectionConfig = {
       name: "orders",
       label: {
         en: "Client Orders",
-        pl: "Zamówienia klienta",
+        cs: "Objednávky klienta",
       },
       type: "join",
       collection: "orders",
@@ -252,7 +252,7 @@ export const Customers: CollectionConfig = {
       type: "json",
       label: {
         en: "Cart",
-        pl: "Koszyk",
+        cs: "Košík",
       },
       admin: {
         hidden: true,
@@ -263,7 +263,7 @@ export const Customers: CollectionConfig = {
       type: "json",
       label: {
         en: "Wishlist",
-        pl: "Lista życzeń",
+        cs: "Seznam přání",
       },
       admin: {
         hidden: true,

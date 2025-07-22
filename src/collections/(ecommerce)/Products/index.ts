@@ -13,11 +13,11 @@ export const Products: CollectionConfig = {
   labels: {
     singular: {
       en: "Product",
-      pl: "Produkt",
+      cs: "Produkt",
     },
     plural: {
       en: "Products list",
-      pl: "Lista Produktów",
+      cs: "Seznam produktů",
     },
   },
   access: {
@@ -46,7 +46,7 @@ export const Products: CollectionConfig = {
       }),
     group: {
       en: "Products",
-      pl: "Produkty",
+      cs: "Produkty",
     },
   },
   fields: [
@@ -54,7 +54,7 @@ export const Products: CollectionConfig = {
       name: "title",
       label: {
         en: "Product name",
-        pl: "Nazwa produktu",
+        cs: "Název produktu",
       },
       type: "text",
       localized: true,
@@ -67,14 +67,14 @@ export const Products: CollectionConfig = {
         {
           label: {
             en: "Content",
-            pl: "Zawartość",
+            cs: "Obsah",
           },
           fields: [
             {
               name: "description",
               label: {
                 en: "Product description",
-                pl: "Opis produktu",
+                cs: "Popis produktu",
               },
               localized: true,
               type: "richText",
@@ -84,7 +84,7 @@ export const Products: CollectionConfig = {
               name: "images",
               label: {
                 en: "Product images",
-                pl: "Zdjęcia produktu",
+                cs: "Obrázky produktu",
               },
               type: "upload",
               relationTo: "media",
@@ -95,7 +95,7 @@ export const Products: CollectionConfig = {
               admin: {
                 description: {
                   en: "If you have variants, first image will be variant image.",
-                  pl: "Jeśli masz warianty, pierwsze zdjęcie będzie zdjęciem wariantu.",
+                  cs: "Pokud máte varianty, první obrázek bude obrázkem varianty.",
                 },
               },
             },
@@ -104,16 +104,16 @@ export const Products: CollectionConfig = {
               type: "array",
               label: {
                 en: "Details",
-                pl: "Szczegóły",
+                cs: "Podrobnosti",
               },
               labels: {
                 singular: {
                   en: "Detail",
-                  pl: "Szczegół",
+                  cs: "Podrobnost",
                 },
                 plural: {
                   en: "Details",
-                  pl: "Szczegóły",
+                  cs: "Podrobnosti",
                 },
               },
               admin: {
@@ -126,7 +126,7 @@ export const Products: CollectionConfig = {
                   name: "title",
                   label: {
                     en: "Title",
-                    pl: "Tytuł",
+                    cs: "Název",
                   },
                   localized: true,
                   type: "text",
@@ -136,7 +136,7 @@ export const Products: CollectionConfig = {
                   name: "content",
                   label: {
                     en: "Content",
-                    pl: "Zawartość",
+                    cs: "Obsah",
                   },
                   localized: true,
                   required: true,
@@ -150,7 +150,7 @@ export const Products: CollectionConfig = {
         {
           label: {
             en: "Variants options",
-            pl: "Opcje wariantów",
+            cs: "Možnosti variant",
           },
           fields: [
             {
@@ -160,7 +160,7 @@ export const Products: CollectionConfig = {
                   name: "enableVariants",
                   label: {
                     en: "Enable variants",
-                    pl: "Włącz warianty",
+                    cs: "Povolit varianty",
                   },
                   type: "checkbox",
                   admin: {
@@ -171,14 +171,13 @@ export const Products: CollectionConfig = {
                   name: "enableVariantPrices",
                   label: {
                     en: "Variants have different prices",
-                    pl: "Warianty mają różne ceny",
+                    cs: "Varianty mají různé ceny",
                   },
-
                   type: "checkbox",
                   admin: {
                     description: {
                       en: "If false, price is in Product Details",
-                      pl: "Jeśli fałsz, cena jest w Szczegółach produktu",
+                      cs: "Pokud je nepravda, cena je v Podrobnostech produktu",
                     },
                     width: "fit-content",
                     style: {
@@ -190,14 +189,13 @@ export const Products: CollectionConfig = {
                   name: "enableVariantWeights",
                   label: {
                     en: "Variants have different weights",
-                    pl: "Warianty mają różne wagi",
+                    cs: "Varianty mají různé váhy",
                   },
-
                   type: "checkbox",
                   admin: {
                     description: {
                       en: "If false, weight is in Product Details",
-                      pl: "Jeśli fałsz, waga jest w Szczegółach produktu",
+                      cs: "Pokud je nepravda, váha je v Podrobnostech produktu",
                     },
                     width: "fit-content",
                     style: {
@@ -212,7 +210,7 @@ export const Products: CollectionConfig = {
               name: "variantsType",
               label: {
                 en: "Variants type",
-                pl: "Rodzaj wariantów",
+                cs: "Typ variant",
               },
               admin: {
                 condition: (data) => Boolean(data.enableVariants),
@@ -223,21 +221,21 @@ export const Products: CollectionConfig = {
                   value: "sizes",
                   label: {
                     en: "Only sizes",
-                    pl: "Tylko rozmiary",
+                    cs: "Pouze velikosti",
                   },
                 },
                 {
                   value: "colors",
                   label: {
                     en: "Only colors",
-                    pl: "Tylko kolory",
+                    cs: "Pouze barvy",
                   },
                 },
                 {
                   value: "colorsAndSizes",
                   label: {
                     en: "Colors and sizes",
-                    pl: "Kolory i rozmiary",
+                    cs: "Barvy a velikosti",
                   },
                 },
               ],
@@ -247,11 +245,11 @@ export const Products: CollectionConfig = {
               labels: {
                 singular: {
                   en: "Color",
-                  pl: "Kolor",
+                  cs: "Barva",
                 },
                 plural: {
                   en: "Colors",
-                  pl: "Kolory",
+                  cs: "Barvy",
                 },
               },
               type: "array",
@@ -271,7 +269,7 @@ export const Products: CollectionConfig = {
                       name: "label",
                       label: {
                         en: "Color name",
-                        pl: "Nazwa koloru",
+                        cs: "Název barvy",
                       },
                       type: "text",
                       localized: true,
@@ -283,7 +281,7 @@ export const Products: CollectionConfig = {
                       required: true,
                       label: {
                         en: "Color slug",
-                        pl: "Slug koloru",
+                        cs: "Slug barvy",
                       },
                     },
                   ],
@@ -292,7 +290,7 @@ export const Products: CollectionConfig = {
                   name: "colorValue",
                   label: {
                     en: "Color",
-                    pl: "Kolor",
+                    cs: "Barva",
                   },
                   type: "text",
                   admin: {
@@ -304,7 +302,7 @@ export const Products: CollectionConfig = {
               ],
               label: {
                 en: "Color options",
-                pl: "Opcje kolorów",
+                cs: "Možnosti barev",
               },
               minRows: 1,
             },
@@ -313,11 +311,11 @@ export const Products: CollectionConfig = {
               labels: {
                 singular: {
                   en: "Size",
-                  pl: "Rozmiar",
+                  cs: "Velikost",
                 },
                 plural: {
                   en: "Sizes",
-                  pl: "Rozmiary",
+                  cs: "Velikosti",
                 },
               },
               type: "array",
@@ -334,7 +332,7 @@ export const Products: CollectionConfig = {
                   name: "label",
                   label: {
                     en: "Size label",
-                    pl: "Etykieta rozmiaru",
+                    cs: "Název velikosti",
                   },
                   type: "text",
                   localized: true,
@@ -346,13 +344,13 @@ export const Products: CollectionConfig = {
                   required: true,
                   label: {
                     en: "Size slug",
-                    pl: "Slug rozmiaru",
+                    cs: "Slug velikosti",
                   },
                 },
               ],
               label: {
                 en: "Size options",
-                pl: "Opcje rozmiarów",
+                cs: "Možnosti velikostí",
               },
               minRows: 1,
             },
@@ -405,7 +403,7 @@ export const Products: CollectionConfig = {
                       index: true,
                       label: {
                         en: "Size",
-                        pl: "Rozmiar",
+                        cs: "Velikost",
                       },
                       admin: {
                         components: {
@@ -420,7 +418,7 @@ export const Products: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Color",
-                        pl: "Kolor",
+                        cs: "Barva",
                       },
                       admin: {
                         components: {
@@ -449,7 +447,7 @@ export const Products: CollectionConfig = {
                   admin: {
                     description: {
                       en: "Define stock for this variant. A stock of 0 disables checkout for this variant.",
-                      pl: "Zdefiniuj stan magazynowy dla tego wariantu. Stan magazynowy 0 wyłącza możliwość zakupu tego wariantu.",
+                      cs: "Definujte sklad pro tuto variantu. Sklad 0 znemožňuje nákup této varianty.",
                     },
                   },
                   defaultValue: 0,
@@ -459,14 +457,14 @@ export const Products: CollectionConfig = {
                   name: "weight",
                   label: {
                     en: "Weight (g)",
-                    pl: "Waga (g)",
+                    cs: "Váha (g)",
                   },
                   type: "number",
                   admin: {
                     condition: (data) => Boolean(data.enableVariantWeights),
                     description: {
                       en: "Define weight for this variant.",
-                      pl: "Zdefiniuj wagę dla tego wariantu.",
+                      cs: "Definujte váhu pro tuto variantu.",
                     },
                   },
                   defaultValue: 0,
@@ -477,18 +475,18 @@ export const Products: CollectionConfig = {
                   type: "array",
                   label: {
                     en: "Pricing",
-                    pl: "Cennik",
+                    cs: "Ceníky",
                   },
                   minRows: 1,
                   required: true,
                   labels: {
                     singular: {
                       en: "Price",
-                      pl: "Cena",
+                      cs: "Cena",
                     },
                     plural: {
                       en: "Prices",
-                      pl: "Ceny",
+                      cs: "Ceny",
                     },
                   },
                   admin: {
@@ -507,7 +505,7 @@ export const Products: CollectionConfig = {
                           type: "number",
                           label: {
                             en: "Price",
-                            pl: "Cena",
+                            cs: "Cena",
                           },
                           required: true,
                         },
@@ -524,7 +522,7 @@ export const Products: CollectionConfig = {
         {
           label: {
             en: "Product details",
-            pl: "Szczegóły produktu",
+            cs: "Podrobnosti produktu",
           },
           admin: {
             // todo: not working condition, waiting for payload team to fix conditional tabs.
@@ -537,16 +535,16 @@ export const Products: CollectionConfig = {
               name: "categoriesArr",
               label: {
                 en: "Product categories",
-                pl: "Kategorie produktu",
+                cs: "Kategorie produktu",
               },
               labels: {
                 singular: {
                   en: "Category",
-                  pl: "Kategoria",
+                  cs: "Kategorie",
                 },
                 plural: {
                   en: "Categories",
-                  pl: "Kategorie",
+                  cs: "Kategorie",
                 },
               },
               type: "array",
@@ -555,7 +553,7 @@ export const Products: CollectionConfig = {
                   name: "category",
                   label: {
                     en: "Category",
-                    pl: "Kategoria",
+                    cs: "Kategorie",
                   },
                   type: "relationship",
                   index: true,
@@ -568,7 +566,7 @@ export const Products: CollectionConfig = {
                   type: "relationship",
                   label: {
                     en: "Subcategories",
-                    pl: "Podkategorie",
+                    cs: "Podkategorie",
                   },
                   relationTo: "productSubCategories",
                   filterOptions: ({ siblingData }) => {
@@ -591,14 +589,14 @@ export const Products: CollectionConfig = {
               name: "stock",
               label: {
                 en: "Stock",
-                pl: "Stan magazynowy",
+                cs: "Sklad",
               },
               type: "number",
               admin: {
                 condition: (data) => !data.enableVariants,
                 description: {
                   en: "Define stock for whole product. A stock of 0 disables checkout for this product.",
-                  pl: "Zdefiniuj stan magazynowy dla całego produktu. Stan magazynowy 0 wyłącza możliwość zakupu tego produktu.",
+                  cs: "Definujte sklad pro celý produkt. Sklad 0 znemožňuje nákup tohoto produktu.",
                 },
               },
               defaultValue: 0,
@@ -608,14 +606,14 @@ export const Products: CollectionConfig = {
               name: "weight",
               label: {
                 en: "Weight (g)",
-                pl: "Waga (g)",
+                cs: "Váha (g)",
               },
               type: "number",
               admin: {
                 condition: (data) => !data.enableVariantWeights,
                 description: {
                   en: "Define weight for whole product.",
-                  pl: "Zdefiniuj wagę dla całego produktu.",
+                  cs: "Definujte váhu pro celý produkt.",
                 },
               },
               defaultValue: 0,
@@ -626,18 +624,18 @@ export const Products: CollectionConfig = {
               type: "array",
               label: {
                 en: "Pricing",
-                pl: "Cennik",
+                cs: "Ceníky",
               },
               minRows: 1,
               required: true,
               labels: {
                 singular: {
                   en: "Price",
-                  pl: "Cena",
+                  cs: "Cena",
                 },
                 plural: {
                   en: "Prices",
-                  pl: "Ceny",
+                  cs: "Ceny",
                 },
               },
               admin: {
@@ -656,7 +654,7 @@ export const Products: CollectionConfig = {
                       index: true,
                       label: {
                         en: "Price",
-                        pl: "Cena",
+                        cs: "Cena",
                       },
                       required: true,
                     },
@@ -670,7 +668,7 @@ export const Products: CollectionConfig = {
               index: true,
               label: {
                 en: "Bought",
-                pl: "Kupiono",
+                cs: "Koupeno",
               },
               type: "number",
               defaultValue: 0,

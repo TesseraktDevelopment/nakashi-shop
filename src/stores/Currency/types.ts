@@ -1,1 +1,1 @@
-export type Currency = "USD" | "PLN" | "GBP" | "EUR";
+export type Currency = "USD" | "CZK" | "GBP" | "EUR";

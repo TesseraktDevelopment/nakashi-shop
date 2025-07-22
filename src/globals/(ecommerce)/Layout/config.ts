@@ -21,7 +21,7 @@ export const ShopLayout: GlobalConfig = {
   slug: "shopLayout",
   label: {
     en: "Shop Layout",
-    pl: "Wygląd sklepu",
+    cs: "Rozložení obchodu",
   },
   access: {
     read: () => true,
@@ -29,7 +29,7 @@ export const ShopLayout: GlobalConfig = {
   admin: {
     group: {
       en: "Shop settings",
-      pl: "Ustawienia sklepu",
+      cs: "Nastavení obchodu",
     },
   },
   fields: [
@@ -39,7 +39,7 @@ export const ShopLayout: GlobalConfig = {
         {
           label: {
             en: "Product Details",
-            pl: "Karta produktu",
+            cs: "Podrobnosti produktu",
           },
           name: "productDetails",
           fields: [
@@ -50,14 +50,14 @@ export const ShopLayout: GlobalConfig = {
                 {
                   label: {
                     en: "With image gallery and expandable details",
-                    pl: "Z galerią zdjęć i rozszerzalnymi szczegółami",
+                    cs: "S galerií obrázků a rozbalitelnými podrobnostmi",
                   },
                   value: "WithImageGalleryExpandableDetails",
                 },
               ],
               label: {
                 en: "Type of product card",
-                pl: "Rodzaj karty produktu",
+                cs: "Typ karty produktu",
               },
               required: true,
               defaultValue: "WithImageGalleryExpandableDetails",
@@ -67,7 +67,7 @@ export const ShopLayout: GlobalConfig = {
               type: "checkbox",
               label: {
                 en: "Enable product reviews",
-                pl: "Włącz opinie o produkcie",
+                cs: "Povolit recenze produktu",
               },
               defaultValue: true,
               required: true,
@@ -77,7 +77,7 @@ export const ShopLayout: GlobalConfig = {
         {
           label: {
             en: "Product List",
-            pl: "Lista produktów",
+            cs: "Seznam produktů",
           },
           name: "productList",
           fields: [
@@ -86,28 +86,28 @@ export const ShopLayout: GlobalConfig = {
               type: "select",
               label: {
                 en: "Filters",
-                pl: "Filtry",
+                cs: "Filtry",
               },
               required: true,
               options: [
                 {
                   label: {
                     en: "None",
-                    pl: "Brak",
+                    cs: "Žádné",
                   },
                   value: "none",
                 },
                 {
                   label: {
                     en: "With sidebar",
-                    pl: "Z bocznym panelem",
+                    cs: "S bočním panelem",
                   },
                   value: "withSidebar",
                 },
                 {
                   label: {
                     en: "Sort only",
-                    pl: "Tylko sortowanie",
+                    cs: "Pouze řazení",
                   },
                   value: "sortOnly",
                 },
@@ -118,7 +118,7 @@ export const ShopLayout: GlobalConfig = {
         {
           label: {
             en: "Cart and Wishlist",
-            pl: "Koszyk i lista życzeń",
+            cs: "Košík a seznam přání",
           },
           name: "cartAndWishlist",
           fields: [
@@ -129,14 +129,14 @@ export const ShopLayout: GlobalConfig = {
                 {
                   label: {
                     en: "Slide-over",
-                    pl: "Wysuwane",
+                    cs: "Vysouvací",
                   },
                   value: "slideOver",
                 },
               ],
               label: {
                 en: "Type of cart and wishlist",
-                pl: "Rodzaj koszyka i listy życzeń",
+                cs: "Typ košíku a seznamu přání",
               },
               defaultValue: "slideOver",
               required: true,
@@ -146,7 +146,7 @@ export const ShopLayout: GlobalConfig = {
         {
           label: {
             en: "Checkout page",
-            pl: "Strona checkout",
+            cs: "Stránka pokladny",
           },
           name: "checkout",
           fields: [
@@ -157,14 +157,14 @@ export const ShopLayout: GlobalConfig = {
                 {
                   label: {
                     en: "One Step With Summary",
-                    pl: "Jeden krok z podsumowaniem",
+                    cs: "Jeden krok s přehledem",
                   },
                   value: "OneStepWithSummary",
                 },
               ],
               label: {
                 en: "Type of checkout page",
-                pl: "Rodzaj strony checkout",
+                cs: "Typ stránky pokladny",
               },
               required: true,
               defaultValue: "OneStepWithSummary",
@@ -174,7 +174,7 @@ export const ShopLayout: GlobalConfig = {
         {
           label: {
             en: "Client panel",
-            pl: "Panel klienta",
+            cs: "Klientský panel",
           },
           name: "clientPanel",
           fields: [
@@ -185,14 +185,14 @@ export const ShopLayout: GlobalConfig = {
                 {
                   label: {
                     en: "With sidebar",
-                    pl: "Z bocznym panelem",
+                    cs: "S bočním panelem",
                   },
                   value: "withSidebar",
                 },
               ],
               label: {
                 en: "Type of client panel",
-                pl: "Rodzaj panelu klienta",
+                cs: "Typ klientského panelu",
               },
               required: true,
               defaultValue: "withSidebar",
@@ -202,7 +202,7 @@ export const ShopLayout: GlobalConfig = {
               type: "group",
               label: {
                 en: "Help page",
-                pl: "Strona pomocy",
+                cs: "Stránka nápovědy",
               },
               fields: [
                 {
@@ -210,7 +210,7 @@ export const ShopLayout: GlobalConfig = {
                   type: "text",
                   label: {
                     en: "Title",
-                    pl: "Tytuł",
+                    cs: "Název",
                   },
                   localized: true,
                   required: true,
@@ -232,7 +232,7 @@ export const ShopLayout: GlobalConfig = {
                   }),
                   label: {
                     en: "Content",
-                    pl: "Treść",
+                    cs: "Obsah",
                   },
                   localized: true,
                   required: true,

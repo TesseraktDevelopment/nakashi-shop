@@ -12,12 +12,12 @@ export const Header: GlobalConfig = {
   admin: {
     group: {
       en: "Page Settings",
-      pl: "Ustawienia strony",
+      cs: "Nastavení stránky",
     },
   },
   label: {
     en: "Header",
-    pl: "Nagłówek",
+    cs: "Hlavní záhlaví",
   },
   fields: [
     {

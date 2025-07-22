@@ -17,17 +17,17 @@ export const Orders: CollectionConfig = {
     useAsTitle: "id",
     group: {
       en: "Orders",
-      pl: "Zamówienia",
+      cs: "Objednávky",
     },
   },
   labels: {
     singular: {
       en: "Order",
-      pl: "Zamówienie",
+      cs: "Objednávka",
     },
     plural: {
       en: "Orders",
-      pl: "Zamówienia",
+      cs: "Objednávky",
     },
   },
   hooks: {
@@ -66,7 +66,7 @@ export const Orders: CollectionConfig = {
         {
           label: {
             en: "General",
-            pl: "Ogólne",
+            cs: "Obecné",
           },
           fields: [
             {
@@ -78,14 +78,14 @@ export const Orders: CollectionConfig = {
                   relationTo: "customers",
                   label: {
                     en: "Customer",
-                    pl: "Klient",
+                    cs: "Klient",
                   },
                 },
                 {
                   name: "date",
                   label: {
                     en: "Order Date",
-                    pl: "Data zamówienia",
+                    cs: "Datum objednávky",
                   },
                   type: "date",
                   admin: {
@@ -108,7 +108,7 @@ export const Orders: CollectionConfig = {
             {
               name: "products",
               type: "array",
-              label: { en: "Products", pl: "Produkty" },
+              label: { en: "Products", cs: "Produkty" },
               admin: {
                 components: {
                   RowLabel: "@/components/(ecommerce)/RowLabels/OrderProductsRowLabel#OrderProductsRowLabel",
@@ -159,7 +159,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Variant Slug",
-                        pl: "Wariant",
+                        cs: "Varianta",
                       },
                       admin: {
                         components: {
@@ -173,7 +173,7 @@ export const Orders: CollectionConfig = {
                       type: "number",
                       label: {
                         en: "Quantity",
-                        pl: "Ilość",
+                        cs: "Množství",
                       },
                       admin: {
                         width: "50%",
@@ -190,7 +190,7 @@ export const Orders: CollectionConfig = {
                       type: "number",
                       label: {
                         en: "Price per unit",
-                        pl: "Cena za sztukę",
+                        cs: "Cena za kus",
                       },
                       admin: {
                         components: {
@@ -205,7 +205,7 @@ export const Orders: CollectionConfig = {
                       type: "checkbox",
                       label: {
                         en: "Auto Price",
-                        pl: "Automatyczna cena",
+                        cs: "Automatická cena",
                       },
                       defaultValue: false,
                       admin: {
@@ -218,7 +218,7 @@ export const Orders: CollectionConfig = {
                       type: "number",
                       label: {
                         en: "Price Total",
-                        pl: "Cena całkowita",
+                        cs: "Cena celkem",
                       },
                       admin: {
                         width: "50%",
@@ -238,12 +238,12 @@ export const Orders: CollectionConfig = {
         {
           label: {
             en: "Invoice",
-            pl: "Dokument sprzedaży",
+            cs: "Dokument prodeje",
           },
           fields: [
             {
               name: "invoice",
-              label: { en: "Invoice data", pl: "Dane do faktury" },
+              label: { en: "Invoice data", cs: "Údaje k faktuře" },
               type: "group",
               fields: [
                 {
@@ -251,7 +251,7 @@ export const Orders: CollectionConfig = {
                   type: "checkbox",
                   label: {
                     en: "Company",
-                    pl: "Firma",
+                    cs: "Firma",
                   },
                 },
                 {
@@ -259,7 +259,7 @@ export const Orders: CollectionConfig = {
                   type: "text",
                   label: {
                     en: "Name",
-                    pl: "Nazwa",
+                    cs: "Název",
                   },
                 },
                 {
@@ -267,7 +267,7 @@ export const Orders: CollectionConfig = {
                   type: "text",
                   label: {
                     en: "TIN",
-                    pl: "NIP",
+                    cs: "DIČ",
                   },
                   admin: {
                     condition: (_, siblingData) => Boolean(siblingData.isCompany),
@@ -278,7 +278,7 @@ export const Orders: CollectionConfig = {
                   type: "text",
                   label: {
                     en: "Address",
-                    pl: "Adres",
+                    cs: "Adresa",
                   },
                 },
                 {
@@ -289,7 +289,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "City",
-                        pl: "Miasto",
+                        cs: "Město",
                       },
                       admin: {
                         width: "50%",
@@ -300,7 +300,7 @@ export const Orders: CollectionConfig = {
                       type: "select",
                       label: {
                         en: "Country",
-                        pl: "Kraj",
+                        cs: "Země",
                       },
                       options: [...countryList],
                       admin: {
@@ -317,7 +317,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Region",
-                        pl: "Region",
+                        cs: "Kraj",
                       },
                       admin: {
                         width: "50%",
@@ -328,7 +328,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Postal Code",
-                        pl: "Kod pocztowy",
+                        cs: "PSČ",
                       },
                       admin: {
                         width: "50%",
@@ -343,12 +343,12 @@ export const Orders: CollectionConfig = {
         {
           label: {
             en: "Shipping",
-            pl: "Dostawa",
+            cs: "Doprava",
           },
           fields: [
             {
               name: "printLabel",
-              label: { en: "Printing Labels", pl: "Drukowanie etykiet" },
+              label: { en: "Printing Labels", cs: "Tisk etiket" },
               type: "group",
               fields: [
                 {
@@ -433,7 +433,7 @@ export const Orders: CollectionConfig = {
               type: "group",
               label: {
                 en: "Shipping Address",
-                pl: "Adres dostawy",
+                cs: "Dodací adresa",
               },
               fields: [
                 {
@@ -441,7 +441,7 @@ export const Orders: CollectionConfig = {
                   type: "text",
                   label: {
                     en: "Name",
-                    pl: "Nazwa",
+                    cs: "Název",
                   },
 
                   required: true,
@@ -451,7 +451,7 @@ export const Orders: CollectionConfig = {
                   type: "text",
                   label: {
                     en: "Address",
-                    pl: "Adres",
+                    cs: "Adresa",
                   },
 
                   required: true,
@@ -464,7 +464,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Pickup point ID",
-                        pl: "ID punktu odbioru",
+                        cs: "ID výdejního místa",
                       },
                       admin: {
                         width: "50%",
@@ -477,7 +477,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Pickup point address",
-                        pl: "Adres punktu odbioru",
+                        cs: "Adresa výdejního místa",
                       },
                       admin: {
                         width: "50%",
@@ -495,7 +495,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "City",
-                        pl: "Miasto",
+                        cs: "Město",
                       },
                       admin: {
                         width: "50%",
@@ -507,7 +507,7 @@ export const Orders: CollectionConfig = {
                       type: "select",
                       label: {
                         en: "Country",
-                        pl: "Kraj",
+                        cs: "Země",
                       },
                       options: [...countryList],
                       admin: {
@@ -525,7 +525,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Region",
-                        pl: "Region",
+                        cs: "Kraj",
                       },
                       admin: {
                         width: "50%",
@@ -537,7 +537,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Postal Code",
-                        pl: "Kod pocztowy",
+                        cs: "PSČ",
                       },
                       admin: {
                         width: "50%",
@@ -554,7 +554,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Email",
-                        pl: "Email",
+                        CS: "Email",
                       },
                       admin: {
                         width: "50%",
@@ -566,7 +566,7 @@ export const Orders: CollectionConfig = {
                       type: "text",
                       label: {
                         en: "Phone number",
-                        pl: "Numer telefonu",
+                        cs: "Telefon",
                       },
                       admin: {
                         width: "50%",
@@ -585,7 +585,7 @@ export const Orders: CollectionConfig = {
       name: "orderDetails",
       label: {
         en: "Order Details",
-        pl: "Szczegóły zamówienia",
+        cs: "Podrobnosti objednávky",
       },
       type: "group",
       admin: {
@@ -600,7 +600,7 @@ export const Orders: CollectionConfig = {
               type: "number",
               label: {
                 en: "Total (without shipping)",
-                pl: "Suma (bez kosztów dostawy)",
+                cs: "Celkem (bez dopravy)",
               },
               admin: {
                 components: {
@@ -615,7 +615,7 @@ export const Orders: CollectionConfig = {
               type: "number",
               label: {
                 en: "Shipping Cost",
-                pl: "Koszt dostawy",
+                cs: "Náklady na dopravu",
               },
 
               required: true,
@@ -630,7 +630,7 @@ export const Orders: CollectionConfig = {
               type: "number",
               label: {
                 en: "Total (with shipping)",
-                pl: "Suma (z kosztami dostawy)",
+                cs: "Celkem (s dopravou)",
               },
               admin: {
                 components: {
@@ -648,14 +648,14 @@ export const Orders: CollectionConfig = {
           name: "amountPaid",
           type: "number",
           defaultValue: 0,
-          label: { en: "Amount Paid", pl: "Zapłacona kwota" },
+          label: { en: "Amount Paid", cs: "Zaplacená částka" },
         },
         {
           name: "shipping",
           type: "select",
           label: {
             en: "Choosen Shipping Method",
-            pl: "Wybrana metoda dostawy",
+            cs: "Vybraná metoda dopravy",
           },
           options: courierSelectOptions,
         },
@@ -664,7 +664,7 @@ export const Orders: CollectionConfig = {
           type: "text",
           label: {
             en: "Transaction ID",
-            pl: "ID transakcji",
+            cs: "ID transakce",
           },
           admin: {
             readOnly: true,
@@ -675,7 +675,7 @@ export const Orders: CollectionConfig = {
           type: "select",
           label: {
             en: "Status",
-            pl: "Status",
+            cs: "Status",
           },
           hooks: {
             afterChange: [sendStatusEmail, restoreStocks],
@@ -684,56 +684,56 @@ export const Orders: CollectionConfig = {
             {
               label: {
                 en: "Pending",
-                pl: "Oczekujące",
+                cs: "Čekající",
               },
               value: "pending",
             },
             {
               label: {
                 en: "Paid",
-                pl: "Opłacone",
+                cs: "Zaplaceno",
               },
               value: "paid",
             },
             {
               label: {
                 en: "Unpaid",
-                pl: "Nieopłacone",
+                cs: "Nezaplaceno",
               },
               value: "unpaid",
             },
             {
               label: {
                 en: "Processing",
-                pl: "W trakcie realizacji",
+                cs: "Zpracovává se",
               },
               value: "processing",
             },
             {
               label: {
                 en: "Shipped",
-                pl: "Wysłane",
+                cs: "Odesláno",
               },
               value: "shipped",
             },
             {
               label: {
                 en: "Completed",
-                pl: "Zakończone",
+                cs: "Dokončeno",
               },
               value: "completed",
             },
             {
               label: {
                 en: "Cancelled",
-                pl: "Anulowane",
+                cs: "Zrušeno",
               },
               value: "cancelled",
             },
             {
               label: {
                 en: "Returned",
-                pl: "Zwrócone",
+                cs: "Vráceno",
               },
               value: "returned",
             },
@@ -745,7 +745,7 @@ export const Orders: CollectionConfig = {
           name: "shippingDate",
           label: {
             en: "Shipping Date",
-            pl: "Data wysyłki",
+            cs: "Datum odeslání",
           },
           type: "date",
         },
@@ -753,7 +753,7 @@ export const Orders: CollectionConfig = {
           name: "trackingNumber",
           label: {
             en: "Tracking Number",
-            pl: "Numer przesyłki",
+            cs: "Číslo zásilky",
           },
           admin: {
             readOnly: true,
@@ -764,7 +764,7 @@ export const Orders: CollectionConfig = {
           name: "orderNote",
           label: {
             en: "Order Note",
-            pl: "Notatka do zamówienia",
+            cs: "Poznámka k objednávce",
           },
           type: "textarea",
         },

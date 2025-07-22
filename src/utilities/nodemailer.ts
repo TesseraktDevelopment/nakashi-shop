@@ -21,11 +21,11 @@ const createEmailTransporter = async () => {
   return {
     transporter: nodemailer.createTransport({
       host: host ?? process.env.SMTP_HOST,
-      port: Number(port ?? 587),
-      secure: secure ?? false,
+      port: Number(port ?? 465),
+      secure: secure ?? true,
       auth: { user: user ?? process.env.SMTP_USER, pass: password ?? process.env.SMTP_PASS },
     }),
-    fromEmail: fromEmail ?? process.env.SMTP_USER,
+    fromEmail: fromEmail ?? process.env.SMTP_FROM,
   };
 };
 

@@ -7,7 +7,7 @@ export const Paywalls: GlobalConfig = {
   slug: "paywalls",
   label: {
     en: "Paywalls",
-    pl: "Bramki płatności",
+    cs: "Platební brány",
   },
   access: {
     read: () => true,
@@ -15,7 +15,7 @@ export const Paywalls: GlobalConfig = {
   admin: {
     group: {
       en: "Payments settings",
-      pl: "Ustawienia płatności",
+      cs: "Nastavení plateb",
     },
   },
   fields: [
@@ -23,28 +23,28 @@ export const Paywalls: GlobalConfig = {
       name: "paywall",
       label: {
         en: "Paywall",
-        pl: "Bramka płatności",
+        cs: "Platební brána",
       },
       type: "select",
       options: [
         {
           label: {
             en: "Stripe",
-            pl: "Stripe",
+            cs: "Stripe",
           },
           value: "stripe",
         },
         {
           label: {
             en: "Autopay",
-            pl: "Autopay",
+            cs: "Autopay",
           },
           value: "autopay",
         },
         {
           label: {
             en: "Przelewy24",
-            pl: "Przelewy24",
+            cs: "Przelewy24",
           },
           value: "p24",
         },
@@ -56,7 +56,7 @@ export const Paywalls: GlobalConfig = {
       name: "stripe",
       label: {
         en: "Stripe configuration",
-        pl: "Konfiguracja Stripe",
+        cs: "Konfigurace Stripe",
       },
       type: "group",
       admin: {
@@ -64,7 +64,7 @@ export const Paywalls: GlobalConfig = {
           return data.paywall === "stripe";
         },
         description: {
-          pl: "Jeśli chcesz korzystać ze środowiska testowego, podaj tu odpowiadające klucze.",
+          cs: "Pokud chcete používat testovací prostředí, zadejte zde odpovídající klíče.",
           en: "If you want to use test environment, you can also provide test keys here.",
         },
       },
@@ -74,7 +74,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Secret API Key",
-            pl: "Prywatny klucz API",
+            cs: "Tajný klíč API",
           },
           access: {
             read: authenticated,
@@ -88,7 +88,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Webhook Secret API Key",
-            pl: "Prywatny klucz API Webhook",
+            cs: "Tajný klíč API pro Webhook",
           },
           access: {
             read: authenticated,
@@ -102,7 +102,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Public API Key",
-            pl: "Publiczny klucz API",
+            cs: "Veřejný klíč API",
           },
           access: {
             read: authenticated,
@@ -116,7 +116,7 @@ export const Paywalls: GlobalConfig = {
       name: "autopay",
       label: {
         en: "Autopay configuration",
-        pl: "Konfiguracja Autopay",
+        cs: "Konfigurace Autopay",
       },
       type: "group",
       admin: {
@@ -124,7 +124,7 @@ export const Paywalls: GlobalConfig = {
           return data.paywall === "autopay";
         },
         description: {
-          pl: "Jeśli chcesz korzystać ze środowiska testowego, podaj tu odpowiadające klucze.",
+          cs: "Pokud chcete používat testovací prostředí, zadejte zde odpovídající klíče.",
           en: "If you want to use test environment, you can also provide test keys here.",
         },
       },
@@ -134,7 +134,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Service ID",
-            pl: "ServiceID (Identyfikator Serwisu Partnera)",
+            cs: "ID služby",
           },
           access: {
             read: authenticated,
@@ -148,7 +148,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Hash Key",
-            pl: "HashKey (Klucz do generowania hasha)",
+            cs: "Hash klíč",
           },
           access: {
             read: authenticated,
@@ -162,11 +162,10 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Endpoint",
-            pl: "Endpoint",
+            cs: "Endpoint",
           },
           access: {
             read: authenticated,
-
             create: authenticated,
             update: authenticated,
           },
@@ -178,7 +177,7 @@ export const Paywalls: GlobalConfig = {
       name: "p24",
       label: {
         en: "Przelewy24 configuration",
-        pl: "Konfiguracja Przelewy24",
+        cs: "Konfigurace Przelewy24",
       },
       type: "group",
       admin: {
@@ -186,7 +185,7 @@ export const Paywalls: GlobalConfig = {
           return data.paywall === "p24";
         },
         description: {
-          pl: "Jeśli chcesz korzystać ze środowiska testowego, podaj tu odpowiadające klucze.",
+          cs: "Pokud chcete používat testovací prostředí, zadejte zde odpovídající klíče.",
           en: "If you want to use test environment, you can also provide test keys here.",
         },
       },
@@ -196,7 +195,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "POS ID (User ID)",
-            pl: "POS ID (ID użytkownika)",
+            cs: "POS ID (ID uživatele)",
           },
           access: {
             read: authenticated,
@@ -210,7 +209,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "CRC Key",
-            pl: "CRC (Klucz do CRC)",
+            cs: "CRC klíč",
           },
           access: {
             read: authenticated,
@@ -224,12 +223,11 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Secret ID (Klucz do raportów)",
-            pl: "Secret ID (Klucz do raportów)",
+            cs: "Tajné ID (Klíč pro reporty)",
           },
           access: {
             read: authenticated,
             create: authenticated,
-
             update: authenticated,
           },
           required: true,
@@ -239,7 +237,7 @@ export const Paywalls: GlobalConfig = {
           type: "text",
           label: {
             en: "Endpoint",
-            pl: "Endpoint",
+            cs: "Endpoint",
           },
           access: {
             read: authenticated,

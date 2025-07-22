@@ -7,16 +7,16 @@ export const freeShippingField: Field = {
   type: "array",
   label: {
     en: "Free shipping from",
-    pl: "Darmowa dostawa od",
+    cs: "Doprava zdarma od",
   },
   labels: {
     singular: {
       en: "Price",
-      pl: "Cena",
+      cs: "Cena",
     },
     plural: {
       en: "Prices",
-      pl: "Ceny",
+      cs: "Ceny",
     },
   },
   admin: {
@@ -33,7 +33,7 @@ export const freeShippingField: Field = {
           type: "number",
           label: {
             en: "Price",
-            pl: "Cena",
+            cs: "Cena",
           },
           required: true,
         },

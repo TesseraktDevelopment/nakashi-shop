@@ -7,12 +7,12 @@ export const Fulfilment: GlobalConfig = {
   admin: {
     group: {
       en: "Orders",
-      pl: "Zamówienia",
+      cs: "Objednávky",
     },
   },
   label: {
     en: "Fulfilment data",
-    pl: "Dane realizacji",
+    cs: "Údaje o plnění",
   },
   fields: [
     {
@@ -20,7 +20,7 @@ export const Fulfilment: GlobalConfig = {
       type: "group",
       label: {
         en: "Shop Address",
-        pl: "Adres sklepu",
+        cs: "Adresa obchodu",
       },
       fields: [
         {
@@ -28,7 +28,7 @@ export const Fulfilment: GlobalConfig = {
           type: "text",
           label: {
             en: "Name",
-            pl: "Nazwa",
+            cs: "Název",
           },
           required: true,
         },
@@ -37,7 +37,7 @@ export const Fulfilment: GlobalConfig = {
           type: "text",
           label: {
             en: "Address",
-            pl: "Adres",
+            cs: "Adresa",
           },
           required: true,
         },
@@ -49,7 +49,7 @@ export const Fulfilment: GlobalConfig = {
               type: "text",
               label: {
                 en: "City",
-                pl: "Miasto",
+                cs: "Město",
               },
               admin: {
                 width: "50%",
@@ -61,7 +61,7 @@ export const Fulfilment: GlobalConfig = {
               type: "select",
               label: {
                 en: "Country",
-                pl: "Kraj",
+                cs: "Země",
               },
               options: [...countryList],
               admin: {
@@ -79,7 +79,7 @@ export const Fulfilment: GlobalConfig = {
               type: "text",
               label: {
                 en: "Region",
-                pl: "Region",
+                cs: "Kraj",
               },
               admin: {
                 width: "50%",
@@ -91,7 +91,7 @@ export const Fulfilment: GlobalConfig = {
               type: "text",
               label: {
                 en: "Postal Code",
-                pl: "Kod pocztowy",
+                cs: "PSČ",
               },
               admin: {
                 width: "50%",
@@ -108,7 +108,7 @@ export const Fulfilment: GlobalConfig = {
               type: "text",
               label: {
                 en: "Email",
-                pl: "Email",
+                cs: "Email",
               },
               admin: {
                 width: "50%",
@@ -120,7 +120,7 @@ export const Fulfilment: GlobalConfig = {
               type: "text",
               label: {
                 en: "Phone number",
-                pl: "Numer telefonu",
+                cs: "Telefonní číslo",
               },
               admin: {
                 width: "50%",

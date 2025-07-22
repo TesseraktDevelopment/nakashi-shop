@@ -5,7 +5,7 @@
   },
   "LocaleSwitch": {
     "label": "Change language",
-    "locale": "{locale, select, pl {Polish} en {English} other {Unknown}}"
+    "locale": "{locale, select, pl {Polish} en {English} cs {Czech} other {Unknown}}"
   },
   "ProductDetails": {
     "add-to-cart": "Add to cart",
@@ -83,6 +83,7 @@
     "success": "Account has been created successfully. An email has been sent to you with a confirmation link.",
     "have-account": "Already have an account?",
     "login-now": "Login here!",
+    "email-placeholder": "john.doe@example.com",
     "errors": {
       "email": "Invalid email address",
       "email-empty": "Email address cannot be empty",

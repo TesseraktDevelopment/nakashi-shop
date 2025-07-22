@@ -5,7 +5,7 @@
   },
   "LocaleSwitch": {
     "label": "Wybierz język",
-    "locale": "{locale, select, pl {Polski} en {Angielski} other {Unknown}}"
+    "locale": "{locale, select, pl {Polski} en {Angielski} cs {Czeski} other {Unknown}}"
   },
   "ProductDetails": {
     "add-to-cart": "Dodaj do koszyka",
@@ -66,6 +66,7 @@
     "register-now": "Zarejestruj się teraz!",
     "verified-success": "Adres e-mail zweryfikowany. Możesz się teraz zalogować.",
     "verified-fail": "Nieprawidłowy link weryfikacyjny. Spróbuj ponownie lub skontaktuj się z nami.",
+    "email-placeholder": "jan.kowalski@example.pl",
     "errors": {
       "email": "Nieprawidłowy adres e-mail",
       "email-empty": "Adres e-mail nie może być pusty",

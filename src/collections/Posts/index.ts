@@ -33,11 +33,11 @@ export const Posts: CollectionConfig<"posts"> = {
   labels: {
     singular: {
       en: "Post",
-      pl: "Post",
+      cs: "Příspěvek",
     },
     plural: {
       en: "Posts",
-      pl: "Posty",
+      cs: "Příspěvky",
     },
   },
   access: {
@@ -77,7 +77,7 @@ export const Posts: CollectionConfig<"posts"> = {
     useAsTitle: "title",
     group: {
       en: "Page Settings",
-      pl: "Ustawienia strony",
+      cs: "Nastavení stránky",
     },
   },
   fields: [

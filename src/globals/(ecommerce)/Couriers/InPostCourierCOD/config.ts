@@ -8,7 +8,7 @@ export const InPostCourierCOD: GlobalConfig = {
   slug: "inpost-courier-cod",
   label: {
     en: "InPost COD Courier",
-    pl: "InPost Kurier pobraniowy",
+    cs: "InPost Kurýr s dobírkou",
   },
   access: {
     read: () => true,
@@ -16,7 +16,7 @@ export const InPostCourierCOD: GlobalConfig = {
   admin: {
     group: {
       en: "Courier integrations",
-      pl: "Integracje kurierskie",
+      cs: "Integrace kuriérů",
     },
   },
   fields: [
@@ -26,14 +26,14 @@ export const InPostCourierCOD: GlobalConfig = {
         {
           label: {
             en: "InPost Courier",
-            pl: "Kurier InPost",
+            cs: "Kurýr InPost",
           },
           fields: courierFields,
         },
         {
           label: {
             en: "API Keys",
-            pl: "Klucze API",
+            cs: "Klíče API",
           },
           fields: [
             {
@@ -41,7 +41,7 @@ export const InPostCourierCOD: GlobalConfig = {
               type: "text",
               label: {
                 en: "Client ID",
-                pl: "ID Klienta",
+                cs: "ID Klienta",
               },
               access: {
                 read: authenticated,
@@ -58,7 +58,7 @@ export const InPostCourierCOD: GlobalConfig = {
               type: "select",
               label: {
                 en: "Environment",
-                pl: "Środowisko",
+                cs: "Prostředí",
               },
               access: {
                 read: authenticated,
@@ -71,14 +71,14 @@ export const InPostCourierCOD: GlobalConfig = {
                 {
                   label: {
                     en: "Production",
-                    pl: "Produkcja",
+                    cs: "Produkce",
                   },
                   value: "https://api-shipx-pl.easypack24.net",
                 },
                 {
                   label: {
                     en: "Sandbox",
-                    pl: "Sandbox",
+                    cs: "Sandbox",
                   },
                   value: "https://sandbox-api-shipx-pl.easypack24.net",
                 },
@@ -87,7 +87,7 @@ export const InPostCourierCOD: GlobalConfig = {
                 condition: (data) => Boolean(data.enabled),
                 description: {
                   en: "Remember to pass matching keys for choosen environment",
-                  pl: "Pamiętaj o przekazaniu odpowiednich kluczy dla wybranego środowiska",
+                  cs: "Nezapomeňte zadat odpovídající klíče pro vybrané prostředí",
                 },
               },
             },
@@ -96,7 +96,7 @@ export const InPostCourierCOD: GlobalConfig = {
               type: "text",
               label: {
                 en: "API ShipX key",
-                pl: "Klucz API ShipX",
+                cs: "Klíč API ShipX",
               },
               access: {
                 read: authenticated,

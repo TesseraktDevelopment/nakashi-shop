@@ -3,315 +3,315 @@ export const countryList = [
     value: "ad",
     label: {
       en: "Andorra",
-      pl: "Andora",
+      cs: "Andorra",
     },
   },
   {
     value: "al",
     label: {
       en: "Albania",
-      pl: "Albania",
+      cs: "Albánie",
     },
   },
   {
     value: "at",
     label: {
       en: "Austria",
-      pl: "Austria",
+      cs: "Rakousko",
     },
   },
   {
     value: "ba",
     label: {
       en: "Bosnia and Herzegovina",
-      pl: "Bośnia i Hercegowina",
+      cs: "Bosna a Hercegovina",
     },
   },
   {
     value: "be",
     label: {
       en: "Belgium",
-      pl: "Belgia",
+      cs: "Belgie",
     },
   },
   {
     value: "bg",
     label: {
       en: "Bulgaria",
-      pl: "Bułgaria",
+      cs: "Bulharsko",
     },
   },
   {
     value: "by",
     label: {
       en: "Belarus",
-      pl: "Białoruś",
+      cs: "Bělorusko",
     },
   },
   {
     value: "ch",
     label: {
       en: "Switzerland",
-      pl: "Szwajcaria",
+      cs: "Švýcarsko",
     },
   },
   {
     value: "cy",
     label: {
       en: "Cyprus",
-      pl: "Cypr",
+      cs: "Kypr",
     },
   },
   {
     value: "cz",
     label: {
       en: "Czech Republic",
-      pl: "Czechy",
+      cs: "Česká republika",
     },
   },
   {
     value: "de",
     label: {
       en: "Germany",
-      pl: "Niemcy",
+      cs: "Německo",
     },
   },
   {
     value: "dk",
     label: {
       en: "Denmark",
-      pl: "Dania",
+      cs: "Dánsko",
     },
   },
   {
     value: "ee",
     label: {
       en: "Estonia",
-      pl: "Estonia",
+      cs: "Estonsko",
     },
   },
   {
     value: "es",
     label: {
       en: "Spain",
-      pl: "Hiszpania",
+      cs: "Španělsko",
     },
   },
   {
     value: "fi",
     label: {
       en: "Finland",
-      pl: "Finlandia",
+      cs: "Finsko",
     },
   },
   {
     value: "fr",
     label: {
       en: "France",
-      pl: "Francja",
+      cs: "Francie",
     },
   },
   {
     value: "gb",
     label: {
       en: "United Kingdom",
-      pl: "Wielka Brytania",
+      cs: "Spojené království",
     },
   },
   {
     value: "gr",
     label: {
       en: "Greece",
-      pl: "Grecja",
+      cs: "Řecko",
     },
   },
   {
     value: "hr",
     label: {
       en: "Croatia",
-      pl: "Chorwacja",
+      cs: "Chorvatsko",
     },
   },
   {
     value: "hu",
     label: {
       en: "Hungary",
-      pl: "Węgry",
+      cs: "Maďarsko",
     },
   },
   {
     value: "ie",
     label: {
       en: "Ireland",
-      pl: "Irlandia",
+      cs: "Irsko",
     },
   },
   {
     value: "is",
     label: {
       en: "Iceland",
-      pl: "Islandia",
+      cs: "Island",
     },
   },
   {
     value: "it",
     label: {
       en: "Italy",
-      pl: "Włochy",
+      cs: "Itálie",
     },
   },
   {
     value: "li",
     label: {
       en: "Liechtenstein",
-      pl: "Liechtenstein",
+      cs: "Lichtenštejnsko",
     },
   },
   {
     value: "lt",
     label: {
       en: "Lithuania",
-      pl: "Litwa",
+      cs: "Litva",
     },
   },
   {
     value: "lu",
     label: {
       en: "Luxembourg",
-      pl: "Luksemburg",
+      cs: "Lucembursko",
     },
   },
   {
     value: "lv",
     label: {
       en: "Latvia",
-      pl: "Łotwa",
+      cs: "Lotyšsko",
     },
   },
   {
     value: "mc",
     label: {
       en: "Monaco",
-      pl: "Monako",
+      cs: "Monako",
     },
   },
   {
     value: "md",
     label: {
       en: "Moldova",
-      pl: "Mołdawia",
+      cs: "Moldavsko",
     },
   },
   {
     value: "me",
     label: {
       en: "Montenegro",
-      pl: "Czarnogóra",
+      cs: "Černá Hora",
     },
   },
   {
     value: "mk",
     label: {
       en: "North Macedonia",
-      pl: "Macedonia Północna",
+      cs: "Severní Makedonie",
     },
   },
   {
     value: "mt",
     label: {
       en: "Malta",
-      pl: "Malta",
+      cs: "Malta",
     },
   },
   {
     value: "nl",
     label: {
       en: "Netherlands",
-      pl: "Holandia",
+      cs: "Nizozemsko",
     },
   },
   {
     value: "no",
     label: {
       en: "Norway",
-      pl: "Norwegia",
+      cs: "Norsko",
     },
   },
   {
     value: "pl",
     label: {
       en: "Poland",
-      pl: "Polska",
+      cs: "Polsko",
     },
   },
   {
     value: "pt",
     label: {
       en: "Portugal",
-      pl: "Portugalia",
+      cs: "Portugalsko",
     },
   },
   {
     value: "ro",
     label: {
       en: "Romania",
-      pl: "Rumunia",
+      cs: "Rumunsko",
     },
   },
   {
     value: "rs",
     label: {
       en: "Serbia",
-      pl: "Serbia",
+      cs: "Srbsko",
     },
   },
   {
     value: "ru",
     label: {
       en: "Russia",
-      pl: "Rosja",
+      cs: "Rusko",
     },
   },
   {
     value: "se",
     label: {
       en: "Sweden",
-      pl: "Szwecja",
+      cs: "Švédsko",
     },
   },
   {
     value: "si",
     label: {
       en: "Slovenia",
-      pl: "Słowenia",
+      cs: "Slovinsko",
     },
   },
   {
     value: "sk",
     label: {
       en: "Slovakia",
-      pl: "Słowacja",
+      cs: "Slovensko",
     },
   },
   {
     value: "sm",
     label: {
       en: "San Marino",
-      pl: "San Marino",
+      cs: "San Marino",
     },
   },
   {
     value: "ua",
     label: {
       en: "Ukraine",
-      pl: "Ukraina",
+      cs: "Ukrajina",
     },
   },
   {
     value: "va",
     label: {
       en: "Vatican City",
-      pl: "Watykan",
+      cs: "Vatikán",
     },
   },
 ] as const;

@@ -31,7 +31,7 @@ export const AddNewAddressDialog = ({
         name: "",
         address: "",
         city: "",
-        country: "pl",
+        country: "cs",
         region: "",
         postalCode: "",
         phone: "",

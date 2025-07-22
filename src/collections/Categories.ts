@@ -8,11 +8,11 @@ export const Categories: CollectionConfig = {
   labels: {
     plural: {
       en: "Posts Categories",
-      pl: "Kategorie postów",
+      cs: "Kategorie příspěvků",
     },
     singular: {
       en: "Post Category",
-      pl: "Kategoria postów",
+      cs: "Kategorie příspěvků",
     },
   },
   access: {
@@ -25,7 +25,7 @@ export const Categories: CollectionConfig = {
     useAsTitle: "title",
     group: {
       en: "Page Settings",
-      pl: "Ustawienia strony",
+      cs: "Nastavení stránky",
     },
   },
   fields: [

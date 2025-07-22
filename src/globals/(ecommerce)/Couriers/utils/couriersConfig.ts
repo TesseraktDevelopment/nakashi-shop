@@ -40,21 +40,21 @@ export const courierSelectOptions = [
     value: "inpost-pickup",
     label: {
       en: "InPost Pickup",
-      pl: "InPost Paczkomat",
+      cs: "InPost Paczkomat",
     },
   },
   {
     value: "inpost-courier",
     label: {
       en: "InPost Courier",
-      pl: "InPost Kurier",
+      cs: "InPost Kurier",
     },
   },
   {
     value: "inpost-courier-cod",
     label: {
       en: "InPost Courier COD",
-      pl: "InPost Kurier pobranie",
+      cs: "InPost Kurier COD",
     },
   },
 ];

@@ -1,0 +1,375 @@
+{
+  "HomePage": {
+    "title": "Ahoj!",
+    "about": "Přejít na stránku O nás"
+  },
+  "LocaleSwitch": {
+    "label": "Vyber jazyk",
+    "locale": "{locale, select, pl {Polština} en {Angličtina} cs {Čeština} other {Neznámý}}"
+  },
+  "ProductDetails": {
+    "add-to-cart": "Přidat do košíku",
+    "product-unavailable": "Produkt není k dispozici",
+    "description": "Popis",
+    "price": "Cena",
+    "color": "Barva",
+    "choose-color": "Vyberte barvu",
+    "size": "Velikost",
+    "choose-size": "Vyberte velikost",
+    "product-info": "Informace o produktu",
+    "reviews": "Recenze",
+    "sizing-chart": "Zobrazit tabulku velikostí",
+    "additional-details": "Další podrobnosti",
+    "add-to-favs": "Přidat k oblíbeným",
+    "stock-left": "Zbývá na skladě:",
+    "maximum-stock": "Máte již maximální množství tohoto produktu v košíku."
+  },
+  "ProductList": {
+    "variants-singular": "varianta",
+    "variants-plural": "varianty",
+    "filters": "Filtry",
+    "categories": "Kategorie",
+    "products": "Produkty",
+    "close-filters": "Zavřít filtry",
+    "sort": "Seřadit",
+    "most-popular": "Nejpopulárnější",
+    "newest": "Nejnovější",
+    "price-low-to-high": "Cena: od nejnižší",
+    "price-high-to-low": "Cena: od nejvyšší",
+    "color": "Barva",
+    "size": "Velikost"
+  },
+  "Cart": {
+    "title": "Košík",
+    "close-panel": "Zavřít panel",
+    "remove": "Odebrat",
+    "subtotal": "Mezisoučet",
+    "subtotal-info": "Náklady na dopravu budou vypočítány u pokladny.",
+    "checkout": "K pokladně",
+    "or": "nebo",
+    "continue-shopping": "Pokračovat v nakupování"
+  },
+  "WishList": {
+    "title": "Oblíbené",
+    "close-panel": "Zavřít panel",
+    "remove": "Odebrat",
+    "add-to-cart": "Přidat do košíku",
+    "unavailable": "Produkt není k dispozici"
+  },
+  "LoginForm": {
+    "title": "Přihlaste se ke svému účtu",
+    "email": "E-mailová adresa",
+    "password": "Heslo",
+    "submit": "Přihlásit se",
+    "forgot-password": "Zapomněli jste heslo?",
+    "no-account": "Nemáte účet?",
+    "register-now": "Zaregistrujte se nyní!",
+    "verified-success": "E-mailová adresa ověřena. Nyní se můžete přihlásit.",
+    "verified-fail": "Neplatný ověřovací odkaz. Zkuste to znovu nebo nás kontaktujte.",
+    "errors": {
+      "email": "Neplatná e-mailová adresa",
+      "email-empty": "E-mailová adresa nesmí být prázdná",
+      "password": "Heslo nesmí být prázdné",
+      "auth": "Neplatná e-mailová adresa nebo heslo",
+      "server-error": "Vnitřní chyba serveru. Kontaktujte nás."
+    }
+  },
+  "RegisterForm": {
+    "title": "Vytvořit účet",
+    "email": "E-mailová adresa",
+    "password": "Heslo",
+    "confirm-password": "Potvrďte heslo",
+    "submit": "Zaregistrovat se",
+    "success": "Účet byl úspěšně vytvořen. Na vaši e-mailovou adresu byl odeslán aktivační odkaz.",
+    "have-account": "Už máte účet?",
+    "login-now": "Přihlaste se zde!",
+    "email-placeholder": "jan.novak@priklad.cz",
+    "errors": {
+      "email": "Neplatná e-mailová adresa",
+      "email-empty": "E-mailová adresa nesmí být prázdná",
+      "password": "Heslo nesmí být prázdné",
+      "password-length": "Heslo musí mít alespoň 8 znaků",
+      "passwords-mismatch": "Hesla nejsou stejná",
+      "server-error": "Vnitřní chyba serveru. Kontaktujte technickou podporu."
+    }
+  },
+  "CheckoutFormServer": {
+    "checkout": "K pokladně"
+  },
+  "CheckoutForm": {
+    "form": {
+      "buy-as": "Nakupujete jako",
+      "individual": "Fyzická osoba",
+      "company": "Firma",
+      "shipping-address": "Doručovací adresa",
+      "other-invoice": "Chci obdržet fakturu na jiné údaje",
+      "full-name": "Jméno a přámení nebo název firmy",
+      "full-name-placeholder": "Jan Novák",
+      "tin": "DIČ",
+      "tin-placeholder": "CZ123456789",
+      "address": "Adresa",
+      "address-placeholder": "ul. Příkladná 1",
+      "city": "Město",
+      "city-placeholder": "Praha",
+      "country": "Země",
+      "country-placeholder": "Česká republika",
+      "region": "Kraj",
+      "region-placeholder": "Hlavní město Praha",
+      "email": "E-mailová adresa",
+      "email-placeholder": "jan.novak@priklad.cz",
+      "phone": "Telefonní číslo",
+      "phone-placeholder": "+420 123 456 789",
+      "postal-code": "PSČ",
+      "postal-code-placeholder": "110 00",
+      "delivery-method": "Způsob doručení",
+      "payment-method": "Způsob platby",
+      "change": "Změnit",
+      "invoice-data": "Fakturační údaje",
+      "no-shipping": "Nejsou dostupné žádné způsoby doručení. Kontaktujte nás.",
+      "internal-server-error": "Došlo k neidentifikované chybě. Kontaktujte nás."
+    },
+    "change-address-dialog": {
+      "change-address": "Změnit adresu",
+      "add-new": "Přidat novou adresu",
+      "save": "Uložit"
+    },
+    "add-address-dialog": {
+      "add-address": "Přidat novou adresu",
+      "save": "Uložit",
+      "saving": "Ukládání..."
+    },
+    "countries": {
+      "ad": "Andorra",
+      "al": "Albánie",
+      "at": "Rakousko",
+      "ba": "Bosna a Hercegovina",
+      "be": "Belgie",
+      "bg": "Bulharsko",
+      "by": "Bělorusko",
+      "ch": "Švýcarsko",
+      "cy": "Kypr",
+      "cz": "Česká republika",
+      "de": "Německo",
+      "dk": "Dánsko",
+      "ee": "Estonsko",
+      "es": "Španělsko",
+      "fi": "Finsko",
+      "fr": "Francie",
+      "gb": "Velká Británie",
+      "gr": "Řecko",
+      "hr": "Chorvatsko",
+      "hu": "Maďarsko",
+      "ie": "Irsko",
+      "is": "Island",
+      "it": "Itálie",
+      "li": "Lichtenštejnsko",
+      "lt": "Litva",
+      "lu": "Lucembursko",
+      "lv": "Lotyšsko",
+      "mc": "Monako",
+      "md": "Moldavsko",
+      "me": "Černá Hora",
+      "mk": "Severní Makedonie",
+      "mt": "Malta",
+      "nl": "Nizozemsko",
+      "no": "Norsko",
+      "pl": "Polsko",
+      "pt": "Portugalsko",
+      "ro": "Rumunsko",
+      "rs": "Srbsko",
+      "ru": "Rusko",
+      "se": "Švédsko",
+      "si": "Slovinsko",
+      "sk": "Slovensko",
+      "sm": "San Marino",
+      "ua": "Ukrajina",
+      "va": "Vatikán",
+      "us": "Spojené státy",
+      "other": "Jiné"
+    },
+    "errors": {
+      "invoice": {
+        "name": "Jméno nesmí být prázdné",
+        "address": "Adresa nesmí být prázdná",
+        "city": "Město nesmí být prázdné",
+        "country": "Země nesmí být prázdná",
+        "region": "Kraj nesmí být prázdný",
+        "postalCode": "PSČ nesmí být prázdné",
+        "tin": "DIČ nesmí být prázdné"
+      },
+      "shipping": {
+        "name": "Jméno nesmí být prázdné",
+        "address": "Adresa nesmí být prázdná",
+        "city": "Město nesmí být prázdné",
+        "country": "Země nesmí být prázdná",
+        "region": "Kraj nesmí být prázdný",
+        "postalCode": "PSČ nesmí být prázdné",
+        "phone": "Neplatné telefonní číslo",
+        "email": "Neplatná e-mailová adresa"
+      },
+      "deliveryMethod": "Musíte vybrat způsob doručení",
+      "paymentMethod": "Musíte vybrat způsob platby"
+    }
+  },
+  "DeliveryMethods": {
+    "inpost-pickup": "Boxy InPost",
+    "inpost-courier": "Kurýr InPost",
+    "choose-pickup": "Vyberte box",
+    "close": "Zavřít"
+  },
+  "OrderSummary": {
+    "subtotal": "Mezisoučet",
+    "shipping": "Doprava",
+    "total": "Celkem",
+    "confirm": "Potvrdit objednávku",
+    "remove": "Odebrat",
+    "items-in-cart": "Položky ve vašem košíku",
+    "order-summary": "Shrnutí objednávky"
+  },
+  "Account": {
+    "navigation": {
+      "orders": "Objednávky",
+      "settings": "Nastavení",
+      "orders-data": "Údaje k objednávkám",
+      "help": "Pomoc"
+    },
+    "orders": {
+      "title": "Objednávky",
+      "pending": "<yellow>Čekající</yellow>",
+      "paid": "<green>Zaplaceno</green>",
+      "unpaid": "<red>Nezaplaceno</red>",
+      "processing": "<yellow>Zpracovává se</yellow>",
+      "shipped": "<green>Odesláno</green>",
+      "completed": "<green>Dokončeno</green>",
+      "cancelled": "<red>Zrušeno</red>",
+      "returned": "<red>Vráceno</red>"
+    },
+    "orders-data": {
+      "title": "Údaje k objednávkám",
+      "add-new": "Přidat novou adresu",
+      "set-as-default": "Nastavit jako výchozí"
+    },
+    "settings": {
+      "title": "Nastavení účtu",
+      "firstName": "Jméno",
+      "lastName": "Příjmení",
+      "birthDate": "Datum narození",
+      "email": "E-mailová adresa",
+      "password": "Heslo",
+      "change-password": "Změnit heslo",
+      "old-password": "Staré heslo",
+      "new-password": "Nové heslo",
+      "confirm-password": "Potvrďte heslo",
+      "save": "Uložit",
+      "update": "Aktualizovat",
+      "password-form": {
+        "success": "Heslo bylo úspěšně změněno. Můžete toto okno zavřít.",
+        "errors": {
+          "old-password": "Staré heslo nesmí být prázdné",
+          "new-password": "Nové heslo nesmí být prázdné",
+          "password-length": "Heslo musí mít alespoň 8 znaků",
+          "passwords-mismatch": "Hesla nejsou stejná",
+          "password-incorrect": "Staré heslo je nesprávné",
+          "password-same": "Nové heslo musí být odlišné od starého",
+          "server-error": "Vnitřní chyba serveru. Kontaktujte technickou podporu."
+        }
+      }
+    },
+    "wrapper": {
+      "my-account": "Můj účet",
+      "logout": "Odhlásit se"
+    }
+  },
+  "Order": {
+    "thank-you": "Děkujeme!",
+    "pending": {
+      "title": "Vaše objednávka čeká na vyřízení.",
+      "subtitle": "Prosím, vyčkejte na zpracování platby. Objednávka {orderID}"
+    },
+    "paid": {
+      "title": "Platba byla přijata.",
+      "subtitle": "Brzy začneme zpracovávat vaši objednávku {orderID}."
+    },
+    "unpaid": {
+      "title": "Platba se nezdařila.",
+      "subtitle": "Zkuste to znovu nebo kontaktujte podporu, pokud máte problémy. Objednávka {orderID}"
+    },
+    "processing": {
+      "title": "Zpracováváme vaši objednávku.",
+      "subtitle": "Objednávka {orderID} bude brzy odeslána."
+    },
+    "shipped": {
+      "title": "Na cestě!",
+      "subtitle": "Vaše objednávka {orderID} byla odeslána."
+    },
+    "completed": {
+      "title": "Dokončeno!",
+      "subtitle": "Obdrželi jste objednávku {orderID}."
+    },
+    "cancelled": {
+      "title": "Zrušeno.",
+      "subtitle": "Objednávka {orderID} byla zrušena."
+    },
+    "returned": {
+      "title": "Vráceno.",
+      "subtitle": "Objednávka {orderID} byla vrácena."
+    },
+    "tracking-number": "Číslo pro sledování: ",
+    "your-order": "Vaše objednávka",
+    "items": "Položky",
+    "quantity": "Množství",
+    "price": "Cena",
+    "your-information": "Vaše údaje",
+    "shipping-address": "Doručovací adresa",
+    "shipping-method": "Způsob doručení",
+    "summary": "Shrnutí",
+    "subtotal": "Mezisoučet",
+    "shipping": "Doprava",
+    "total": "Celkem",
+    "pickup-point": "Výdejní místo"
+  },
+  "Emails": {
+    "reset-password": {
+      "greeting": "Dobrý den, {name},",
+      "message": "Někdo požádal o resetování hesla k vašemu účtu. Pokud to nejste vy, ignorujte tuto zprávu.",
+      "subject": "Resetovat heslo",
+      "button": "Resetovat heslo",
+      "body": "Klikněte na odkaz níže pro resetování hesla"
+    },
+    "verify-email": {
+      "greeting": "Dobrý den, {name},",
+      "subject": "Ověřte svou e-mailovou adresu",
+      "button": "Ověřit e-mail",
+      "body": "Klikněte na odkaz níže pro ověření vaší e-mailové adresy"
+    },
+    "welcome": {
+      "greeting": "Dobrý den, {name},",
+      "preview": "Vítejte v našem obchodě. Doufáme, že budete spokojeni s nákupy.",
+      "subject": "Ahoj! Děkujeme za registraci",
+      "body": "S radostí vás vítáme v našem obchodě. Najdete u nás široký výběr produktů za atraktivní ceny.",
+      "button": "Přejít do obchodu"
+    }
+  },
+  "ResetPasswordForm": {
+    "new-password": "Nové heslo",
+    "confirm-password": "Potvrďte heslo",
+    "change-password": "Změnit heslo",
+    "title": "Resetovat heslo",
+    "errors": {
+      "old-password": "Staré heslo nesmí být prázdné",
+      "new-password": "Nové heslo nesmí být prázdné",
+      "password-length": "Heslo musí mít alespoň 8 znaků",
+      "passwords-mismatch": "Hesla nejsou stejná",
+      "password-incorrect": "Staré heslo je nesprávné",
+      "password-same": "Nové heslo musí být odlišné od starého",
+      "server-error": "Vnitřní chyba serveru. Kontaktujte technickou podporu."
+    }
+  },
+  "Search": {
+    "no-results": "Žádné výsledky.",
+    "results": "Výsledky pro: ",
+    "search": "Hledat...",
+    "categories": "Kategorie",
+    "products": "Produkty"
+  }
+}

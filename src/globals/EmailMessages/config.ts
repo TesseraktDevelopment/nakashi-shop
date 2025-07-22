@@ -7,7 +7,7 @@ export const EmailMessages: GlobalConfig = {
   slug: "emailMessages",
   label: {
     en: "Email Messages",
-    pl: "Wiadomości e-mail",
+    cs: "Emailové zprávy",
   },
   access: {
     read: authenticated,
@@ -16,7 +16,7 @@ export const EmailMessages: GlobalConfig = {
   admin: {
     group: {
       en: "Shop settings",
-      pl: "Ustawienia sklepu",
+      cs: "Nastavení obchodu",
     },
   },
   fields: [
@@ -27,7 +27,7 @@ export const EmailMessages: GlobalConfig = {
           name: "smtp",
           label: {
             en: "SMTP",
-            pl: "SMTP",
+            cs: "SMTP",
           },
           fields: [
             {
@@ -36,7 +36,7 @@ export const EmailMessages: GlobalConfig = {
               required: true,
               label: {
                 en: "Host",
-                pl: "Host",
+                cs: "Host",
               },
             },
             {
@@ -45,7 +45,7 @@ export const EmailMessages: GlobalConfig = {
               required: true,
               label: {
                 en: "SMTP Port",
-                pl: "Port SMTP",
+                cs: "Port SMTP",
               },
             },
             {
@@ -53,7 +53,7 @@ export const EmailMessages: GlobalConfig = {
               type: "checkbox",
               label: {
                 en: "Secure",
-                pl: "Bezpieczne",
+                cs: "Zabezpečené",
               },
               required: true,
               defaultValue: false,
@@ -64,7 +64,7 @@ export const EmailMessages: GlobalConfig = {
               required: true,
               label: {
                 en: "User",
-                pl: "Użytkownik",
+                cs: "Uživatel",
               },
             },
             {
@@ -73,7 +73,7 @@ export const EmailMessages: GlobalConfig = {
               required: true,
               label: {
                 en: "Password",
-                pl: "Hasło",
+                cs: "Heslo",
               },
             },
             {
@@ -82,7 +82,7 @@ export const EmailMessages: GlobalConfig = {
               required: true,
               label: {
                 en: "From Email",
-                pl: "Z adresu e-mail",
+                cs: "Z emailu",
               },
             },
           ],
@@ -91,7 +91,7 @@ export const EmailMessages: GlobalConfig = {
           name: "messages",
           label: {
             en: "Messages",
-            pl: "Wiadomości",
+            cs: "Zprávy",
           },
           fields: [
             {
@@ -99,7 +99,7 @@ export const EmailMessages: GlobalConfig = {
               type: "upload",
               label: {
                 en: "Logo",
-                pl: "Logo",
+                cs: "Logo",
               },
               relationTo: "media",
             },
@@ -108,7 +108,7 @@ export const EmailMessages: GlobalConfig = {
               type: "textarea",
               label: {
                 en: "Additional text",
-                pl: "Dodatkowy tekst",
+                cs: "Dodatečný text",
               },
             },
             {
@@ -116,7 +116,7 @@ export const EmailMessages: GlobalConfig = {
               type: "select",
               required: true,
               defaultValue: "default",
-              options: [{ value: "default", label: { en: "Default", pl: "Domyślny" } }],
+              options: [{ value: "default", label: { en: "Default", cs: "Výchozí" } }],
             },
           ],
         },

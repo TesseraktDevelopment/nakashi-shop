@@ -76,7 +76,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
         name: defaultShippingAddress?.name ?? "",
         address: defaultShippingAddress?.address ?? "",
         city: defaultShippingAddress?.city ?? "",
-        country: defaultShippingAddress?.country ?? "pl",
+        country: defaultShippingAddress?.country ?? "cs",
         region: defaultShippingAddress?.region ?? "",
         postalCode: defaultShippingAddress?.postalCode ?? "",
         phone: defaultShippingAddress?.phone ?? "",
@@ -329,14 +329,14 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                         <FormItem>
                           <FormLabel>{t("country")}</FormLabel>
                           <FormControl>
-                            <Select onValueChange={field.onChange} defaultValue={field.value ?? "pl"}>
+                            <Select onValueChange={field.onChange} defaultValue={field.value ?? "cs"}>
                               <FormControl>
                                 <SelectTrigger className="w-full appearance-none rounded-md bg-white py-2 pr-3 text-base text-gray-900 outline-solid outline-1 -outline-offset-1 outline-gray-300 focus:outline-solid focus:outline-2 focus:-outline-offset-2 focus:outline-main-600 focus:ring-0 focus:ring-offset-0 sm:text-sm/6">
                                   <SelectValue placeholder={t("country-placeholder")} />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="pl">{c("pl")}</SelectItem>
+                                <SelectItem value="cs">{c("cs")}</SelectItem>
                                 <SelectItem value="gb">{c("gb")}</SelectItem>
                                 <SelectItem value="us">{c("us")}</SelectItem>
                               </SelectContent>

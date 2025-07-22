@@ -7,7 +7,7 @@ export const countryPickerField: Field = {
   type: "select",
   label: {
     en: "Countries",
-    pl: "Kraje",
+    cs: "Země",
   },
   hasMany: true,
   options: [...countryList],

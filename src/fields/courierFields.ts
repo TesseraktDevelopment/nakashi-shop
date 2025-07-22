@@ -11,14 +11,14 @@ export const courierFields: Field[] = [
     type: "checkbox",
     label: {
       en: "Enable this courier",
-      pl: "Włącz tego kuriera",
+      cs: "Povolit tohoto kurýra",
     },
   },
   {
     name: "settings",
     label: {
       en: "Settings",
-      pl: "Ustawienia",
+      cs: "Nastavení",
     },
     type: "group",
 
@@ -29,16 +29,16 @@ export const courierFields: Field[] = [
     type: "array",
     label: {
       en: "Delivery zones",
-      pl: "Strefy dostaw",
+      cs: "Doručovací zóny",
     },
     labels: {
       plural: {
         en: "Delivery zones",
-        pl: "Strefy dostaw",
+        cs: "Doručovací zóny",
       },
       singular: {
         en: "Delivery zone",
-        pl: "Strefa dostaw",
+        cs: "Doručovací zóna",
       },
     },
 
@@ -54,7 +54,7 @@ export const courierFields: Field[] = [
     type: "upload",
     label: {
       en: "Icon",
-      pl: "Ikona",
+      cs: "Ikona",
     },
     relationTo: "media",
     admin: {

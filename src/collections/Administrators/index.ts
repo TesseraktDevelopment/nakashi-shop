@@ -7,11 +7,11 @@ export const Administrators: CollectionConfig = {
   labels: {
     singular: {
       en: "Administrator",
-      pl: "Administrator",
+      cs: "Administrátor",
     },
     plural: {
       en: "Administrators",
-      pl: "Administratorzy",
+      cs: "Administrátoři",
     },
   },
   access: {
@@ -26,7 +26,7 @@ export const Administrators: CollectionConfig = {
     useAsTitle: "name",
     group: {
       en: "Page Settings",
-      pl: "Ustawienia strony",
+      cs: "Nastavení stránky",
     },
   },
   auth: true,

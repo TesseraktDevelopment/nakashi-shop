@@ -7,16 +7,16 @@ export const weightRangesField: Field = {
   type: "array",
   label: {
     en: "Weight ranges",
-    pl: "Zakresy wagowe",
+    cs: "Hmotnostní rozsahy",
   },
   labels: {
     plural: {
       en: "Weight ranges",
-      pl: "Zakresy wagowe",
+      cs: "Hmotnostní rozsahy",
     },
     singular: {
       en: "Weight range",
-      pl: "Zakres wagowy",
+      cs: "Hmotnostní rozsah",
     },
   },
   admin: {
@@ -32,7 +32,7 @@ export const weightRangesField: Field = {
           name: "weightFrom",
           label: {
             en: "Weight from (g)",
-            pl: "Waga od (g)",
+            cs: "Hmotnost od (g)",
           },
           type: "number",
           required: true,
@@ -41,7 +41,7 @@ export const weightRangesField: Field = {
           name: "weightTo",
           label: {
             en: "Weight to (g)",
-            pl: "Waga do (g)",
+            cs: "Hmotnost do (g)",
           },
           type: "number",
           required: true,
@@ -53,18 +53,18 @@ export const weightRangesField: Field = {
       type: "array",
       label: {
         en: "Pricing",
-        pl: "Cennik",
+        cs: "Ceník",
       },
       minRows: 1,
       required: true,
       labels: {
         singular: {
           en: "Price",
-          pl: "Cena",
+          cs: "Cena",
         },
         plural: {
           en: "Prices",
-          pl: "Ceny",
+          cs: "Ceny",
         },
       },
       admin: {
@@ -81,7 +81,7 @@ export const weightRangesField: Field = {
               type: "number",
               label: {
                 en: "Price",
-                pl: "Cena",
+                cs: "Cena",
               },
               required: true,
             },

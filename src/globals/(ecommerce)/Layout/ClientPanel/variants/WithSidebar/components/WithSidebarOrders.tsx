@@ -45,7 +45,7 @@ export const WithSidebarOrders = async () => {
               <p className="text-sm">{formatDateTime(order.createdAt, "EU")}</p>
               <p className="text-xs">Nr: {order.id}</p>
               <p className="font-medium">
-                {formatPrice(order.orderDetails?.total ?? 0, order.orderDetails?.currency ?? "PLN", locale)}
+                {formatPrice(order.orderDetails?.total ?? 0, order.orderDetails?.currency ?? "CZK", locale)}
               </p>
             </div>
             <div className="flex items-center gap-2 overflow-y-auto p-4 sm:pl-8">

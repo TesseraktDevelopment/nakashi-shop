@@ -66,9 +66,8 @@ export const ShippingAddressForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="pl">{c("pl")}</SelectItem>
-                  <SelectItem value="gb">{c("gb")}</SelectItem>
-                  <SelectItem value="us">{c("us")}</SelectItem>
+                  <SelectItem value="cs">{c("cs")}</SelectItem>
+                  <SelectItem value="sk">{c("sk")}</SelectItem>
                 </SelectContent>
               </Select>
             </FormControl>

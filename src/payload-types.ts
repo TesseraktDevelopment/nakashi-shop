@@ -148,7 +148,7 @@ export interface Config {
     paywalls: PaywallsSelect<false> | PaywallsSelect<true>;
     fulfilment: FulfilmentSelect<false> | FulfilmentSelect<true>;
   };
-  locale: 'en' | 'pl';
+  locale: 'en' | 'cs';
   user:
     | (Administrator & {
         collection: 'administrators';
@@ -2792,7 +2792,7 @@ export interface ShopSetting {
   /**
    * First currency is the default one
    */
-  availableCurrencies: ('USD' | 'EUR' | 'GBP' | 'PLN')[];
+  availableCurrencies: ('USD' | 'EUR' | 'GBP' | 'CZK')[];
   currencyValues?:
     | {
         currency: string;
