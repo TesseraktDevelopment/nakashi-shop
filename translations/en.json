@@ -64,6 +64,7 @@
     "forgot-password": "Forgot password?",
     "no-account": "Don't have an account?",
     "register-now": "Register now!",
+    "email-placeholder": "john.doe@example.com",
     "verified-success": "Email has been verified successfully. You can now sign in.",
     "verified-fail": "Email verification failed. Please try again or contact support.",
     "errors": {

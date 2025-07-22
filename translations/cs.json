@@ -64,6 +64,7 @@
     "forgot-password": "Zapomněli jste heslo?",
     "no-account": "Nemáte účet?",
     "register-now": "Zaregistrujte se nyní!",
+    "email-placeholder": "jan.novak@priklad.cz",
     "verified-success": "E-mailová adresa ověřena. Nyní se můžete přihlásit.",
     "verified-fail": "Neplatný ověřovací odkaz. Zkuste to znovu nebo nás kontaktujte.",
     "errors": {

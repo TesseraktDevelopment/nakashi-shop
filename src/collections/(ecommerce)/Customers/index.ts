@@ -13,17 +13,17 @@ export const Customers: CollectionConfig = {
   labels: {
     singular: {
       en: "Customer",
-      cs: "Klient",
+      cs: "Zákazník",
     },
     plural: {
       en: "Customers list",
-      cs: "Seznam Klientů",
+      cs: "Seznam zákazníků",
     },
   },
   admin: {
     group: {
       en: "Clients",
-      cs: "Klienti",
+      cs: "Zákazníci",
     },
     defaultColumns: ["fullName", "email", "createdAt", "updatedAt"],
     useAsTitle: "fullName",
@@ -94,7 +94,7 @@ export const Customers: CollectionConfig = {
           name: "lastBuyerType",
           label: {
             en: "Last Buyer Type",
-            cs: "Poslední typ kupujícího",
+            cs: "Poslední typ zákazníka",
           },
           type: "select",
           admin: {
@@ -240,8 +240,8 @@ export const Customers: CollectionConfig = {
     {
       name: "orders",
       label: {
-        en: "Client Orders",
-        cs: "Objednávky klienta",
+        en: "Customer Orders",
+        cs: "Objednávky zákazníka",
       },
       type: "join",
       collection: "orders",
