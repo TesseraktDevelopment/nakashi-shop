@@ -129,6 +129,7 @@ export interface Config {
     footer: Footer;
     emailMessages: EmailMessage;
     shopSettings: ShopSetting;
+    'zasilkovna-box': ZasilkovnaBox;
     shopLayout: ShopLayout;
     'inpost-pickup': InpostPickup;
     'inpost-courier': InpostCourier;
@@ -141,6 +142,7 @@ export interface Config {
     footer: FooterSelect<false> | FooterSelect<true>;
     emailMessages: EmailMessagesSelect<false> | EmailMessagesSelect<true>;
     shopSettings: ShopSettingsSelect<false> | ShopSettingsSelect<true>;
+    'zasilkovna-box': ZasilkovnaBoxSelect<false> | ZasilkovnaBoxSelect<true>;
     shopLayout: ShopLayoutSelect<false> | ShopLayoutSelect<true>;
     'inpost-pickup': InpostPickupSelect<false> | InpostPickupSelect<true>;
     'inpost-courier': InpostCourierSelect<false> | InpostCourierSelect<true>;
@@ -2806,6 +2808,103 @@ export interface ShopSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "zasilkovna-box".
+ */
+export interface ZasilkovnaBox {
+  id: string;
+  enabled?: boolean | null;
+  settings: {
+    label: string;
+    /**
+     * You can provide typical delivery time or any other information
+     */
+    description?: string | null;
+  };
+  deliveryZones?:
+    | {
+        countries: (
+          | 'ad'
+          | 'al'
+          | 'at'
+          | 'ba'
+          | 'be'
+          | 'bg'
+          | 'by'
+          | 'ch'
+          | 'cy'
+          | 'cz'
+          | 'de'
+          | 'dk'
+          | 'ee'
+          | 'es'
+          | 'fi'
+          | 'fr'
+          | 'gb'
+          | 'gr'
+          | 'hr'
+          | 'hu'
+          | 'ie'
+          | 'is'
+          | 'it'
+          | 'li'
+          | 'lt'
+          | 'lu'
+          | 'lv'
+          | 'mc'
+          | 'md'
+          | 'me'
+          | 'mk'
+          | 'mt'
+          | 'nl'
+          | 'no'
+          | 'pl'
+          | 'pt'
+          | 'ro'
+          | 'rs'
+          | 'ru'
+          | 'se'
+          | 'si'
+          | 'sk'
+          | 'sm'
+          | 'ua'
+          | 'va'
+        )[];
+        freeShipping?:
+          | {
+              value: number;
+              currency: string;
+              id?: string | null;
+            }[]
+          | null;
+        range?:
+          | {
+              weightFrom: number;
+              weightTo: number;
+              pricing: {
+                value: number;
+                currency: string;
+                id?: string | null;
+              }[];
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  icon?: (string | null) | Media;
+  apiKey?: string | null;
+  /**
+   * Remember to pass matching keys for choosen environment
+   */
+  APIUrl?: 'https://www.zasilkovna.cz/api/rest' | null;
+  widgetVersion?: 'https://widget.packeta.com/v6/' | null;
+  apiPassword?: string | null;
+  sender?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "shopLayout".
  */
 export interface ShopLayout {
@@ -3323,6 +3422,55 @@ export interface ShopSettingsSelect<T extends boolean = true> {
         id?: T;
       };
   enableOAuth?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "zasilkovna-box_select".
+ */
+export interface ZasilkovnaBoxSelect<T extends boolean = true> {
+  enabled?: T;
+  settings?:
+    | T
+    | {
+        label?: T;
+        description?: T;
+      };
+  deliveryZones?:
+    | T
+    | {
+        countries?: T;
+        freeShipping?:
+          | T
+          | {
+              value?: T;
+              currency?: T;
+              id?: T;
+            };
+        range?:
+          | T
+          | {
+              weightFrom?: T;
+              weightTo?: T;
+              pricing?:
+                | T
+                | {
+                    value?: T;
+                    currency?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  icon?: T;
+  apiKey?: T;
+  APIUrl?: T;
+  widgetVersion?: T;
+  apiPassword?: T;
+  sender?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

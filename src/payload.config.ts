@@ -25,6 +25,7 @@ import { Posts } from "./collections/Posts";
 import { InPostCourier } from "./globals/(ecommerce)/Couriers/InPostCourier/config";
 import { InPostCourierCOD } from "./globals/(ecommerce)/Couriers/InPostCourierCOD/config";
 import { InPostPickup } from "./globals/(ecommerce)/Couriers/InPostPickup/config";
+import { ZasilkovnaBox } from "./globals/(ecommerce)/Couriers/ZBOX/config";
 import { Fulfilment } from "./globals/(ecommerce)/Fulfilment";
 import { ShopLayout } from "./globals/(ecommerce)/Layout/config";
 import { Paywalls } from "./globals/(ecommerce)/Paywalls/config";
@@ -132,6 +133,7 @@ export default buildConfig({
     Footer,
     EmailMessages,
     ShopSettings,
+    ZasilkovnaBox,
     ShopLayout,
     InPostPickup,
     InPostCourier,
