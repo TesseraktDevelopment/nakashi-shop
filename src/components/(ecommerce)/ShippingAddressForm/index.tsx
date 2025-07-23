@@ -59,14 +59,14 @@ export const ShippingAddressForm = () => {
           <FormItem>
             <FormLabel>{t("country")}</FormLabel>
             <FormControl>
-              <Select onValueChange={field.onChange} defaultValue={field.value ?? "pl"}>
+              <Select onValueChange={field.onChange} defaultValue={field.value ?? "cz"}>
                 <FormControl>
                   <SelectTrigger className="w-full appearance-none rounded-md bg-white py-2 pr-3 text-base text-gray-900 outline-solid outline-1 -outline-offset-1 outline-gray-300 focus:outline-solid focus:outline-2 focus:-outline-offset-2 focus:outline-main-600 focus:ring-0 focus:ring-offset-0 sm:text-sm/6">
                     <SelectValue placeholder={t("country-placeholder")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="cs">{c("cs")}</SelectItem>
+                  <SelectItem value="cz">{c("cz")}</SelectItem>
                   <SelectItem value="sk">{c("sk")}</SelectItem>
                 </SelectContent>
               </Select>
