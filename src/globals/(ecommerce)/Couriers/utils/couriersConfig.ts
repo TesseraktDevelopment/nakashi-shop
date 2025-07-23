@@ -33,6 +33,14 @@ export const createCouriers = (locale: Locale) =>
         createInpostCODCourierPackage(order, dimensions),
       getLabel: (packageID: string) => getInpostLabel(packageID, "inpost-courier-cod"),
     },
+    {
+      key: "zasilkovna-box",
+      getSettings: () => getCachedGlobal("zasilkovna-box", locale, 1)(),
+      prepaid: true,
+      createPackage: (order: Order, dimension: string, _dimensions?: Dimensions) =>
+        createInpostPickupPackage(order, dimension),
+      getLabel: (packageID: string) => getInpostLabel(packageID, "inpost-courier-cod"),
+    },
   ] as const;
 
 export const courierSelectOptions = [
@@ -55,6 +63,13 @@ export const courierSelectOptions = [
     label: {
       en: "InPost Courier COD",
       cs: "InPost Kurier COD",
+    },
+  },
+    {
+    value: "zasilkovna-box",
+    label: {
+      en: "Packeta Box",
+      cs: "Zásilkovna Box",
     },
   },
 ];

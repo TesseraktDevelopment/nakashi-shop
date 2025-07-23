@@ -49,6 +49,7 @@ export const navIconMap: Partial<Record<CollectionSlug | GlobalSlug, ExoticCompo
   emailMessages: Mail,
   shopSettings: Settings,
   shopLayout: PanelsTopLeft,
+  "zasilkovna-box": BoxesIcon,
   "inpost-courier-cod": TruckIcon,
   "inpost-courier": TruckIcon,
   "inpost-pickup": BoxesIcon,

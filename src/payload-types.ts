@@ -1469,7 +1469,7 @@ export interface Order {
     totalWithShipping: number;
     currency: string;
     amountPaid?: number | null;
-    shipping?: ('inpost-pickup' | 'inpost-courier' | 'inpost-courier-cod') | null;
+    shipping?: ('inpost-pickup' | 'inpost-courier' | 'inpost-courier-cod' | 'zasilkovna-box') | null;
     transactionID?: string | null;
     status: 'pending' | 'paid' | 'unpaid' | 'processing' | 'shipped' | 'completed' | 'cancelled' | 'returned';
     shippingDate?: string | null;
