@@ -163,7 +163,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
       }
     } catch (error) {
       form.setError("root", { message: t("internal-server-error") });
-      console.log(error);
+      console.error(error);
     }
   };
 
