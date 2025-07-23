@@ -16,7 +16,7 @@ export const InPostCourierCOD: GlobalConfig = {
   admin: {
     group: {
       en: "Courier integrations",
-      cs: "Integrace kuriérů",
+      cs: "Kurýři",
     },
   },
   fields: [

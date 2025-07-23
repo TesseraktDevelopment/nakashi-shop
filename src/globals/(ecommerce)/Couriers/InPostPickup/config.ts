@@ -16,7 +16,7 @@ export const InPostPickup: GlobalConfig = {
   admin: {
     group: {
       en: "Courier integrations",
-      cs: "Integrace kurýrů",
+      cs: "Kurýři",
     },
   },
   fields: [
