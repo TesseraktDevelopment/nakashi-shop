@@ -267,7 +267,7 @@ export const Orders: CollectionConfig = {
                   type: "text",
                   label: {
                     en: "TIN",
-                    cs: "DIČ",
+                    cs: "IČO",
                   },
                   admin: {
                     condition: (_, siblingData) => Boolean(siblingData.isCompany),
