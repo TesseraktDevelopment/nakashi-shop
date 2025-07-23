@@ -293,7 +293,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
 
               <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                 {shippingAddresses ? (
-                  <div className="group relative flex cursor-pointer rounded-lg border border-gray-300 border-transparent bg-white p-4 shadow-xs ring-2 ring-main-500 focus:outline-hidden">
+                  <div className="group relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-xs ring-2 ring-main-500 focus:outline-hidden">
                     <span className="flex flex-1">
                       <span className="flex w-full flex-col">
                         <span className="block text-sm font-medium text-gray-900">{shipping.name}</span>
