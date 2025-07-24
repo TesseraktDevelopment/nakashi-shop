@@ -14,10 +14,15 @@ import { sendStatusEmail } from "./hooks/sendStatusEmail";
 export const Orders: CollectionConfig = {
   slug: "orders",
   admin: {
+    defaultColumns: ["status", "id", "date", "customer", "orderDetails.totalWithShipping", "extractedFromStock"],
     useAsTitle: "id",
     group: {
       en: "Orders",
       cs: "Objednávky",
+    },
+    pagination: {
+      defaultLimit: 15,
+      limits: [10, 15, 20, 30, 50],
     },
   },
   labels: {
@@ -468,8 +473,9 @@ export const Orders: CollectionConfig = {
                       },
                       admin: {
                         width: "50%",
+                        readOnly: true,
                         // eslint-disable-next-line
-                        condition: (data) => data.orderDetails.shipping === "inpost-pickup",
+                        condition: (data) => data.orderDetails.shipping === "inpost-pickup" || data.orderDetails.shipping === "zasilkovna-box",
                       },
                     },
                     {
@@ -481,8 +487,9 @@ export const Orders: CollectionConfig = {
                       },
                       admin: {
                         width: "50%",
+                        readOnly: true,
                         // eslint-disable-next-line
-                        condition: (data) => data.orderDetails.shipping === "inpost-pickup",
+                        condition: (data) => data.orderDetails.shipping === "inpost-pickup" || data.orderDetails.shipping === "zasilkovna-box",
                       },
                     },
                   ],
