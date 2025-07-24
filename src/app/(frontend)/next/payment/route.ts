@@ -80,6 +80,14 @@ export async function POST(req: Request) {
     const filledProducts = getFilledProducts(products, cart);
     console.log("Filled products:", filledProducts);
 
+    // Validate products
+    for (const product of filledProducts) {
+      if (!product.title) {
+        console.error(`Product ${product.id} is missing a title`);
+        return Response.json({ status: 400, message: `Product ${product.id} is missing a title` });
+      }
+    }
+
     const total = getTotal(filledProducts);
     console.log("Total calculated:", total);
 
@@ -105,7 +113,7 @@ export async function POST(req: Request) {
       ?.pricing.find((pricing) => pricing.currency === currency)?.value;
     console.log("Shipping cost calculated:", shippingCost, "for country:", selectedCountry);
 
-    if (!shippingCost) {
+    if (shippingCost === undefined) {
       console.log("Shipping cost not found for weight:", totalWeight, "currency:", currency);
       return Response.json({ status: 400, message: "Shipping cost not found" });
     }
@@ -273,7 +281,8 @@ export async function POST(req: Request) {
           redirectURL = await getStripePaymentURL({
             filledProducts,
             shippingCost,
-            shippingLabel: courierData.settings.label,
+            pickupPointID: checkoutData.shipping.pickupPointID || "",
+            shippingLabel: courierData.settings.label || "Doprava (Shipping)",
             currency,
             locale,
             apiKey: paywalls?.stripe?.secret ?? "",
@@ -314,7 +323,7 @@ export async function POST(req: Request) {
 
         default:
           console.log("No valid paywall type found");
-          break;
+          return Response.json({ status: 400, message: "No valid paywall type configured" });
       }
     } catch (error) {
       console.error("Payment processing error:", error);
