@@ -360,13 +360,13 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                             render={({ field }) => (
                               <>
                                 <FormControl>
-                                  <Input placeholder={t("tin-placeholder")} autoComplete="off" maxLength={11} {...field} pattern="[0-10]*" type="text" inputMode="numeric" onChange={(e) => { const value = e.target.value.replace(/[^0-9]/g, ""); if (value.length <= 10) { field.onChange(value); }}} />
+                                  <Input placeholder={t("tin-placeholder")} autoComplete="off" maxLength={11} {...field} pattern="[0-9]*" type="text" inputMode="numeric" onChange={(e) => { const value = e.target.value.replace(/[^0-9]/g, ""); if (value.length <= 10) { field.onChange(value); }}} />
                                 </FormControl>
                                 <Button
                                   type="button"
                                   disabled={isLoadingAresOrsr || !field.value || field.value.trim().length < 8 || field.value.trim().length > 10}
                                   onClick={() => fetchAresOrsrData((field.value ?? "").trim(), invoiceCountry as "cz" | "sk")}
-                                  className="h-10 w-[45%] text-sm font-medium text-main-600 disabled:bg-slate-300 disabled:text-slate-800 disabled:cursor-not-allowed rounded-md border border-transparent bg-white outline outline-gray-300"
+                                  className="h-10 w-[45%] text-sm font-medium text-main-600 cursor-pointer disabled:bg-slate-300 disabled:text-slate-800 disabled:cursor-not-allowed rounded-md border border-transparent bg-white outline outline-gray-300"
                                 >
                                   {isLoadingAresOrsr ? t("loading") : t("fill-from-ares-orsr")}
                                 </Button>
