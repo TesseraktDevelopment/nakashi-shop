@@ -1,5 +1,4 @@
 import { getPayload } from "payload";
-
 import { type Country } from "@/globals/(ecommerce)/Couriers/utils/countryList";
 import { type Locale } from "@/i18n/config";
 import { getFilledProducts } from "@/lib/getFilledProducts";
@@ -22,7 +21,10 @@ const createCouriers = async (locale: Locale) => {
 
 export async function POST(req: Request) {
   try {
+    console.log("POST request received");
     const payload = await getPayload({ config });
+    console.log("Payload initialized");
+
     const {
       cart,
       selectedCountry,
@@ -42,10 +44,14 @@ export async function POST(req: Request) {
       checkoutData: CheckoutFormData;
       currency: Currency;
     };
+    console.log("Request body:", { cart, selectedCountry, checkoutData, locale, currency });
+
     if (!cart) {
+      console.log("Cart is undefined, returning empty response");
       return Response.json({ status: 200 });
     }
 
+    console.log("Fetching products for cart IDs:", cart.map((product) => product.id));
     const { docs: products } = await payload.find({
       collection: "products",
       where: {
@@ -69,32 +75,50 @@ export async function POST(req: Request) {
         pricing: true,
       },
     });
+    console.log("Fetched products:", products);
 
     const filledProducts = getFilledProducts(products, cart);
+    console.log("Filled products:", filledProducts);
+
     const total = getTotal(filledProducts);
+    console.log("Total calculated:", total);
+
     const totalWeight = getTotalWeight(filledProducts, cart);
+    console.log("Total weight calculated:", totalWeight);
+
     const couriers = await createCouriers(locale);
+    console.log("Couriers fetched:", couriers);
 
     const courier = couriers.find((courier) => courier?.key === checkoutData.deliveryMethod);
+    console.log("Selected courier:", courier);
     if (!courier) {
+      console.log("Courier not found for deliveryMethod:", checkoutData.deliveryMethod);
       return Response.json({ status: 400, message: "Courier not found" });
     }
+
     const courierData = await courier.getSettings();
+    console.log("Courier settings:", courierData);
+
     const shippingCost = courierData.deliveryZones
       ?.find((zone) => zone.countries.includes(selectedCountry))
       ?.range?.find((range) => range.weightFrom <= totalWeight && range.weightTo >= totalWeight)
       ?.pricing.find((pricing) => pricing.currency === currency)?.value;
+    console.log("Shipping cost calculated:", shippingCost, "for country:", selectedCountry);
 
     if (!shippingCost) {
+      console.log("Shipping cost not found for weight:", totalWeight, "currency:", currency);
       return Response.json({ status: 400, message: "Shipping cost not found" });
     }
 
     const paywalls = await getCachedGlobal("paywalls", locale, 1)();
+    console.log("Paywalls fetched:", paywalls);
 
     let redirectURL: string | null = null;
 
     const user = await getCustomer();
+    console.log("Customer fetched:", user);
 
+    console.log("Creating order with data...");
     const order = await payload.create({
       collection: "orders",
       data: {
@@ -174,13 +198,17 @@ export async function POST(req: Request) {
         },
       },
     });
+    console.log("Order created:", order);
 
+    console.log("Updating product stock and bought counts...");
     filledProducts.forEach((product) => {
-      const newBoughtCount = product.bought ?? 0 + (product?.quantity ?? 0);
+      const newBoughtCount = (product.bought ?? 0) + (product?.quantity ?? 0);
+      console.log(`Processing product ${product.id}, newBoughtCount: ${newBoughtCount}`);
       if (product.enableVariants && product.variant && product.variants) {
         const variant = product.variant;
         if (variant.stock) {
           const newStock = variant.stock - (product?.quantity ?? 0);
+          console.log(`Updating variant stock for ${product.id}, variant: ${variant.variantSlug}, newStock: ${newStock}`);
           void payload.update({
             collection: "products",
             id: product.id,
@@ -201,6 +229,7 @@ export async function POST(req: Request) {
       } else {
         if (product.stock) {
           const newStock = product.stock - (product?.quantity ?? 0);
+          console.log(`Updating stock for ${product.id}, newStock: ${newStock}`);
           void payload.update({
             collection: "products",
             id: product.id,
@@ -214,6 +243,7 @@ export async function POST(req: Request) {
     });
 
     if (user) {
+      console.log(`Updating customer ${user.id} with lastBuyerType: ${checkoutData.buyerType}`);
       void payload.update({
         collection: "customers",
         id: user.id,
@@ -224,6 +254,7 @@ export async function POST(req: Request) {
     }
 
     if (courier.prepaid === false) {
+      console.log("Courier is not prepaid, returning order URL");
       return Response.json({
         status: 200,
         url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
@@ -231,12 +262,14 @@ export async function POST(req: Request) {
     }
 
     const totalWithShipping = (total.find((price) => price.currency === currency)?.value ?? 0) + shippingCost;
+    console.log("Total with shipping:", totalWithShipping);
 
-    console.log(paywalls.paywall);
+    console.log("Paywall type:", paywalls.paywall);
 
     try {
       switch (paywalls.paywall) {
         case "stripe":
+          console.log("Processing Stripe payment...");
           redirectURL = await getStripePaymentURL({
             filledProducts,
             shippingCost,
@@ -246,9 +279,11 @@ export async function POST(req: Request) {
             apiKey: paywalls?.stripe?.secret ?? "",
             orderID: order.id,
           });
+          console.log("Stripe redirect URL:", redirectURL);
           break;
 
         case "autopay":
+          console.log("Processing Autopay payment...");
           redirectURL = await getAutopayPaymentURL({
             total: totalWithShipping,
             autopay: paywalls?.autopay,
@@ -256,8 +291,11 @@ export async function POST(req: Request) {
             currency,
             customerEmail: checkoutData.shipping.email,
           });
+          console.log("Autopay redirect URL:", redirectURL);
           break;
+
         case "p24":
+          console.log("Processing P24 payment...");
           redirectURL = await getP24PaymentURL({
             secretId: paywalls.p24?.secretId ?? "",
             posId: Number(paywalls.p24?.posId ?? 0),
@@ -271,19 +309,22 @@ export async function POST(req: Request) {
             locale,
             client: user,
           });
+          console.log("P24 redirect URL:", redirectURL);
           break;
 
         default:
+          console.log("No valid paywall type found");
           break;
       }
     } catch (error) {
-      console.log(error);
+      console.error("Payment processing error:", error);
       return Response.json({ status: 500, message: "Error while creating payment" });
     }
 
+    console.log("Final response, redirectURL:", redirectURL);
     return Response.json({ status: 200, url: redirectURL });
   } catch (error) {
-    console.log(error);
+    console.error("General error in POST handler:", error);
     return Response.json({ status: 500, message: "Internal server error" });
   }
 }
