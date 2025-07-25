@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import Stripe from "stripe";
+
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import config from "@payload-config";
 
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
 
     const rawBody = await req.text();
 
-    const stripe = new Stripe(secret);
+    const stripe = new Stripe(secret, {apiVersion: "2025-06-30.basil"});
 
     let event: Stripe.Event;
 
@@ -38,12 +39,21 @@ export async function POST(req: Request) {
 
     switch (event.type) {
       case "checkout.session.completed": {
-        const session = event.data.object as Stripe.Checkout.Session;
+        const session = event.data.object;
         const orderID = session.metadata?.orderID;
 
         if (!orderID) {
           console.error("No orderID found in checkout.session.completed metadata");
           return Response.json({ status: 400, message: "Missing orderID in metadata" });
+        }
+
+        const paymentIntentId = typeof session.payment_intent === 'string'
+          ? session.payment_intent
+          : session.payment_intent?.id;
+
+        if (!paymentIntentId) {
+          console.error("No payment_intent ID found in checkout.session.completed");
+          return Response.json({ status: 400, message: "Missing payment_intent ID" });
         }
 
         console.log(`Processing checkout.session.completed for orderID: ${orderID}`);
@@ -60,7 +70,7 @@ export async function POST(req: Request) {
               },
             },
           });
-          console.log(`Order ${orderID} updated to paid with transactionID: ${session.payment_intent}`);
+          console.log(`Order ${orderID} updated to paid with transactionID: ${paymentIntentId}`);
         } catch (updateError) {
           console.error(`Failed to update order ${orderID}:`, updateError);
           return Response.json({ status: 500, message: `Failed to update order ${orderID}` });
@@ -69,7 +79,7 @@ export async function POST(req: Request) {
       }
 
       case "payment_intent.succeeded": {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const paymentIntent = event.data.object;
         const orderID = paymentIntent.metadata?.orderID;
 
         if (!orderID) {
@@ -103,7 +113,7 @@ export async function POST(req: Request) {
 
       case "payment_intent.payment_failed":
       case "payment_intent.canceled": {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const paymentIntent = event.data.object;
         const orderID = paymentIntent.metadata?.orderID;
 
         if (!orderID) {
@@ -128,6 +138,28 @@ export async function POST(req: Request) {
         } catch (updateError) {
           console.error(`Failed to update order ${orderID}:`, updateError);
           return Response.json({ status: 500, message: `Failed to update order ${orderID}` });
+        }
+        break;
+      }
+
+      case "customer.deleted": {
+        const customer = event.data.object;
+        const customerId = customer.id;
+
+        console.log(`Processing customer.deleted for customerId: ${customerId}`);
+
+        try {
+          await payload.update({
+            collection: "customers",
+            id: customerId,
+            data: {
+              stripeCustomerId: null,
+            },
+          });
+          console.log(`Customer ${customerId} updated to remove Stripe ID`);
+        } catch (updateError) {
+          console.error(`Failed to update customer ${customerId}:`, updateError);
+          return Response.json({ status: 500, message: `Failed to update customer ${customerId}` });
         }
         break;
       }
