@@ -9,10 +9,18 @@ import config from "@payload-config";
 
 import { type FilledProduct } from "../getFilledProducts";
 
+type Customer = {
+  id: string;
+  email?: string | null;
+  fullName?: string | null;
+  stripeCustomerId?: string | null;
+}
+
 export const getStripePaymentURL = async ({
   filledProducts,
   shippingCost,
   pickupPointID,
+  pickupPointAddress,
   shippingLabel,
   currency,
   locale,
@@ -22,6 +30,7 @@ export const getStripePaymentURL = async ({
 }: {
   filledProducts: FilledProduct[];
   shippingCost: number;
+  pickupPointAddress?: string;
   pickupPointID?: string;
   shippingLabel: string;
   currency: Currency;
@@ -32,6 +41,7 @@ export const getStripePaymentURL = async ({
 }) => {
   const stripe = new Stripe(apiKey, { apiVersion: "2025-06-30.basil" });
 
+  console.log(checkoutData)
   const stripeMappedProducts = filledProducts.map((product) => {
     const productPrice = product.enableVariantPrices
       ? product.variant?.pricing?.find((price) => price.currency === currency)?.value
@@ -41,14 +51,6 @@ export const getStripePaymentURL = async ({
       console.error(`Product price not found for product: ${product.id}, title: ${product.title}`);
       throw new Error(`Product price not found for product: ${product.id}`);
     }
-
-    // TODO: Images
-    // const productImage =
-    //   product.enableVariants && product.variant.image?.url
-    //     ? product.variant.image.url
-    //     : (product.image?.url ?? "");
-
-    // console.log(`${process.env.NEXT_PUBLIC_SERVER_URL}${productImage}`);
 
     if (!product.title) {
       console.error(`Product title missing for product: ${product.id}`);
@@ -62,13 +64,20 @@ export const getStripePaymentURL = async ({
 
     const description = descriptionArray.length > 0 ? descriptionArray.join(", ") : product.title;
 
+    const productImage =
+      product.enableVariants && product.variant?.image?.filename
+        ? `https://cdn.nakashi.cz/nakashi/${product.variant.image.filename}`
+        : product.image?.filename
+          ? `https://cdn.nakashi.cz/nakashi/${product.image.filename}`
+          : "";
+
     return {
       price_data: {
         currency: currency.toLowerCase(),
         product_data: {
           name: product.title,
           description: description,
-          //   images: [`${process.env.NEXT_PUBLIC_SERVER_URL}${productImage}`],
+          images: productImage ? [productImage] : [],
         },
         //unit_amount: productPrice * 100,
         unit_amount: Math.round(productPrice * 100), // Ensure integer cents
@@ -86,7 +95,7 @@ export const getStripePaymentURL = async ({
     }
 
     const payload = await getPayload({ config });
-    const user = await getCustomer();
+    const user = await getCustomer() as Customer | null;
 
     let customerId: string | undefined;
 
@@ -100,8 +109,8 @@ export const getStripePaymentURL = async ({
       } else {
         // Create a new Stripe Customer
         const customer = await stripe.customers.create({
-          email: user.email || checkoutData.shipping.email,
-          name: checkoutData.shipping.name ?? user.fullName ?? "neznámé jméno",
+          email: user.email ?? checkoutData.shipping.email ?? null,
+          name: checkoutData.shipping.name ?? user.fullName ?? null,
           address: {
             line1: checkoutData.shipping.address ?? "neznámá adresa",
             city: checkoutData.shipping.city ?? "neznámé město",
@@ -109,12 +118,26 @@ export const getStripePaymentURL = async ({
             country: checkoutData.shipping.country ?? "neznámá země",
             state: checkoutData.shipping.region || undefined,
           },
-          phone: checkoutData.shipping.phone ?? undefined,
+          invoice_settings: {
+            footer: "Děkujeme za Váš nákup!",
+          },
+          shipping: {
+            name: checkoutData.shipping.name ?? user.fullName ?? null,
+            address: {
+              line1: checkoutData.shipping.address ?? "neznámá adresa",
+              city: checkoutData.shipping.city ?? "neznámé město",
+              postal_code: checkoutData.shipping.postalCode ?? "neznámé PSČ",
+              country: checkoutData.shipping.country ?? "neznámá země",
+              state: checkoutData.shipping.region || undefined,
+            },
+            phone: checkoutData.shipping.phone ?? null,
+          },
+          phone: checkoutData.shipping.phone ?? null,
           metadata: {
             payloadCustomerId: user.id,
-            firstPickupPoint: checkoutData.shipping.pickupPointID,
-            buyerType: checkoutData.buyerType,
-            individualInvoice: checkoutData.individualInvoice,
+            firstPickupPoint: checkoutData.shipping.pickupPointID ?? "",
+            buyerType: checkoutData.buyerType ?? "",
+            individualInvoice: checkoutData.individualInvoice ? "true" : "false",
           },
         });
 
@@ -153,6 +176,8 @@ export const getStripePaymentURL = async ({
             },
             metadata: {
               orderID,
+              pickupPointID: pickupPointID ?? "",
+              pickupPointAddress: pickupPointAddress ?? "",
               locale: locale,
               currency: currency.toLowerCase(),
             },
@@ -176,7 +201,7 @@ export const getStripePaymentURL = async ({
         name: "auto",
       };
     } else {
-      sessionConfig.customer_email = checkoutData.shipping.email;
+      sessionConfig.customer_email = checkoutData.shipping.email ?? "unknown@example.com";
     }
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
