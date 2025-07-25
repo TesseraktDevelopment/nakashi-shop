@@ -1214,6 +1214,7 @@ export interface Customer {
   lastName?: string | null;
   birthDate?: string | null;
   lastBuyerType?: ('individual' | 'company') | null;
+  stripeCustomerId?: string | null;
   shippings?:
     | {
         name: string;
@@ -2205,6 +2206,7 @@ export interface CustomersSelect<T extends boolean = true> {
   lastName?: T;
   birthDate?: T;
   lastBuyerType?: T;
+  stripeCustomerId?: T;
   shippings?:
     | T
     | {

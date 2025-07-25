@@ -1,7 +1,11 @@
+import { getPayload } from "payload";
 import Stripe from "stripe";
 
 import { type Locale } from "@/i18n/config";
+import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
 import { type Currency } from "@/stores/Currency/types";
+import { getCustomer } from "@/utilities/getCustomer";
+import config from "@payload-config";
 
 import { type FilledProduct } from "../getFilledProducts";
 
@@ -14,6 +18,7 @@ export const getStripePaymentURL = async ({
   locale,
   apiKey,
   orderID,
+  checkoutData,
 }: {
   filledProducts: FilledProduct[];
   shippingCost: number;
@@ -23,8 +28,9 @@ export const getStripePaymentURL = async ({
   locale: Locale;
   apiKey: string;
   orderID: string;
+  checkoutData: CheckoutFormData;
 }) => {
-  const stripe = new Stripe(apiKey, {apiVersion: "2025-06-30.basil"});
+  const stripe = new Stripe(apiKey, { apiVersion: "2025-06-30.basil" });
 
   const stripeMappedProducts = filledProducts.map((product) => {
     const productPrice = product.enableVariantPrices
@@ -67,7 +73,7 @@ export const getStripePaymentURL = async ({
         //unit_amount: productPrice * 100,
         unit_amount: Math.round(productPrice * 100), // Ensure integer cents
       },
-      quantity: product.quantity || 1,
+      quantity: product.quantity ?? 1,
     };
   });
 
@@ -79,7 +85,56 @@ export const getStripePaymentURL = async ({
       throw new Error("Server URL configuration missing");
     }
 
-    const session = await stripe.checkout.sessions.create({
+    const payload = await getPayload({ config });
+    const user = await getCustomer();
+
+    let customerId: string | undefined;
+
+    if (user) {
+      console.log(`Logged-in user found: ${user.id}`);
+
+      // Check if the customer has a Stripe customerId
+      if (user.stripeCustomerId) {
+        console.log(`Using existing Stripe customer ID: ${user.stripeCustomerId}`);
+        customerId = user.stripeCustomerId;
+      } else {
+        // Create a new Stripe Customer
+        const customer = await stripe.customers.create({
+          email: user.email || checkoutData.shipping.email,
+          name: checkoutData.shipping.name ?? user.fullName ?? "neznámé jméno",
+          address: {
+            line1: checkoutData.shipping.address ?? "neznámá adresa",
+            city: checkoutData.shipping.city ?? "neznámé město",
+            postal_code: checkoutData.shipping.postalCode ?? "neznámé PSČ",
+            country: checkoutData.shipping.country ?? "neznámá země",
+            state: checkoutData.shipping.region || undefined,
+          },
+          phone: checkoutData.shipping.phone ?? undefined,
+          metadata: {
+            payloadCustomerId: user.id,
+            firstPickupPoint: checkoutData.shipping.pickupPointID,
+            buyerType: checkoutData.buyerType,
+            individualInvoice: checkoutData.individualInvoice,
+          },
+        });
+
+        console.log(`Created new Stripe customer: ${customer.id}`);
+
+        await payload.update({
+          collection: "customers",
+          id: user.id,
+          data: {
+            stripeCustomerId: customer.id,
+          },
+        });
+
+        customerId = customer.id;
+      }
+    } else {
+      console.log("No logged-in user, proceeding with guest checkout");
+    }
+
+    const sessionConfig: Stripe.Checkout.SessionCreateParams = {
       line_items: stripeMappedProducts,
       mode: "payment",
       shipping_options: [
@@ -99,7 +154,7 @@ export const getStripePaymentURL = async ({
             metadata: {
               orderID,
               locale: locale,
-              currency: currency.toLowerCase(), // Ensure currency is in lowercase
+              currency: currency.toLowerCase(),
             },
           },
         },
@@ -111,7 +166,20 @@ export const getStripePaymentURL = async ({
       },
       success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}?cancelled=true`,
-    });
+    };
+
+    // Add customer information if available
+    if (customerId) {
+      sessionConfig.customer = customerId;
+      sessionConfig.customer_update = {
+        address: "auto",
+        name: "auto",
+      };
+    } else {
+      sessionConfig.customer_email = checkoutData.shipping.email;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     console.log("Stripe session created:", session.id, session.url);
     return session.url;
