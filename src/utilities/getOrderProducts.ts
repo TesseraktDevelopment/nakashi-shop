@@ -7,7 +7,6 @@ import config from "@/payload.config";
 export const getOrderProducts = async (orderProducts: Order["products"] | null, locale: Locale) => {
   try {
     const payload = await getPayload({ config });
-    console.log(orderProducts);
     return (
       orderProducts &&
       (await Promise.all(
