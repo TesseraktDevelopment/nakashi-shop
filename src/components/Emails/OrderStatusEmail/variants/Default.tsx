@@ -26,7 +26,7 @@ import { getOrderProducts } from "@/utilities/getOrderProducts";
 const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export const Default = async ({ order, locale }: { order: Order; locale: Locale }) => {
-  const t = await getTranslations({ locale, namespace: "Order" });
+  const t = await getTranslations({ locale, namespace: "OrderEmail" });
 
   const products = await getOrderProducts(order.products, locale);
   const { messages } = await getCachedGlobal("emailMessages", locale, 1)();
@@ -34,19 +34,25 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
   return (
     <Html>
       <Head />
-      <Preview>Get your order summary, estimated delivery date and more</Preview>
+      <Preview>{t(`${order.orderDetails.status}.preview`)}</Preview>
       <Body style={main}>
         <Container style={container}>
           {order.orderDetails.status === "shipped" && (
             <Section style={track.container}>
               <Row>
                 <Column>
-                  <Text style={global.paragraphWithBold}>Tracking Number</Text>
-                  <Text style={track.number}>{order.orderDetails.trackingNumber}</Text>
+                  <Text style={global.paragraphWithBold}>{t("tracking-number")}</Text>
+                  <Text style={track.number}>
+                    {order.orderDetails.shipping === 'zasilkovna-box' ? `Z${order.orderDetails.trackingNumber}` : order.orderDetails.trackingNumber}
+                  </Text>
                 </Column>
                 <Column align="right">
-                  {/* TODO: tracking link in order config */}
-                  <Link style={global.button}>Track Package</Link>
+                  <Link
+                    style={global.button}
+                    href={order.orderDetails.shipping === 'zasilkovna-box' ? `https://tracking.packeta.com/${locale}/?id=${order.orderDetails.trackingNumber}` : undefined}
+                  >
+                    {t("tracking-number")}
+                  </Link>
                 </Column>
               </Row>
             </Section>
@@ -56,7 +62,7 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
             {messages?.logo && typeof messages.logo !== "string" && (
               <Img
                 alt={messages.logo.alt ?? ""}
-                src={`${baseUrl}${messages.logo.url ?? ""}`}
+                src={`https://cdn.nakashi.cz/nakashi/${messages.logo.filename ?? ""}`}
                 width="66"
                 height="22"
                 style={{ margin: "auto" }}
@@ -72,10 +78,11 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
           </Section>
           <Hr style={global.hr} />
           <Section style={global.defaultPadding}>
-            <Text style={adressTitle}>Shipping to: {order.shippingAddress.name}</Text>
+            <Text style={adressTitle}>{order.orderDetails.shipping === 'zasilkovna-box' ? `${t("shipping-zbox")} ` : `${t("shipping-house")} ${order.shippingAddress.name}`}</Text>
             <Text style={{ ...global.text, fontSize: 14 }}>
-              {order.shippingAddress.address}, {order.shippingAddress.postalCode} {order.shippingAddress.city}
-              , {order.shippingAddress.region}
+              {order.orderDetails.shipping === 'zasilkovna-box'
+                ? order.shippingAddress.pickupPointAddress
+                : `${order.shippingAddress.address}, ${order.shippingAddress.postalCode} ${order.shippingAddress.city}, ${order.shippingAddress.region}`}
             </Text>
           </Section>
           <Hr style={global.hr} />
@@ -94,9 +101,9 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
                   <Column>
                     <Img
                       alt={productImage?.alt ?? ""}
-                      src={`${baseUrl}${productImage?.url ?? ""}`}
+                      src={`https://cdn.nakashi.cz/nakashi/${productImage?.filename ?? ""}`}
                       style={{ float: "left" }}
-                      width="260px"
+                      width="130px"
                     />
                   </Column>
                   <Column style={{ verticalAlign: "top", paddingLeft: "12px" }}>
@@ -129,18 +136,18 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
           <Section style={global.defaultPadding}>
             <Row style={{ display: "inline-flex", marginBottom: 40 }}>
               <Column style={{ width: "170px" }}>
-                <Text style={global.paragraphWithBold}>Order Number</Text>
+                <Text style={global.paragraphWithBold}>{t("order-number")}</Text>
                 <Text style={track.number}>{order.id}</Text>
               </Column>
               <Column>
-                <Text style={global.paragraphWithBold}>Order Date</Text>
+                <Text style={global.paragraphWithBold}>{t("order-date")}</Text>
                 <Text style={track.number}>{formatDateTime(order.createdAt, "EU")}</Text>
               </Column>
             </Row>
             <Row>
               <Column align="center">
                 <Link href={`${baseUrl}/${locale}/order/${order.id}`} style={global.button}>
-                  Order Status
+                  {t("order-status")}
                 </Link>
               </Column>
             </Row>
@@ -194,34 +201,34 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
           <Hr style={global.hr} />
           <Section style={menu.container}>
             <Row>
-              <Text style={menu.title}>Get Help</Text>
+              <Text style={menu.title}>{t("get-help")}</Text>
             </Row>
             <Row style={menu.content}>
               <Column style={{ width: "33%" }} colSpan={1}>
                 <Link href="/" style={menu.text}>
-                  Shipping Status
+                  {t("shipping-status")}
                 </Link>
               </Column>
               <Column style={{ width: "33%" }} colSpan={1}>
                 <Link href="/" style={menu.text}>
-                  Shipping & Delivery
+                  {t("shipping-delivery")}
                 </Link>
               </Column>
               <Column style={{ width: "33%" }} colSpan={1}>
                 <Link href="/" style={menu.text}>
-                  Returns & Exchanges
+                  {t("returns-exchanges")}
                 </Link>
               </Column>
             </Row>
             <Row style={{ ...menu.content, paddingTop: "0" }}>
               <Column style={{ width: "33%" }} colSpan={1}>
                 <Link href="/" style={menu.text}>
-                  How to Return
+                  {t("how-to-return")}
                 </Link>
               </Column>
               <Column style={{ width: "66%" }} colSpan={2}>
                 <Link href="/" style={menu.text}>
-                  Contact Options
+                  {t("contact-options")}
                 </Link>
               </Column>
             </Row>
@@ -231,14 +238,14 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
                 <Row>
                   <Column style={{ width: "16px" }}>
                     <Img
-                      src={`${baseUrl}/static/nike-phone.png`}
+                      src={`https://cdn.nakashi.cz/nakashi/phone.png`}
                       width="16px"
                       height="26px"
                       style={{ paddingRight: "14px" }}
                     />
                   </Column>
                   <Column>
-                    <Text style={{ ...menu.text, marginBottom: "0" }}>1-800-806-6453</Text>
+                    <Text style={{ ...menu.text, marginBottom: "0" }}>604 344 244</Text>
                   </Column>
                 </Row>
               </Column>
@@ -257,27 +264,27 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
           <Hr style={global.hr} />
           <Section style={paddingY}>
             <Row>
-              <Text style={global.heading}>Mandala</Text>
+              <Text style={global.heading}>{t("nakashi-army")}</Text>
             </Row>
             <Row style={categories.container}>
               <Column align="center">
                 <Link href="/" style={categories.text}>
-                  Men
+                  {t("men")}
                 </Link>
               </Column>
               <Column align="center">
                 <Link href="/" style={categories.text}>
-                  Women
+                  {t("women")}
                 </Link>
               </Column>
               <Column align="center">
                 <Link href="/" style={categories.text}>
-                  Kids
+                  {t("kids")}
                 </Link>
               </Column>
               <Column align="center">
                 <Link href="/" style={categories.text}>
-                  Customize
+                  {t("customize")}
                 </Link>
               </Column>
             </Row>
@@ -286,23 +293,22 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
           <Section style={paddingY}>
             <Row style={footer.policy}>
               <Column>
-                <Text style={footer.text}>Web Version</Text>
+                <Text style={footer.text}>{t("web-version")}</Text>
               </Column>
               <Column>
-                <Text style={footer.text}>Privacy Policy</Text>
+                <Text style={footer.text}>{t("privacy-policy")}</Text>
               </Column>
             </Row>
             <Row>
-              <Text style={{ ...footer.text, paddingTop: 30, paddingBottom: 30 }}>
-                Please contact us if you have any questions. (If you reply to this email, we won&apos;t be
-                able to see it.)
+              <Text style={{ ...footer.text, paddingTop: 10, paddingBottom: 10 }}>
+                {t("auto-email-notice")}
               </Text>
             </Row>
             <Row>
-              <Text style={footer.text}>© 2022 Nike, Inc. All Rights Reserved.</Text>
+              <Text style={{ ...footer.text, paddingTop: 3, paddingBottom: 0 }}>{t("copyright")}</Text>
             </Row>
             <Row>
-              <Text style={footer.text}>NIKE, INC. One Bowerman Drive, Beaverton, Oregon 97005, USA.</Text>
+              <Text style={{ ...footer.text, paddingTop: 0, paddingBottom: 0 }}>{t("company-address")}</Text>
             </Row>
           </Section>
         </Container>

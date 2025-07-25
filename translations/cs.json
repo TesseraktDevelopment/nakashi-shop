@@ -308,8 +308,8 @@
       "subtitle": "Objednávka {orderID} bude brzy odeslána."
     },
     "shipped": {
-      "title": "Na cestě!",
-      "subtitle": "Vaše objednávka {orderID} byla odeslána."
+      "title": "Objednávka je na cestě!",
+      "subtitle": "Vaše objednávka č. {orderID} byla právě odeslána."
     },
     "completed": {
       "title": "Dokončeno!",
@@ -323,7 +323,7 @@
       "title": "Vráceno.",
       "subtitle": "Objednávka {orderID} byla vrácena."
     },
-    "tracking-number": "Číslo pro sledování: ",
+    "tracking-number": "Sledovací číslo: ",
     "your-order": "Vaše objednávka",
     "items": "Položky",
     "quantity": "Množství",
@@ -336,6 +336,72 @@
     "shipping": "Doprava",
     "total": "Celkem",
     "pickup-point": "Výdejní místo"
+  },
+  "OrderEmail": {
+    "thank-you": "Děkujeme!",
+    "pending": {
+      "preview": "Vaše objednávka čeká na potvrzení. Zkontrolujte detaily!",
+      "title": "Vaše objednávka čeká na vyřízení.",
+      "subtitle": "Prosím, vyčkejte na zpracování platby. Objednávka {orderID}"
+      },
+    "paid": {
+      "preview": "Platba přijata! Vaše objednávka se připravuje.",
+      "title": "Platba byla přijata.",
+      "subtitle": "Brzy začneme zpracovávat vaši objednávku {orderID}."
+      },
+    "unpaid": {
+      "preview": "Vaše objednávka čeká na platbu. Dokončete ji nyní!",
+      "title": "Platba se nezdařila.",
+      "subtitle": "Zkuste to znovu nebo kontaktujte podporu, pokud máte problémy. Objednávka {orderID}"
+      },
+    "processing": {
+      "preview": "Vaše objednávka je zpracovávána. Brzy vás budeme informovat!",
+      "title": "Zpracováváme vaši objednávku.",
+      "subtitle": "Objednávka {orderID} bude brzy odeslána."
+      },
+    "shipped": {
+      "preview": "Vaše objednávka je na cestě! Sledujte svůj balíček.",
+      "title": "Objednávka je na cestě!",
+      "subtitle": "Vaše objednávka č. {orderID} byla odeslána. Sledujte svůj balíček."
+      },
+    "completed": {
+      "preview": "Vaše objednávka je dokončena! Užijte si svůj nákup.",
+      "title": "Dokončeno!",
+      "subtitle": "Obdrželi jste objednávku {orderID}."
+      },
+    "cancelled": {
+      "preview": "Vaše objednávka byla zrušena. Podrobnosti uvnitř.",
+      "title": "Zrušeno.",
+      "subtitle": "Objednávka {orderID} byla zrušena."
+      },
+    "returned": {
+      "preview": "Vaše vrácení bylo zpracováno. Zkontrolujte stav.",
+      "title": "Vráceno.",
+      "subtitle": "Objednávka {orderID} byla vrácena."
+      },
+    "tracking-number": "Sledovací číslo",
+    "shipping-house": "Doručení na adresu:",
+    "shipping-zbox": "Doručení do Z-Boxu:",
+    "order-number": "Číslo objednávky",
+    "order-date": "Datum objednávky",
+    "order-status": "Stav objednávky",
+    "get-help": "Získat pomoc",
+    "shipping-status": "Stav dopravy",
+    "shipping-delivery": "Doprava a doručení",
+    "returns-exchanges": "Vratky a výměny",
+    "how-to-return": "Jak vrátit",
+    "contact-options": "Možnosti kontaktu",
+    "nakashi-army": "Nakashi Army",
+    "men": "Muži",
+    "women": "Ženy",
+    "kids": "Děti",
+    "customize": "Přizpůsobit",
+    "web-version": "Webová verze",
+    "privacy-policy": "Zásady ochrany osobních údajů",
+    "contact-us": "Pokud máte jakékoli dotazy, kontaktujte nás. (Pokud na tento e-mail odpovíte, nebudeme ho moci vidět.)",
+    "auto-email-notice": "Na tento e-mail prosím neodpovídejte, byl vám zaslán automaticky v souvislosti s objednávkou. Tento e-mail slouží jako potvrzení o uzavření kupní smlouvy.",
+    "copyright": "© 2025 Nakashi Army. Všechna práva vyhrazena.",
+    "company-address": "Nakashi Army s.r.o., Věčná 45, Praha 1, 110 00, Česká republika."
   },
   "Emails": {
     "reset-password": {

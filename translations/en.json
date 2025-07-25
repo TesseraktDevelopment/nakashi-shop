@@ -320,6 +320,7 @@
       "subtitle": "Order {orderID} has been returned."
     },
     "tracking-number": "Tracking number: ",
+    "track-package": "Track package",
     "your-order": "Your order",
     "items": "Items",
     "quantity": "Quantity",
@@ -332,6 +333,71 @@
     "shipping": "Shipping",
     "total": "Total",
     "pickup-point": "Pickup point"
+  },
+  "OrderEmail": {
+    "thank-you": "Thank you!",
+    "pending": {
+      "preview": "Your order is awaiting confirmation. Check the details!",
+      "title": "Your order is pending.",
+      "subtitle": "Please wait for payment processing. Order {orderID}"
+      },
+    "paid": {
+      "preview": "Payment received! Your order is being prepared.",
+      "title": "Payment received.",
+      "subtitle": "We will soon start processing your order {orderID}."
+      },
+    "unpaid": {
+      "preview": "Your order is waiting for payment. Complete it now!",
+      "title": "Payment failed.",
+      "subtitle": "Try again or contact support if you have issues. Order {orderID}"
+      },
+    "processing": {
+      "preview": "Your order is in progress. We'll update you soon!",
+      "title": "We are processing your order.",
+      "subtitle": "Order {orderID} will be shipped soon."
+      },
+    "shipped": {
+      "preview": "Your order is on its way! Track your package now.",
+      "title": "On its way!",
+      "subtitle": "Your order {orderID} has been shipped."
+      },
+    "completed": {
+      "preview": "Your order is complete! Enjoy your purchase.",
+      "title": "Completed!",
+      "subtitle": "You have received order {orderID}."
+      },
+    "cancelled": {
+      "preview": "Your order has been cancelled. See details inside.",
+      "title": "Cancelled.",
+      "subtitle": "Order {orderID} has been cancelled."
+      },
+    "returned": {
+      "preview": "Your return has been processed. Check the status.",
+      "title": "Returned.",
+      "subtitle": "Order {orderID} has been returned."
+      },
+    "tracking-number": "Tracking Number",
+    "shipping-to": "Shipping to:",
+    "order-number": "Order Number",
+    "order-date": "Order Date",
+    "order-status": "Order Status",
+    "get-help": "Get Help",
+    "shipping-status": "Shipping Status",
+    "shipping-delivery": "Shipping & Delivery",
+    "returns-exchanges": "Returns & Exchanges",
+    "how-to-return": "How to Return",
+    "contact-options": "Contact Options",
+    "nakashi-army": "Nakashi Army",
+    "men": "Men",
+    "women": "Women",
+    "kids": "Kids",
+    "customize": "Customize",
+    "web-version": "Web Version",
+    "privacy-policy": "Privacy Policy",
+    "contact-us": "Please contact us if you have any questions. (If you reply to this email, we won't be able to see it.)",
+    "auto-email-notice": "Please do not reply to this email; it was sent automatically in connection with your order. This email serves as confirmation of the purchase agreement.",
+    "copyright": "© 2025 Nakashi Army. All Rights Reserved.",
+    "company-address": "Nakashi Army s.r.o., Věčná 45, Prague 1, 110 00, Czech Republic."
   },
   "Emails": {
     "reset-password": {
