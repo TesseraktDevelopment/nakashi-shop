@@ -4,8 +4,8 @@ import { type ReactNode } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { InPostGeowidget } from "@/components/(ecommerce)/InPostGeowidget";
-import { ZasilkovnaWidget } from "@/components/(ecommerce)/ZasilkovnaWidget";
 import { PriceClient } from "@/components/(ecommerce)/PriceClient";
+import { ZasilkovnaWidget } from "@/components/(ecommerce)/ZasilkovnaWidget";
 import { Media } from "@/components/Media";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -13,7 +13,7 @@ import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
 
 import { type FilledCourier } from "./CheckoutForm";
 
-interface InPostPoint {
+type InPostPoint = {
   name?: string;
   address_details: {
     street?: string;
@@ -23,7 +23,7 @@ interface InPostPoint {
   };
 }
 
-interface ZasilkovnaPoint {
+type ZasilkovnaPoint = {
   id: string;
   name: string;
   place: string;
@@ -65,7 +65,7 @@ export const DeliveryMethod = ({
   const onPointSelect = (event: PointSelectEvent) => {
     if ("id" in event.detail) {
       // Handle Zásilkovna
-      const point = event.detail as ZasilkovnaPoint;
+      const point = event.detail;
       form.setValue("shipping.pickupPointID", point.id);
       form.setValue(
         "shipping.pickupPointAddress",
@@ -73,7 +73,7 @@ export const DeliveryMethod = ({
       );
     } else {
       // Handle InPost
-      const point = event.detail as InPostPoint;
+      const point = event.detail;
       form.setValue("shipping.pickupPointID", point.name ?? "");
       form.setValue(
         "shipping.pickupPointAddress",
@@ -133,7 +133,7 @@ export const DeliveryMethod = ({
 
           {pickupPointID && (
             <p className="mr-auto flex items-center text-sm">
-              ID: {pickupPointID} // {pickupPointAddress}
+              ID: {pickupPointID} / {pickupPointAddress}
             </p>
           )}
         </div>
