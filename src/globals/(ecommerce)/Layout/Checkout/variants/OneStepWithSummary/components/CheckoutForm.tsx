@@ -2,7 +2,7 @@
 
 import { Button, Radio, RadioGroup } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { isAxiosError } from "axios"; // Import isAxiosError
 import debounce from "lodash.debounce";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -29,6 +29,20 @@ import { AddNewAddressDialog } from "./AddNewAddressDialog";
 import { ChangeAddressDialog } from "./ChangeAddressDialog";
 import { DeliveryMethod } from "./DeliveryMethod";
 import { OrderSummary } from "./OrderSummary";
+
+// Interface for ARES response data
+type AresResponse = {
+  obchodniJmeno?: string;
+  sidlo?: {
+    nazevUlice?: string;
+    cisloDomovni?: string;
+    textovaAdresa?: string;
+    nazevObce?: string;
+    psc?: number;
+    nazevKraje?: string;
+  };
+  ico?: string;
+}
 
 export type FilledCourier = {
   slug: string;
@@ -120,11 +134,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
   const { cart, setCart } = useCart();
   const locale = useLocale() as Locale;
   const currency = useCurrency();
-  /**
-   * Fetches products from the cart, calculates the total price and available couriers with their prices. Basically, it's getting all checkout needed data.
-   * @param cartToCalculate - Actual cart to calculate the total price and available couriers.
-   * @param countryToCalculate - Country to get available couriers.
-   */
+
   const fetchCartProducts = useCallback(
     async (cartToCalculate: Cart | null, countryToCalculate: string) => {
       try {
@@ -174,33 +184,35 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
       }
       try {
         if (country === "cz") {
-          const response = await axios.get(`/next/services/ares?ico=${ico}`, {
+          const response = await axios.get<AresResponse>(`/next/services/ares?ico=${ico}`, {
             headers: { accept: "application/json" },
           });
           console.log("ARES response:", response.data);
           const data = response.data;
-          if (data && data.obchodniJmeno) {
-            form.setValue("invoice.name", data.obchodniJmeno || "");
+          if (data?.obchodniJmeno) {
+            form.setValue("invoice.name", data.obchodniJmeno ?? "");
             form.setValue(
               "invoice.address",
-              `${data.sidlo.nazevUlice || ""} ${data.sidlo.cisloDomovni || ""}`.trim() || data.sidlo.textovaAdresa || "",
+              `${data.sidlo?.nazevUlice ?? ""} ${data.sidlo?.cisloDomovni ?? ""}`.trim() ??
+                data.sidlo?.textovaAdresa ??
+                "",
             );
-            form.setValue("invoice.city", data.sidlo.nazevObce || "");
+            form.setValue("invoice.city", data.sidlo?.nazevObce ?? "");
             form.setValue("invoice.country", "cz");
-            form.setValue("invoice.postalCode", data.sidlo.psc ? String(data.sidlo.psc) : "");
-            form.setValue("invoice.region", data.sidlo.nazevKraje || "");
-            form.setValue("invoice.tin", data.ico || ico);
+            form.setValue("invoice.postalCode", data.sidlo?.psc ? String(data.sidlo.psc) : "");
+            form.setValue("invoice.region", data.sidlo?.nazevKraje ?? "");
+            form.setValue("invoice.tin", data.ico ?? ico);
             form.clearErrors("invoice");
           } else {
             setAresOrsrError(e("invoice.tinNotFound"));
           }
         } else if (country === "sk") {
-            setAresOrsrError(e("invoice.tinNotFound"));
+          setAresOrsrError(e("invoice.tinNotFound"));
         }
-      } catch (error: any) {
-        if (axios.isAxiosError(error) && error.response?.status === 429) {
+      } catch (error: unknown) {
+        if (isAxiosError(error) && error.response?.status === 429) {
           setAresOrsrError(e("invoice.tooManyRequests"));
-        } else if (axios.isAxiosError(error) && error.response?.status === 400) {
+        } else if (isAxiosError(error) && error.response?.status === 400) {
           setAresOrsrError(e("invoice.tinInvalid"));
         } else {
           setAresOrsrError(e("invoice.tinNotFound"));
@@ -453,9 +465,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                         </FormItem>
                       )}
                     />
-                    {(isCompany) && (
-                      <p className="text-sm text-gray-500 sm:col-span-2">{t("verify-data")}</p>
-                    )}
+                    {isCompany && <p className="text-sm text-gray-500 sm:col-span-2">{t("verify-data")}</p>}
                   </>
                 )}
               </div>

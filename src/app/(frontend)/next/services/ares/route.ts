@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
 import arcjet, { fixedWindow } from "@arcjet/next";
+import axios, { isAxiosError } from "axios";
+import { type NextRequest, NextResponse } from "next/server";
 
 const aj = arcjet({
   key: process.env.ARCJET_KEY!,
   rules: [
     fixedWindow({
-      mode: "LIVE", // Enforce rate limiting (use "DRY_RUN" for testing)
+      mode: "LIVE",
       window: "60s",
       max: 3,
     }),
@@ -48,8 +48,8 @@ export async function GET(req: NextRequest) {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error: any) {
-    if (axios.isAxiosError(error) && error.response?.status) {
+  } catch (error: unknown) {
+    if (isAxiosError(error) && error.response?.status) {
       return new NextResponse(
         JSON.stringify({ error: "Failed to fetch ARES data" }),
         {

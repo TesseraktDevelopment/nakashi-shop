@@ -1,11 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React, { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import React, { useEffect, useRef } from "react";
+
 import { Button } from "@/components/ui/button";
 
-interface PacketaWidget {
+type PacketaWidget = {
   pick: (
     apiKey: string,
     callback: (point: ZasilkovnaPoint | null) => void,
@@ -13,17 +14,18 @@ interface PacketaWidget {
   ) => void;
 }
 
-interface Packeta {
+type Packeta = {
   Widget: PacketaWidget;
 }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Window {
     Packeta?: Packeta;
   }
 }
 
-interface ZasilkovnaPoint {
+type ZasilkovnaPoint = {
   id: string;
   name: string;
   place: string;
@@ -33,7 +35,7 @@ interface ZasilkovnaPoint {
   formatedValue?: string;
 }
 
-interface ZasilkovnaWidgetOptions {
+type ZasilkovnaWidgetOptions = {
   country: string;
   language: string;
   weight?: string;
@@ -44,7 +46,7 @@ interface ZasilkovnaWidgetOptions {
   defaultPrice?: string;
 }
 
-interface ZasilkovnaWidgetProps {
+type ZasilkovnaWidgetProps = {
   apiKey: string;
   options: ZasilkovnaWidgetOptions;
   onPointSelect: (e: CustomEvent<ZasilkovnaPoint>) => void;
