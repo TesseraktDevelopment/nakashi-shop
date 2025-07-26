@@ -1,4 +1,5 @@
 import { getPayload } from "payload";
+
 import { type Country } from "@/globals/(ecommerce)/Couriers/utils/countryList";
 import { type Locale } from "@/i18n/config";
 import { getFilledProducts } from "@/lib/getFilledProducts";
@@ -281,10 +282,12 @@ export async function POST(req: Request) {
           redirectURL = await getStripePaymentURL({
             filledProducts,
             shippingCost,
-            pickupPointID: checkoutData.shipping.pickupPointID || "",
+            pickupPointID: checkoutData.shipping.pickupPointID ?? "",
+            pickupPointAddress: checkoutData.shipping.pickupPointAddress ?? "",
             shippingLabel: courierData.settings.label || "Doprava (Shipping)",
             currency,
             locale,
+            checkoutData,
             apiKey: paywalls?.stripe?.secret ?? "",
             orderID: order.id,
           });
