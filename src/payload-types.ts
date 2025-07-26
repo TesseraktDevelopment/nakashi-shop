@@ -1411,6 +1411,7 @@ export interface Order {
     name: string;
     address: string;
     pickupPointID?: string | null;
+    pickupPointName?: string | null;
     pickupPointAddress?: string | null;
     city: string;
     country:
@@ -2295,6 +2296,7 @@ export interface OrdersSelect<T extends boolean = true> {
         name?: T;
         address?: T;
         pickupPointID?: T;
+        pickupPointName?: T;
         pickupPointAddress?: T;
         city?: T;
         country?: T;

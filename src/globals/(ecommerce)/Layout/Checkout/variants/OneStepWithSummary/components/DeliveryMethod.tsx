@@ -59,6 +59,7 @@ export const DeliveryMethod = ({
   const { title, turnaround, pricing, slug, icon } = deliveryMethod;
 
   const pickupPointID = useWatch({ control: form.control, name: "shipping.pickupPointID" });
+  const pickupPointName = useWatch({ control: form.control, name: "shipping.pickupPointName" });
   const pickupPointAddress = useWatch({ control: form.control, name: "shipping.pickupPointAddress" });
   const selectedDeliveryMethod = useWatch({ control: form.control, name: "deliveryMethod" });
 
@@ -67,6 +68,7 @@ export const DeliveryMethod = ({
       // Handle Zásilkovna
       const point = event.detail;
       form.setValue("shipping.pickupPointID", point.id);
+      form.setValue("shipping.pickupPointName", point.name);
       form.setValue(
         "shipping.pickupPointAddress",
         `${point.street}${point.street ? ", " : ""}${point.zip} ${point.city}`,
@@ -133,7 +135,7 @@ export const DeliveryMethod = ({
 
           {pickupPointID && (
             <p className="mr-auto flex items-center text-sm">
-              ID: {pickupPointID} / {pickupPointAddress}
+              ID: {pickupPointID} / {pickupPointAddress} / {pickupPointName}
             </p>
           )}
         </div>
@@ -146,7 +148,7 @@ export const DeliveryMethod = ({
   return (
     <div className="flex flex-1 flex-col">
       <span className="flex flex-1 items-center gap-3">
-        {icon?.url && <Media resource={icon} className="block aspect-31/24 max-h-12 w-fit max-w-[62px]" />}
+        {icon?.url && <Media resource={icon} className="block aspect-square max-h-12 w-fit max-w-[62px]" />}
         <div className="flex-1">
           <span className="block text-sm font-medium text-gray-900">{title}</span>
           <span className="block items-center text-sm text-gray-500">{turnaround}</span>

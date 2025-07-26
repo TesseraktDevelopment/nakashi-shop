@@ -201,6 +201,7 @@ export async function POST(req: Request) {
           phone: checkoutData.shipping.phone,
           pickupPointAddress: checkoutData.shipping.pickupPointAddress,
           pickupPointID: checkoutData.shipping.pickupPointID,
+          pickupPointName: checkoutData.shipping.pickupPointName,
         },
         printLabel: {
           weight: totalWeight / 1000,
@@ -283,6 +284,7 @@ export async function POST(req: Request) {
             filledProducts,
             shippingCost,
             pickupPointID: checkoutData.shipping.pickupPointID ?? "",
+            pickupPointName: checkoutData.shipping.pickupPointName ?? "",
             pickupPointAddress: checkoutData.shipping.pickupPointAddress ?? "",
             shippingLabel: courierData.settings.label || "Doprava (Shipping)",
             currency,

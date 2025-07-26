@@ -20,6 +20,7 @@ export const getStripePaymentURL = async ({
   filledProducts,
   shippingCost,
   pickupPointID,
+  pickupPointName,
   pickupPointAddress,
   shippingLabel,
   currency,
@@ -32,6 +33,7 @@ export const getStripePaymentURL = async ({
   shippingCost: number;
   pickupPointAddress?: string;
   pickupPointID?: string;
+  pickupPointName?: string;
   shippingLabel: string;
   currency: Currency;
   locale: Locale;
@@ -177,6 +179,7 @@ export const getStripePaymentURL = async ({
             metadata: {
               orderID,
               pickupPointID: pickupPointID ?? "",
+              pickupPointName: pickupPointName ?? "",
               pickupPointAddress: pickupPointAddress ?? "",
               locale: locale,
               currency: currency.toLowerCase(),

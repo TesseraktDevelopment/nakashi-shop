@@ -106,6 +106,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
         phone: defaultShippingAddress?.phone ?? "",
         email: defaultShippingAddress?.email ?? "",
         pickupPointID: "",
+        pickupPointName: "",
         pickupPointAddress: "",
       },
       deliveryMethod: "",
