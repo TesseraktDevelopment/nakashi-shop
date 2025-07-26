@@ -353,7 +353,7 @@ export const Orders: CollectionConfig = {
           fields: [
             {
               name: "printLabel",
-              label: { en: "Printing Labels", cs: "Tisk etiket" },
+              label: { en: "Printing Labels", cs: "Tisk štítků" },
               type: "group",
               fields: [
                 {
@@ -371,7 +371,7 @@ export const Orders: CollectionConfig = {
                     condition: (data) =>
                       Boolean(
                         // eslint-disable-next-line
-                        data.orderDetails?.shipping === "inpost-pickup",
+                        ["inpost-pickup", "zasilkovna-box"].includes(data.orderDetails?.shipping)
                       ),
                     components: {
                       Field:
