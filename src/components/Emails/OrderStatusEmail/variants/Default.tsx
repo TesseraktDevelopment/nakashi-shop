@@ -81,7 +81,7 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
             <Text style={adressTitle}>{order.orderDetails.shipping === 'zasilkovna-box' ? `${t("shipping-zbox")} ` : `${t("shipping-house")} ${order.shippingAddress.name}`}</Text>
             <Text style={{ ...global.text, fontSize: 14 }}>
               {order.orderDetails.shipping === 'zasilkovna-box'
-                ? order.shippingAddress.pickupPointAddress
+                ? order.shippingAddress.pickupPointName
                 : `${order.shippingAddress.address}, ${order.shippingAddress.postalCode} ${order.shippingAddress.city}, ${order.shippingAddress.region}`}
             </Text>
           </Section>
