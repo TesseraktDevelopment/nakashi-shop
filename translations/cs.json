@@ -345,8 +345,8 @@
       "subtitle": "Prosím, vyčkejte na zpracování platby. Objednávka {orderID}"
       },
     "paid": {
-      "preview": "Platba přijata! Vaše objednávka se připravuje.",
-      "title": "Platba byla přijata.",
+      "preview": "Platba přijata! Vaše objednávka se připravuje",
+      "title": "Platba byla přijata",
       "subtitle": "Brzy začneme zpracovávat vaši objednávku {orderID}."
       },
     "unpaid": {
@@ -360,22 +360,22 @@
       "subtitle": "Objednávka {orderID} bude brzy odeslána."
       },
     "shipped": {
-      "preview": "Vaše objednávka je na cestě! Sledujte svůj balíček.",
+      "preview": "Vaše objednávka je na cestě! Sledujte svůj balíček",
       "title": "Objednávka je na cestě!",
       "subtitle": "Vaše objednávka č. {orderID} byla odeslána. Sledujte svůj balíček."
       },
     "completed": {
-      "preview": "Vaše objednávka je dokončena! Užijte si svůj nákup.",
+      "preview": "Vaše objednávka je dokončena! Užijte si svůj nákup",
       "title": "Dokončeno!",
       "subtitle": "Obdrželi jste objednávku {orderID}."
       },
     "cancelled": {
-      "preview": "Vaše objednávka byla zrušena. Podrobnosti uvnitř.",
+      "preview": "Vaše objednávka byla zrušena. Podrobnosti uvnitř",
       "title": "Zrušeno.",
       "subtitle": "Objednávka {orderID} byla zrušena."
       },
     "returned": {
-      "preview": "Vaše vrácení bylo zpracováno. Zkontrolujte stav.",
+      "preview": "Vaše vrácení bylo zpracováno. Zkontrolujte stav",
       "title": "Vráceno.",
       "subtitle": "Objednávka {orderID} byla vrácena."
       },
