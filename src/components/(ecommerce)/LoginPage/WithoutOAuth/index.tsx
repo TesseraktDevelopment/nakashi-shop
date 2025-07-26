@@ -12,10 +12,10 @@ export const LoginPageWithoutOAuth = ({ verified }: { verified?: string }) => {
       <div className="container flex w-full flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <Image
-            alt="Mandala Software House"
+            alt="Nakashi Army"
             width={125}
             height={88}
-            src="/mandala.svg"
+            src="/nakashi-army.svg"
             className="mx-auto -my-5 h-20 w-auto invert"
           />
           <h2 className="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900">{t("title")}</h2>

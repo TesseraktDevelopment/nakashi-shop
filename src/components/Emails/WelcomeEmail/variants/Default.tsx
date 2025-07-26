@@ -121,7 +121,7 @@ export const Default = async ({ customer, locale }: { customer: Customer; locale
           <Hr style={global.hr} />
           <Section style={paddingY}>
             <Row>
-              <Text style={global.heading}>Mandala</Text>
+              <Text style={global.heading}>Nakashi Army</Text>
             </Row>
             <Row style={categories.container}>
               <Column align="center">
