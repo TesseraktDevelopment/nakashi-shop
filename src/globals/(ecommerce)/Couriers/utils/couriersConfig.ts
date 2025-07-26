@@ -4,8 +4,23 @@ import { getInpostLabel } from "@/lib/couriers/labels/getInpostLabel";
 import { createInpostCODCourierPackage } from "@/lib/couriers/packages/createInpostCODCourierPackage";
 import { createInpostCourierPackage } from "@/lib/couriers/packages/createInpostCourierPackage";
 import { createInpostPickupPackage } from "@/lib/couriers/packages/createInpostPickupPackage";
+import { createPacketaZBoxShipment } from "@/lib/couriers/packages/createPacketaZBoxPackage";
 import { type Order } from "@/payload-types";
 import { getCachedGlobal } from "@/utilities/getGlobals";
+
+const parseDimensions = (dimension: string, fallbackDimensions?: Dimensions): Dimensions => {
+  if (fallbackDimensions) {
+    return fallbackDimensions;
+  }
+
+  const [width, height, length] = dimension.replace("mm", "").split("x").map(Number);
+  return {
+    width: width || 100,
+    height: height || 100,
+    length: length || 100,
+    weight: 1,
+  };
+};
 
 export const createCouriers = (locale: Locale) =>
   [
@@ -38,7 +53,7 @@ export const createCouriers = (locale: Locale) =>
       getSettings: () => getCachedGlobal("zasilkovna-box", locale, 1)(),
       prepaid: true,
       createPackage: (order: Order, dimension: string, _dimensions?: Dimensions) =>
-        createInpostPickupPackage(order, dimension),
+        createPacketaZBoxShipment(order, parseDimensions(dimension, _dimensions)),
       getLabel: (packageID: string) => getInpostLabel(packageID, "inpost-courier-cod"),
     },
   ] as const;
@@ -65,7 +80,7 @@ export const courierSelectOptions = [
       cs: "InPost Kurier COD",
     },
   },
-    {
+  {
     value: "zasilkovna-box",
     label: {
       en: "Packeta Box",
