@@ -377,7 +377,8 @@
       "subtitle": "Order {orderID} has been returned."
       },
     "tracking-number": "Tracking Number",
-    "shipping-to": "Shipping to:",
+    "shipping-house": "Shipping to:",
+    "shipping-zbox": "Shipping to Z-Box:",
     "order-number": "Order Number",
     "order-date": "Order Date",
     "order-status": "Order Status",
