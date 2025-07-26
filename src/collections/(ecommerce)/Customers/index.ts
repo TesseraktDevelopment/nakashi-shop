@@ -108,6 +108,22 @@ export const Customers: CollectionConfig = {
       ],
     },
     {
+      type: "row",
+      fields: [
+        {
+          name: "stripeCustomerId",
+          label: {
+            en: "Stripe Customer ID",
+            cs: "Stripe ID zákazníka",
+          },
+          type: "text",
+          admin: {
+            width: "50%",
+          },
+        },
+      ],
+    },
+    {
       name: "shippings",
       type: "array",
       label: {
