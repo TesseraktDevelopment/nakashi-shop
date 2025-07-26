@@ -57,6 +57,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Ecommerce Template Posts`,
+    title: `Nakashi Army Posts`,
   };
 }

@@ -10,8 +10,8 @@ const defaultOpenGraph: Metadata["openGraph"] = {
       url: `${getServerSideURL()}/website-template-OG.webp`,
     },
   ],
-  siteName: "Payload Ecommerce Template",
-  title: "Payload Ecommerce Template",
+  siteName: "Nakashi Army",
+  title: "Nakashi Army",
 };
 
 export const mergeOpenGraph = (og?: Metadata["openGraph"]): Metadata["openGraph"] => {
