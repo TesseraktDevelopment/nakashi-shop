@@ -68,7 +68,7 @@ const CommandSearchInput = React.forwardRef<
       )}
       {...props}
     />
-    <Link href={`/search?search=${searchValue}`} className="-m-2 aspect-square p-2">
+    <Link href={`/search?search=${searchValue}`} aria-label="Vyhledávat" className="-m-2 aspect-square p-2">
       <Search className="h-5 w-5 shrink-0 opacity-50" />
     </Link>
   </div>

@@ -108,12 +108,12 @@ export const DefaultHeader = ({ data, disableCart }: { data: Header; disableCart
           </div>
         </nav>
         <div className="flex gap-5">
-          <Link href="/account/orders" className="-m-2 cursor-pointer p-2">
+          <Link href="/account/orders" aria-label="Účet" className="-m-2 cursor-pointer p-2">
             <UserIcon color="white" width={24} height={24} />
           </Link>
           {!disableCart && (
             <>
-              <button onClick={toggleWishList} className="relative -m-2 cursor-pointer p-2">
+              <button onClick={toggleWishList} aria-label="Seznam přání" className="relative -m-2 cursor-pointer p-2">
                 {wishlist && wishlist.length > 0 ? (
                   <span className="absolute right-0 top-0 flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-main-600 text-xs text-white">
                     {wishlist.length}
@@ -123,7 +123,7 @@ export const DefaultHeader = ({ data, disableCart }: { data: Header; disableCart
                 )}
                 <HeartIcon color="white" width={24} height={24} />
               </button>
-              <button onClick={toggleCart} className="relative -m-2 cursor-pointer p-2">
+              <button onClick={toggleCart} aria-label="Košík" className="relative -m-2 cursor-pointer p-2">
                 {totalQuantity && totalQuantity > 0 ? (
                   <span className="absolute right-0 top-0 flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-main-600 text-xs text-white">
                     {totalQuantity}
