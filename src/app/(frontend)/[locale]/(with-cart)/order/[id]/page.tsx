@@ -126,24 +126,24 @@ const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: st
                     <span className="block">
                       {order.shippingAddress.region}, {c(order.shippingAddress.country)}
                     </span>
-                    {order.shippingAddress.pickupPointID && (
-                      <>
-                        <span className="block">
-                          {t("pickup-point")}: {order.shippingAddress.pickupPointID}
-                        </span>
-                        {order.shippingAddress.pickupPointAddress && (
-                          <span>{order.shippingAddress.pickupPointAddress}</span>
-                        )}
-                      </>
-                    )}
                   </address>
                 </dd>
               </div>
               <div>
                 <dt className="font-medium text-gray-900">{t("shipping-method")}</dt>
                 <dd className="mt-2 text-gray-700">
-                  <p>{courier?.settings.label}</p>
-                  <p>{courier?.settings.description}</p>
+                  <span className="block">{courier?.settings.label}</span>
+                  {/* <span className="block">{courier?.settings.description}</span> */}
+                    {order.shippingAddress.pickupPointID && (
+                      <>
+                        <span className="block mt-0.5">
+                          <span className="font-medium">{t("pickup-point")}:</span> {order.shippingAddress.pickupPointName}
+                        </span>
+                        {order.shippingAddress.pickupPointAddress && (
+                          <span>{order.shippingAddress.pickupPointAddress}</span>
+                        )}
+                      </>
+                    )}
                 </dd>
               </div>
             </dl>
@@ -159,12 +159,12 @@ const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: st
               </div>
               {/* <div className="flex justify-between">
                 <dt className="flex font-medium text-gray-900">
-                  Discount
+                  Sleva
                   <span className="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-600">
                     STUDENT50
                   </span>
                 </dt>
-                <dd className="text-gray-700">-$18.00 (50%)</dd>
+                <dd className="text-gray-700">- 149.99Kč (50%)</dd>
               </div> */}
               <div className="flex justify-between">
                 <dt className="font-medium text-gray-900">{t("shipping")}</dt>
