@@ -103,10 +103,9 @@ export const ProductForm = ({
     }
   };
 
-  const isProductAvailable = !(
-    (product.enableVariants && (!selectedVariant || selectedVariant.stock === 0)) ??
-    (!product.enableVariants && product.stock === 0)
-  );
+  const isProductAvailable = product.enableVariants
+    ? selectedVariant && typeof selectedVariant.stock === "number" && selectedVariant.stock > 0
+    : typeof product.stock === "number" && product.stock > 0;
 
   const cartItem = cart?.find(
     (item) => item.id === product.id && item.choosenVariantSlug === selectedVariant?.slug,
@@ -135,7 +134,7 @@ export const ProductForm = ({
                     disabled={!isAvailable}
                     className={cn(
                       "ring-gray-500",
-                      "focus:outline-hidden data-focus:data-checked:ring-3 relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 data-checked:ring-2 data-focus:data-checked:ring-offset-1",
+                      "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-hidden data-checked:ring-2 data-focus:data-checked:ring-3 data-focus:data-checked:ring-offset-1",
                       !isAvailable && "cursor-not-allowed opacity-25",
                     )}
                   >
@@ -179,9 +178,9 @@ export const ProductForm = ({
                     disabled={!matchingVariant}
                     className={cn(
                       matchingVariant
-                        ? "focus:outline-hidden cursor-pointer"
+                        ? "cursor-pointer focus:outline-hidden"
                         : "cursor-not-allowed opacity-25",
-                      "flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 data-checked:border-transparent data-checked:bg-main-600 data-checked:text-white data-focus:ring-2 data-focus:ring-main-500 data-focus:ring-offset-2 data-checked:hover:bg-main-700 sm:flex-1",
+                      "data-checked:bg-main-600 data-focus:ring-main-500 data-checked:hover:bg-main-700 flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-900 uppercase hover:bg-gray-50 data-checked:border-transparent data-checked:text-white data-focus:ring-2 data-focus:ring-offset-2 sm:flex-1",
                     )}
                   >
                     {size.label}
@@ -198,11 +197,12 @@ export const ProductForm = ({
           type="submit"
           disabled={!isProductAvailable}
           className={cn(
-            "focus:outline-hidden col-span-2 row-start-2 flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-main-600 px-8 py-3 text-base font-medium text-white hover:bg-main-700 focus:ring-2 focus:ring-main-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full",
+            "bg-main-600 hover:bg-main-700 focus:ring-main-500 col-span-2 row-start-2 flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden sm:w-full",
             !isProductAvailable && "cursor-not-allowed opacity-25",
           )}
           onClick={(e) => {
             e.preventDefault();
+            if (!isProductAvailable) return;
             if (quantity <= maxQuantity - (cartItem?.quantity ?? 0)) {
               setOverStock(false);
               updateCart([
