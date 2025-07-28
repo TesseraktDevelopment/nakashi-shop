@@ -129,69 +129,29 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
               <h2 className="sr-only">{t("your-order")}</h2>
               <h3 className="sr-only">{t("items")}</h3>
               <div className="space-y-6">
-                <div className="flex space-x-6 border-b border-gray-200 py-6">
-                  <div className="size-20 flex-none rounded-lg bg-gray-200"></div>
-                  <div className="flex flex-auto flex-col">
-                    <div>
-                      <h4 className="font-medium text-gray-500">••••••••••••••••••••</h4>
-                      <p className="mt-2 text-sm text-gray-500">••••••••••••••••••••</p>
-                    </div>
-                    <div className="mt-6 flex flex-1 items-end">
-                      <dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
-                        <div className="flex">
-                          <dt className="font-medium text-gray-500">{t("quantity")}</dt>
-                          <dd className="ml-2 text-gray-500">••</dd>
-                        </div>
-                        <div className="flex pl-4 sm:pl-6">
-                          <dt className="font-medium text-gray-500">{t("price")}</dt>
-                          <dd className="ml-2 text-gray-500">•••</dd>
-                        </div>
-                      </dl>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex space-x-6 border-b border-gray-200 py-6">
-                  <div className="size-20 flex-none rounded-lg bg-gray-200"></div>
-                  <div className="flex flex-auto flex-col">
-                    <div>
-                      <h4 className="font-medium text-gray-500">••••••••••••••••••••</h4>
-                      <p className="mt-2 text-sm text-gray-500">••••••••••••••••••••</p>
-                    </div>
-                    <div className="mt-6 flex flex-1 items-end">
-                      <dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
-                        <div className="flex">
-                          <dt className="font-medium text-gray-500">{t("quantity")}</dt>
-                          <dd className="ml-2 text-gray-500">••</dd>
-                        </div>
-                        <div className="flex pl-4 sm:pl-6">
-                          <dt className="font-medium text-gray-500">{t("price")}</dt>
-                          <dd className="ml-2 text-gray-500">•••</dd>
-                        </div>
-                      </dl>
+                {Array.from({ length: order.products?.length ?? 3 }).map((_, index) => (
+                  <div key={index} className="flex space-x-6 border-b border-gray-200 py-6">
+                    <div className="size-20 flex-none rounded-lg bg-gray-200"></div>
+                    <div className="flex flex-auto flex-col">
+                      <div>
+                        <h4 className="font-medium text-gray-500">••••••••••••••••••••</h4>
+                        <p className="mt-2 text-sm text-gray-500">••••••••••••••••••••</p>
+                      </div>
+                      <div className="mt-6 flex flex-1 items-end">
+                        <dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
+                          <div className="flex">
+                            <dt className="font-medium text-gray-500">{t("quantity")}</dt>
+                            <dd className="ml-2 text-gray-500">••</dd>
+                          </div>
+                          <div className="flex pl-4 sm:pl-6">
+                            <dt className="font-medium text-gray-500">{t("price")}</dt>
+                            <dd className="ml-2 text-gray-500">•••</dd>
+                          </div>
+                        </dl>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex space-x-6 border-b border-gray-200 py-6">
-                  <div className="size-20 flex-none rounded-lg bg-gray-200"></div>
-                  <div className="flex flex-auto flex-col">
-                    <div>
-                      <h4 className="font-medium text-gray-500">••••••••••••••••••••</h4>
-                      <p className="mt-2 text-sm text-gray-500">••••••••••••••••••••</p>
-                    </div>
-                    <div className="mt-6 flex flex-1 items-end">
-                      <dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
-                        <div className="flex">
-                          <dt className="font-medium text-gray-500">{t("quantity")}</dt>
-                          <dd className="ml-2 text-gray-500">••</dd>
-                        </div>
-                        <div className="flex pl-4 sm:pl-6">
-                          <dt className="font-medium text-gray-500">{t("price")}</dt>
-                          <dd className="ml-2 text-gray-500">•••</dd>
-                        </div>
-                      </dl>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
 
               <div className="sm:ml-40 sm:pl-6">
