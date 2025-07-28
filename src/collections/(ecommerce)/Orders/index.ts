@@ -472,7 +472,7 @@ export const Orders: CollectionConfig = {
                         cs: "ID výdejního místa",
                       },
                       admin: {
-                        width: "33%",
+                        width: "25%",
                         readOnly: true,
                         // eslint-disable-next-line
                         condition: (data) => data.orderDetails.shipping === "inpost-pickup" || data.orderDetails.shipping === "zasilkovna-box",
@@ -486,7 +486,21 @@ export const Orders: CollectionConfig = {
                         cs: "Název výdejního místa",
                       },
                       admin: {
-                        width: "33%",
+                        width: "25%",
+                        readOnly: true,
+                        // eslint-disable-next-line
+                        condition: (data) => data.orderDetails.shipping === "zasilkovna-box",
+                      },
+                    },
+                    {
+                      name: "pickupPointBranchCode",
+                      type: "text",
+                      label: {
+                        en: "Pickup point Branch Code",
+                        cs: "URL výdejního místa",
+                      },
+                      admin: {
+                        width: "25%",
                         readOnly: true,
                         // eslint-disable-next-line
                         condition: (data) => data.orderDetails.shipping === "zasilkovna-box",
@@ -500,7 +514,7 @@ export const Orders: CollectionConfig = {
                         cs: "Adresa výdejního místa",
                       },
                       admin: {
-                        width: "33%",
+                        width: "25%",
                         readOnly: true,
                         // eslint-disable-next-line
                         condition: (data) => data.orderDetails.shipping === "inpost-pickup" || data.orderDetails.shipping === "zasilkovna-box",

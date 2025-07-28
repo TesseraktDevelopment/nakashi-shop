@@ -137,7 +137,7 @@ const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: st
                     {order.shippingAddress.pickupPointID && (
                       <>
                         <span className="block mt-0.5">
-                          <span className="font-medium">{t("pickup-point")}:</span> {order.shippingAddress.pickupPointName}
+                          <Link target="_blank" className="text-main-500" href={order.orderDetails.shipping === 'zasilkovna-box' ? `https://www.zasilkovna.cz/pobocky/${order.shippingAddress.pickupPointBranchCode ?? order.shippingAddress.pickupPointID ?? ""}` : "#"}>{order.shippingAddress.pickupPointName}</Link>
                         </span>
                         {order.shippingAddress.pickupPointAddress && (
                           <span>{order.shippingAddress.pickupPointAddress}</span>

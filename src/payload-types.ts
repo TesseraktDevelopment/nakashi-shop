@@ -1412,6 +1412,7 @@ export interface Order {
     address: string;
     pickupPointID?: string | null;
     pickupPointName?: string | null;
+    pickupPointBranchCode?: string | null;
     pickupPointAddress?: string | null;
     city: string;
     country:
@@ -1477,6 +1478,7 @@ export interface Order {
     shippingDate?: string | null;
     trackingNumber?: string | null;
     orderNote?: string | null;
+    orderSecret?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -2297,6 +2299,7 @@ export interface OrdersSelect<T extends boolean = true> {
         address?: T;
         pickupPointID?: T;
         pickupPointName?: T;
+        pickupPointBranchCode?: T;
         pickupPointAddress?: T;
         city?: T;
         country?: T;
@@ -2319,6 +2322,7 @@ export interface OrdersSelect<T extends boolean = true> {
         shippingDate?: T;
         trackingNumber?: T;
         orderNote?: T;
+        orderSecret?: T;
       };
   updatedAt?: T;
   createdAt?: T;

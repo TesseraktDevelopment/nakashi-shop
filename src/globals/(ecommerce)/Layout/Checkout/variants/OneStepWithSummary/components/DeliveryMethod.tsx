@@ -31,6 +31,7 @@ type ZasilkovnaPoint = {
   city: string;
   zip: string;
   formatedValue?: string;
+  branchCode: string,
 }
 
 type PointSelectEvent = CustomEvent<InPostPoint | ZasilkovnaPoint>;
@@ -61,6 +62,7 @@ export const DeliveryMethod = ({
   const pickupPointID = useWatch({ control: form.control, name: "shipping.pickupPointID" });
   const pickupPointName = useWatch({ control: form.control, name: "shipping.pickupPointName" });
   const pickupPointAddress = useWatch({ control: form.control, name: "shipping.pickupPointAddress" });
+  const pickupPointBranchCode = useWatch({ control: form.control, name: "shipping.pickupPointBranchCode" });
   const selectedDeliveryMethod = useWatch({ control: form.control, name: "deliveryMethod" });
 
   const onPointSelect = (event: PointSelectEvent) => {
@@ -69,6 +71,7 @@ export const DeliveryMethod = ({
       const point = event.detail;
       form.setValue("shipping.pickupPointID", point.id);
       form.setValue("shipping.pickupPointName", point.name);
+      form.setValue("shipping.pickupPointBranchCode", point.branchCode);
       form.setValue(
         "shipping.pickupPointAddress",
         `${point.street}${point.street ? ", " : ""}${point.zip} ${point.city}`,
@@ -121,7 +124,7 @@ export const DeliveryMethod = ({
               country: zasilkovnaSettings?.countries[0] ?? "cz,sk",
               language: zasilkovnaSettings?.language ?? "cs",
               weight: zasilkovnaSettings?.weight ?? "5",
-              valueFormat: '"Packeta",id,carrierId,carrierPickupPointId,name,city,street',
+              valueFormat: '"Packeta",id,carrierId,carrierPickupPointId,name,city,street,branchCode',
               view: "modal",
               vendors: [
                 { country: zasilkovnaSettings?.countries[0] ?? "cz", group: "zbox" },
@@ -135,7 +138,7 @@ export const DeliveryMethod = ({
 
           {pickupPointID && (
             <p className="mr-auto flex items-center text-sm">
-              ID: {pickupPointID} / {pickupPointAddress} / {pickupPointName}
+              ID: {pickupPointID} / {pickupPointAddress} / {pickupPointName} / {pickupPointBranchCode}
             </p>
           )}
         </div>

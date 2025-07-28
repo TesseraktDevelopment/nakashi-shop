@@ -33,6 +33,7 @@ type ZasilkovnaPoint = {
   city: string;
   zip: string;
   formatedValue?: string;
+  branchCode: string;
 }
 
 type ZasilkovnaWidgetOptions = {
