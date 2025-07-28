@@ -30,6 +30,15 @@ export const WithSidebarOrders = async () => {
     pagination: false,
   });
 
+  if (orders.docs.length === 0) {
+    return (
+      <div className="no-prose flex flex-col gap-4">
+        <h2 className="mb-8 text-xl font-bold">{t("title")}</h2>
+        <p className="text-gray-500">{t("no-orders")}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="no-prose flex flex-col gap-4">
       <h2 className="mb-8 text-xl font-bold">{t("title")}</h2>
