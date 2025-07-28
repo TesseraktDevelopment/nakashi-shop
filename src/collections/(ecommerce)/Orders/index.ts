@@ -803,6 +803,17 @@ export const Orders: CollectionConfig = {
           },
           type: "textarea",
         },
+        {
+          name: "orderSecret",
+          type: "text",
+          label: {
+            en: "Order secret",
+            cs: "Secret objednávky",
+          },
+          admin: {
+            readOnly: true,
+          },
+        },
       ],
     },
   ],

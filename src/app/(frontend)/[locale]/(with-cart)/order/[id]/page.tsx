@@ -3,24 +3,237 @@ import { getPayload } from "payload";
 
 import { Media as MediaComponent } from "@/components/Media";
 import RichText from "@/components/RichText";
+import { Button } from "@/components/ui/button";
 import { type Locale } from "@/i18n/config";
 import { Link } from "@/i18n/routing";
-import { type Media } from "@/payload-types";
+import { type Order, type Media, type Customer } from "@/payload-types";
 import config from "@/payload.config";
 import { formatPrice } from "@/utilities/formatPrices";
+import { getCustomer } from "@/utilities/getCustomer";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { getOrderProducts } from "@/utilities/getOrderProducts";
 
-const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: string }> }) => {
-  const { locale, id } = await params;
+const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: Locale; id: string }>; searchParams: Promise<{ x?: string }> }) => {
+  const { locale, id: rawId } = await params;
   const payload = await getPayload({ config });
-  const order = await payload.findByID({
-    collection: "orders",
-    id,
-    locale,
-  });
+  const user = await getCustomer();
+  const { x: providedSecret } = await searchParams;
+
+  const id = rawId.replace(/[^0-9a-fA-F]/g, '');
+  if (!id || id.length !== rawId.length) {
+    return (
+      <div className="bg-white">
+        <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <div className="max-w-xl">
+            <h1 className="text-base font-medium text-indigo-600">Error</h1>
+            <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+              Invalid Order ID
+            </p>
+            <p className="mt-2 text-base text-gray-500">
+              The order number provided is invalid. Please check and try again.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Fetch the order with error handling
+  let order: Order;
+  try {
+    order = await payload.findByID({
+      collection: "orders",
+      id,
+      locale,
+      depth: 2,
+    });
+  } catch (error) {
+    console.error(`Error fetching order with ID ${id}:`, error);
+    return (
+      <div className="bg-white">
+        <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <div className="max-w-xl">
+            <h1 className="text-base font-medium text-indigo-600">Error</h1>
+            <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+              Order Not Found
+            </p>
+            <p className="mt-2 text-base text-gray-500">
+              The order with ID {id} could not be found. Please check the order number or contact support.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="bg-white">
+        <div className="mx-auto lg:flex lg:gap-x-16 lg:px-8">
+          <div className="max-w-xl">
+            <h1 className="text-base font-medium text-indigo-600">Error</h1>
+            <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+              Order Not Found
+            </p>
+            <p className="mt-2 text-base text-gray-500">
+              The order with ID {id} could not be found. Please check the order number or contact support.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const t = await getTranslations("Order");
+
+  // Validate order secret if not authenticated user
+  if (!user && (!providedSecret || providedSecret !== order.orderDetails.orderSecret)) {
+    return (
+      <div className="container pt-16">
+        <div className="mx-auto">
+          <div className="max-w-2xl">
+            <h1 className="text-base font-medium text-indigo-600">{t("thank-you")}</h1>
+              <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+                {t(`${order.orderDetails.status}.title`)}
+              </p>
+              <p className="mt-2 text-base text-gray-500">
+                {t(`${order.orderDetails.status}.subtitle`, { orderID: order.id })}
+              </p>
+            </div>
+            <p className="mt-12 text-base text-orange-500">
+              {t("warning-message", { email: `${(order.customer as Customer)?.email ? `${(order.customer as Customer)?.email.slice(0, 2)}${'*'.repeat((order.customer as Customer)?.email.indexOf('@') - 2)}${(order.customer as Customer)?.email.slice((order.customer as Customer)?.email.indexOf('@'))}` : ''}` })}
+            </p>
+            <div className="flex flex-1/2 gap-3.5 mt-6">
+              <Link href="/login">
+                <Button variant="tailwind" className="w-full h-full">
+                  Přihlásit se
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button variant="tailwind" className="w-full h-full">
+                  Změnit objednávku
+                </Button>
+              </Link>
+            </div>
+            <p className="mt-2 text-base text-gray-500">{t("created-at")} {new Date(order.createdAt).toLocaleString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+            <div className="mt-10 border-t border-gray-200">
+              <h2 className="sr-only">{t("your-order")}</h2>
+              <h3 className="sr-only">{t("items")}</h3>
+              <div className="space-y-6">
+                <div className="flex space-x-6 border-b border-gray-200 py-6">
+                  <div className="size-20 flex-none rounded-lg bg-gray-200"></div>
+                  <div className="flex flex-auto flex-col">
+                    <div>
+                      <h4 className="font-medium text-gray-500">••••••••••••••••••••</h4>
+                      <p className="mt-2 text-sm text-gray-500">••••••••••••••••••••</p>
+                    </div>
+                    <div className="mt-6 flex flex-1 items-end">
+                      <dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
+                        <div className="flex">
+                          <dt className="font-medium text-gray-500">{t("quantity")}</dt>
+                          <dd className="ml-2 text-gray-500">••</dd>
+                        </div>
+                        <div className="flex pl-4 sm:pl-6">
+                          <dt className="font-medium text-gray-500">{t("price")}</dt>
+                          <dd className="ml-2 text-gray-500">•••</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex space-x-6 border-b border-gray-200 py-6">
+                  <div className="size-20 flex-none rounded-lg bg-gray-200"></div>
+                  <div className="flex flex-auto flex-col">
+                    <div>
+                      <h4 className="font-medium text-gray-500">••••••••••••••••••••</h4>
+                      <p className="mt-2 text-sm text-gray-500">••••••••••••••••••••</p>
+                    </div>
+                    <div className="mt-6 flex flex-1 items-end">
+                      <dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
+                        <div className="flex">
+                          <dt className="font-medium text-gray-500">{t("quantity")}</dt>
+                          <dd className="ml-2 text-gray-500">••</dd>
+                        </div>
+                        <div className="flex pl-4 sm:pl-6">
+                          <dt className="font-medium text-gray-500">{t("price")}</dt>
+                          <dd className="ml-2 text-gray-500">•••</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex space-x-6 border-b border-gray-200 py-6">
+                  <div className="size-20 flex-none rounded-lg bg-gray-200"></div>
+                  <div className="flex flex-auto flex-col">
+                    <div>
+                      <h4 className="font-medium text-gray-500">••••••••••••••••••••</h4>
+                      <p className="mt-2 text-sm text-gray-500">••••••••••••••••••••</p>
+                    </div>
+                    <div className="mt-6 flex flex-1 items-end">
+                      <dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
+                        <div className="flex">
+                          <dt className="font-medium text-gray-500">{t("quantity")}</dt>
+                          <dd className="ml-2 text-gray-500">••</dd>
+                        </div>
+                        <div className="flex pl-4 sm:pl-6">
+                          <dt className="font-medium text-gray-500">{t("price")}</dt>
+                          <dd className="ml-2 text-gray-500">•••</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="sm:ml-40 sm:pl-6">
+                <h3 className="sr-only">{t("your-information")}</h3>
+
+                <h4 className="sr-only">{t("shipping")}</h4>
+                <dl className="grid grid-cols-2 gap-x-6 border-gray-200 py-10 text-sm">
+                  <div>
+                    <dt className="font-medium text-gray-900">{t("shipping-address")}</dt>
+                    <dd className="mt-2 text-gray-500">
+                      <address className="not-italic">
+                        <span className="block">••••••••••••••••••••</span>
+                        <span className="block">••••••••••••••••••••</span>
+                        <span className="block">••••••••••••••••••••</span>
+                      </address>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="font-medium text-gray-900">{t("shipping-method")}</dt>
+                    <dd className="mt-2 text-gray-500">
+                      <span className="block">••••••••••••••••••••</span>
+                      <span className="block">••••••••••••••••••••</span>
+                    </dd>
+                  </div>
+                </dl>
+
+                <h3 className="sr-only">{t("summary")}</h3>
+
+                <dl className="space-y-6 border-t border-gray-200 pt-10 text-sm mb-15">
+                  <div className="flex justify-between">
+                    <dt className="font-medium text-gray-500">{t("subtotal")}</dt>
+                    <dd className="text-gray-500">•••</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="flex font-medium text-gray-500">
+                      {t("shipping")}
+                    </dt>
+                    <dd className="text-gray-500">•••</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="font-medium text-gray-500">{t("total")}</dt>
+                    <dd className="text-gray-500">•••</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+    );
+  }
+
   const c = await getTranslations("CheckoutForm.countries");
 
   const filledProducts = await getOrderProducts(order.products, locale);
@@ -29,8 +242,8 @@ const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: st
     order.orderDetails.shipping && (await getCachedGlobal(order.orderDetails.shipping, locale, 1)());
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+    <div className="container pt-16">
+      <div className="mx-auto">
         <div className="max-w-xl">
           <h1 className="text-base font-medium text-indigo-600">{t("thank-you")}</h1>
           <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
@@ -57,7 +270,6 @@ const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: st
               (variant) => variant.variantSlug === product.variantSlug,
             );
 
-            console.log(selectedVariant);
             const productImage =
               product.variants && product.variantSlug
                 ? ((product.variants.find((variant) => product.variantSlug === variant.variantSlug)?.image ??
@@ -130,10 +342,9 @@ const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: st
                 </dd>
               </div>
               <div>
-                <dt className="font-medium text-gray-900">{t("shipping-method")}</dt>
+                <dt className="font-medium text-gray-900">{t("billing-address")}</dt>
                 <dd className="mt-2 text-gray-700">
                   <span className="block">{courier?.settings.label}</span>
-                  {/* <span className="block">{courier?.settings.description}</span> */}
                     {order.shippingAddress.pickupPointID && (
                       <>
                         <span className="block mt-0.5">
@@ -147,10 +358,31 @@ const OrdersPage = async ({ params }: { params: Promise<{ locale: Locale; id: st
                 </dd>
               </div>
             </dl>
-
+            <dl className="grid grid-cols-2 gap-x-6 border-gray-200 py-10 text-sm">
+              <div>
+                <dt className="font-medium text-gray-900">{t("payment-method")}</dt>
+                <dd className="mt-2 text-gray-700">
+                  <address className="not-italic">
+                    <span className="block">
+                      Tato informace není k dispozici.
+                    </span>
+                    <span className="block text-gray-500">
+                      Chyba: 0x30201
+                    </span>
+                  </address>
+                </dd>
+              </div>
+              <div>
+                <dt className="font-medium text-gray-900">{t("shipping-method")}</dt>
+                <dd className="mt-2 text-gray-700">
+                  <span className="block">{courier?.settings.label}</span>
+                  <span className="block">{courier?.settings.description}</span>
+                </dd>
+              </div>
+            </dl>
             <h3 className="sr-only">{t("summary")}</h3>
 
-            <dl className="space-y-6 border-t border-gray-200 pt-10 text-sm">
+            <dl className="space-y-6 border-t border-gray-200 pt-10 text-sm mb-15">
               <div className="flex justify-between">
                 <dt className="font-medium text-gray-900">{t("subtotal")}</dt>
                 <dd className="text-gray-700">

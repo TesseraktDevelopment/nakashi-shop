@@ -146,7 +146,7 @@ export const Default = async ({ order, locale }: { order: Order; locale: Locale 
             </Row>
             <Row>
               <Column align="center">
-                <Link href={`${baseUrl}/${locale}/order/${order.id}`} style={global.button}>
+                <Link href={`${baseUrl}/${locale}/order/${order.id}?x=${order.orderDetails.orderSecret}`} style={global.button}>
                   {t("order-status")}
                 </Link>
               </Column>
