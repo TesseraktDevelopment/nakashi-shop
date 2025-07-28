@@ -3,6 +3,8 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 
+//TODO: Translate
+
 export default function NotFound() {
   return (
     <div className="container py-28">
@@ -11,7 +13,7 @@ export default function NotFound() {
         <p className="mb-4">This page could not be found.</p>
       </div>
       <Button asChild variant="default">
-        <Link href="/">Go home</Link>
+        <Link aria-label="Domů" href="/">Go home</Link>
       </Button>
     </div>
   );
