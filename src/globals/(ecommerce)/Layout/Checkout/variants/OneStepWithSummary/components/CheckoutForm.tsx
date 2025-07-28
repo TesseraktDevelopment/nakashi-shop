@@ -18,7 +18,7 @@ import { type Country } from "@/globals/(ecommerce)/Couriers/utils/countryList";
 import { type ProductWithFilledVariants } from "@/globals/(ecommerce)/Layout/Cart/variants/SlideOver";
 import { type Locale } from "@/i18n/config";
 import { useRouter } from "@/i18n/routing";
-import { type Customer, type Media } from "@/payload-types";
+import { type ZasilkovnaBox, type Customer, type Media } from "@/payload-types";
 import { type CheckoutFormData, useCheckoutFormSchema } from "@/schemas/checkoutForm.schema";
 import { useCart } from "@/stores/CartStore";
 import { type Cart } from "@/stores/CartStore/types";
@@ -56,9 +56,9 @@ export type FilledCourier = {
         id?: string | null;
       }[]
     | undefined;
-};
+}
 
-export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowidgetToken?: string }) => {
+export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowidgetToken?: string, zasilkovnaSettings?: ZasilkovnaBox }) => {
   const { CheckoutFormSchemaResolver } = useCheckoutFormSchema();
   const t = useTranslations("CheckoutForm.form");
   const c = useTranslations("CheckoutForm.countries");
