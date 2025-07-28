@@ -77,6 +77,7 @@
   },
   "RegisterForm": {
     "title": "Create an account",
+    "name": "Full Name",
     "email": "Email address",
     "password": "Password",
     "confirm-password": "Confirm password",
@@ -85,6 +86,7 @@
     "have-account": "Already have an account?",
     "login-now": "Login here!",
     "email-placeholder": "john.doe@example.com",
+    "name-placeholder": "John Doe",
     "errors": {
       "email": "Invalid email address",
       "email-empty": "Email address cannot be empty",
@@ -240,6 +242,7 @@
     },
     "orders": {
       "title": "Orders",
+      "no-orders": "No orders",
       "pending": "<yellow>Pending</yellow>",
       "paid": "<green>Paid</green>",
       "unpaid": "<red>Unpaid</red>",
@@ -289,35 +292,35 @@
     "thank-you": "Thank you!",
     "pending": {
       "title": "Your order is pending now.",
-      "subtitle": "Please wait for the payment to be processed. Order {orderID}"
+      "subtitle": "Please wait for the payment to be processed. Order ¨#{orderID}"
     },
     "paid": {
       "title": "Payment has been received.",
-      "subtitle": "We will start processing your order soon. Order {orderID}"
+      "subtitle": "We will start processing your order soon. Order #{orderID}"
     },
     "unpaid": {
       "title": "Payment failed.",
-      "subtitle": "Please try again or contact support if you have any trouble. Order {orderID}"
+      "subtitle": "Please try again or contact support if you have any trouble. Order #{orderID}"
     },
     "processing": {
       "title": "We're processing your order.",
-      "subtitle": "Order {orderID} will be shipped soon."
+      "subtitle": "Order #{orderID} will be shipped soon."
     },
     "shipped": {
       "title": "It's on its way!",
-      "subtitle": "Your order {orderID} has been shipped."
+      "subtitle": "Your order #{orderID} has been shipped."
     },
     "completed": {
       "title": "Finished!",
-      "subtitle": "You received your order {orderID}."
+      "subtitle": "You received your order #{orderID}."
     },
     "cancelled": {
       "title": "Cancelled.",
-      "subtitle": "The order {orderID} has been cancelled."
+      "subtitle": "The order #{orderID} has been cancelled."
     },
     "returned": {
       "title": "Returned.",
-      "subtitle": "Order {orderID} has been returned."
+      "subtitle": "Order #{orderID} has been returned."
     },
     "tracking-number": "Tracking number: ",
     "track-package": "Track package",
@@ -328,11 +331,36 @@
     "your-information": "Your information",
     "shipping-address": "Shipping address",
     "shipping-method": "Shipping method",
+    "payment-method": "Paymenet method",
     "summary": "Summary",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "total": "Total",
-    "pickup-point": "Pickup point"
+    "pickup-point": "Pickup point",
+    "thank-you": "Thank you!",
+    "order": "Order",
+    "created-at": "Created at",
+    "order-completed": "Order completed",
+    "thank-you-for-purchase": "Thank you for purchase.",
+    "warning-message": "To view all order information, please log in to your account {email}.",
+    "download-invoice": "Download Invoice",
+    "edit-order": "Edit order",
+    "invoice-number": "Invoice number: {number}",
+    "add-items": "Add items",
+    "order-items": "Order items",
+    "billing-address": "Billing address",
+    "edit-billing": "Edit billing",
+    "shipping-address": "Shopping address",
+    "edit-shipping": "Edit Shipping",
+    "tracking-number": "Tracking number",
+    "quantity": "Quantity",
+    "price": "Price",
+    "your-order": "Your order",
+    "items": "Items",
+    "your-information": "Your information",
+    "shipping": "Shipping",
+    "subtotal": "Subtotal",
+    "total": "Total"
   },
   "OrderEmail": {
     "thank-you": "Thank you!",

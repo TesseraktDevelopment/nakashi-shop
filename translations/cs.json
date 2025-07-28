@@ -77,6 +77,7 @@
   },
   "RegisterForm": {
     "title": "Vytvořit účet",
+    "name": "Jméno a příjmení",
     "email": "E-mailová adresa",
     "password": "Heslo",
     "confirm-password": "Potvrďte heslo",
@@ -85,6 +86,7 @@
     "have-account": "Už máte účet?",
     "login-now": "Přihlaste se zde!",
     "email-placeholder": "jan.novak@priklad.cz",
+    "name-placeholder": "Jan Novák",
     "errors": {
       "email": "Neplatná e-mailová adresa",
       "email-empty": "E-mailová adresa nesmí být prázdná",
@@ -244,6 +246,7 @@
     },
     "orders": {
       "title": "Objednávky",
+      "no-orders": "Nejsou k dispozici žádné objednávky.",
       "pending": "<yellow>Čekající</yellow>",
       "paid": "<green>Zaplaceno</green>",
       "unpaid": "<red>Nezaplaceno</red>",
@@ -292,36 +295,36 @@
   "Order": {
     "thank-you": "Děkujeme!",
     "pending": {
-      "title": "Vaše objednávka čeká na vyřízení.",
-      "subtitle": "Prosím, vyčkejte na zpracování platby. Objednávka {orderID}"
+      "title": "Čeká na zpracování",
+      "subtitle": "Vaše objednávka #{orderID} je ve zpracování."
     },
     "paid": {
       "title": "Platba byla přijata.",
-      "subtitle": "Brzy začneme zpracovávat vaši objednávku {orderID}."
+      "subtitle": "Brzy začneme zpracovávat vaši objednávku #{orderID}."
     },
     "unpaid": {
       "title": "Platba se nezdařila.",
-      "subtitle": "Zkuste to znovu nebo kontaktujte podporu, pokud máte problémy. Objednávka {orderID}"
+      "subtitle": "Zkuste to znovu nebo kontaktujte podporu, pokud máte problémy. Objednávka #{orderID}"
     },
     "processing": {
       "title": "Zpracováváme vaši objednávku.",
-      "subtitle": "Objednávka {orderID} bude brzy odeslána."
+      "subtitle": "Objednávka #{orderID} bude brzy odeslána."
     },
     "shipped": {
       "title": "Objednávka je na cestě!",
-      "subtitle": "Vaše objednávka č. {orderID} byla právě odeslána."
+      "subtitle": "Vaše objednávka #{orderID} byla právě odeslána."
     },
     "completed": {
       "title": "Dokončeno!",
-      "subtitle": "Obdrželi jste objednávku {orderID}."
+      "subtitle": "Obdrželi jste objednávku #{orderID}."
     },
     "cancelled": {
       "title": "Zrušeno.",
-      "subtitle": "Objednávka {orderID} byla zrušena."
+      "subtitle": "Objednávka #{orderID} byla zrušena."
     },
     "returned": {
       "title": "Vráceno.",
-      "subtitle": "Objednávka {orderID} byla vrácena."
+      "subtitle": "Objednávka #{orderID} byla vrácena."
     },
     "tracking-number": "Sledovací číslo: ",
     "your-order": "Vaše objednávka",
@@ -331,53 +334,78 @@
     "your-information": "Vaše údaje",
     "shipping-address": "Doručovací adresa",
     "shipping-method": "Způsob doručení",
+    "payment-method": "Způsob platby",
     "summary": "Shrnutí",
     "subtotal": "Mezisoučet",
     "shipping": "Doprava",
     "total": "Celkem",
-    "pickup-point": "Výdejní místo"
+    "pickup-point": "Výdejní místo",
+    "thank-you": "Děkujeme vám!",
+    "order": "Objednávka",
+    "created-at": "Vytvořeno",
+    "order-completed": "Objednávka dokončena",
+    "thank-you-for-purchase": "Děkujeme za váš nákup.",
+    "warning-message": "Pro zobrazení všech informací o objednávce se prosím přihlaste se k účtu {email}.",
+    "download-invoice": "Stáhnout fakturu",
+    "edit-order": "Upravit objednávku",
+    "invoice-number": "Číslo faktury: {number}",
+    "add-items": "Přidat položky",
+    "order-items": "Položky objednávky",
+    "billing-address": "Fakturační adresa",
+    "edit-billing": "Upravit fakturaci",
+    "shipping-address": "Doručovací adresa",
+    "edit-shipping": "Upravit doručení",
+    "tracking-number": "Sledovací číslo",
+    "quantity": "Množství",
+    "price": "Cena",
+    "your-order": "Vaše objednávka",
+    "items": "Položky",
+    "your-information": "Vaše údaje",
+    "shipping": "Doprava",
+    "subtotal": "Mezisoučet",
+    "total": "Celkem"
   },
   "OrderEmail": {
     "thank-you": "Děkujeme!",
     "pending": {
       "preview": "Vaše objednávka čeká na potvrzení. Zkontrolujte detaily!",
       "title": "Vaše objednávka čeká na vyřízení.",
-      "subtitle": "Prosím, vyčkejte na zpracování platby. Objednávka {orderID}"
+      "subtitle": "Prosím, vyčkejte na zpracování platby. Objednávka #{orderID}"
       },
     "paid": {
       "preview": "Platba přijata! Vaše objednávka se připravuje",
       "title": "Platba byla přijata",
-      "subtitle": "Brzy začneme zpracovávat vaši objednávku {orderID}."
+      "subtitle": "Brzy začneme zpracovávat vaši objednávku #{orderID}."
       },
     "unpaid": {
       "preview": "Vaše objednávka čeká na platbu. Dokončete ji nyní!",
       "title": "Platba se nezdařila.",
-      "subtitle": "Zkuste to znovu nebo kontaktujte podporu, pokud máte problémy. Objednávka {orderID}"
+      "subtitle": "Zkuste to znovu nebo kontaktujte podporu, pokud máte problémy. Objednávka #{orderID}"
       },
     "processing": {
       "preview": "Vaše objednávka je zpracovávána. Brzy vás budeme informovat!",
       "title": "Zpracováváme vaši objednávku.",
-      "subtitle": "Objednávka {orderID} bude brzy odeslána."
+      "subtitle": "Objednávka #{orderID} bude brzy odeslána."
       },
     "shipped": {
       "preview": "Vaše objednávka je na cestě! Sledujte svůj balíček",
       "title": "Objednávka je na cestě!",
-      "subtitle": "Vaše objednávka č. {orderID} byla odeslána. Sledujte svůj balíček."
+      "subtitle": "Vaše objednávka #{orderID} byla odeslána. Sledujte svůj balíček."
       },
     "completed": {
       "preview": "Vaše objednávka je dokončena! Užijte si svůj nákup",
       "title": "Dokončeno!",
-      "subtitle": "Obdrželi jste objednávku {orderID}."
+      "subtitle": "Obdrželi jste objednávku #{orderID}."
       },
     "cancelled": {
       "preview": "Vaše objednávka byla zrušena. Podrobnosti uvnitř",
       "title": "Zrušeno.",
-      "subtitle": "Objednávka {orderID} byla zrušena."
+      "subtitle": "Objednávka #{orderID} byla zrušena."
       },
     "returned": {
       "preview": "Vaše vrácení bylo zpracováno. Zkontrolujte stav",
       "title": "Vráceno.",
-      "subtitle": "Objednávka {orderID} byla vrácena."
+      "subtitle": "Objednávka #{orderID} byla vrácena."
       },
     "tracking-number": "Sledovací číslo",
     "shipping-house": "Doručení na adresu:",
