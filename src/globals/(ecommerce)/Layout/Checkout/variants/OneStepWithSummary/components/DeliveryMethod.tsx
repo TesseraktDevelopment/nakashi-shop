@@ -45,6 +45,9 @@ export const DeliveryMethod = ({
   geowidgetToken?: string;
   zasilkovnaSettings?: {
     apiKey: string;
+    deliveryZones: [
+      countries: string[],
+    ]
     countries: string[];
     language: string;
     filterTypes?: string[];
@@ -119,7 +122,7 @@ export const DeliveryMethod = ({
       Additional = selectedDeliveryMethod === slug && (
         <div className="mt-2 flex flex-row-reverse">
           <ZasilkovnaWidget
-            apiKey={zasilkovnaSettings?.apiKey ?? ""}
+            apiKey={zasilkovnaSettings?.apiKey ?? "de597455fae8f143"}
             options={{
               country: zasilkovnaSettings?.countries[0] ?? "cz,sk",
               language: zasilkovnaSettings?.language ?? "cs",
