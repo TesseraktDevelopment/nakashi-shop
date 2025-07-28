@@ -162,15 +162,29 @@ export const SlideOver = () => {
                                   onClick={() => {
                                     removeFromWishList(product.id, product.variant?.slug ?? undefined);
                                   }}
-                                  className="font-medium text-main-600 hover:text-main-500"
+                                  className="text-main-600 hover:text-main-500 font-medium"
                                 >
                                   {t("remove")}
                                 </button>
                                 <Button
                                   type="button"
                                   variant="tailwind"
-                                  disabled={!product.variant?.stock || product.variant?.stock === 0}
+                                  disabled={
+                                    !(product.enableVariants
+                                      ? product.variant &&
+                                        typeof product.variant.stock === "number" &&
+                                        product.variant.stock > 0
+                                      : typeof product.stock === "number" && product.stock > 0)
+                                  }
                                   onClick={() => {
+                                    if (
+                                      !(product.enableVariants
+                                        ? product.variant &&
+                                          typeof product.variant.stock === "number" &&
+                                          product.variant.stock > 0
+                                        : typeof product.stock === "number" && product.stock > 0)
+                                    )
+                                      return;
                                     updateCart([
                                       {
                                         id: product.id,
@@ -182,7 +196,11 @@ export const SlideOver = () => {
                                   }}
                                   className="ml-auto w-fit font-medium"
                                 >
-                                  {!product.variant?.stock || product.variant?.stock === 0
+                                  {!(product.enableVariants
+                                    ? product.variant &&
+                                      typeof product.variant.stock === "number" &&
+                                      product.variant.stock > 0
+                                    : typeof product.stock === "number" && product.stock > 0)
                                     ? t("unavailable")
                                     : t("add-to-cart")}
                                 </Button>
