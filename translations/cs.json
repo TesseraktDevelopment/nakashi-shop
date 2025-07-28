@@ -346,6 +346,7 @@
     "order-completed": "Objednávka dokončena",
     "thank-you-for-purchase": "Děkujeme za váš nákup.",
     "warning-message": "Pro zobrazení všech informací o objednávce se prosím přihlaste se k účtu {email}.",
+    "unauthorized-message": "Nemáte oprávnění prohlížet tuto objednávku. Kontaktujte podporu nebo se přihlaste pod správným účtem ({email}).",
     "download-invoice": "Stáhnout fakturu",
     "edit-order": "Upravit objednávku",
     "invoice-number": "Číslo faktury: {number}",

@@ -343,6 +343,7 @@
     "order-completed": "Order completed",
     "thank-you-for-purchase": "Thank you for purchase.",
     "warning-message": "To view all order information, please log in to your account {email}.",
+    "unauthorized-message": "You do not have permission to view this order. Contact support or log in with your correct account ({email}).",
     "download-invoice": "Download Invoice",
     "edit-order": "Edit order",
     "invoice-number": "Invoice number: {number}",

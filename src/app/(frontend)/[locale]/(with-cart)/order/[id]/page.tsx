@@ -86,8 +86,13 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
 
   const t = await getTranslations("Order");
 
-  // Validate order secret if not authenticated user
-  if (!user && (!providedSecret || providedSecret !== order.orderDetails.orderSecret)) {
+  const isAuthorized = user && (order.customer as Customer)?.id === user.id;
+  const isValidSecret = !user && providedSecret && providedSecret === order.orderDetails.orderSecret;
+
+  if (!isAuthorized && !isValidSecret) {
+    if (user) {
+      console.warn(`Unauthorized access attempt: User ${user.id} tried to access order ${id}`);
+    }
     return (
       <div className="container pt-16">
         <div className="mx-auto">
@@ -101,17 +106,21 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
               </p>
             </div>
             <p className="mt-12 text-base text-orange-500">
-              {t("warning-message", { email: `${(order.customer as Customer)?.email ? `${(order.customer as Customer)?.email.slice(0, 2)}${'*'.repeat((order.customer as Customer)?.email.indexOf('@') - 2)}${(order.customer as Customer)?.email.slice((order.customer as Customer)?.email.indexOf('@'))}` : ''}` })}
+              {user
+                ? t("unauthorized-message", { email: `${(order.customer as Customer)?.email.slice(0, 2)}${'*'.repeat((order.customer as Customer)?.email.indexOf('@') - 2)}${(order.customer as Customer)?.email.slice((order.customer as Customer)?.email.indexOf('@'))}` })
+                : t("warning-message", { email: `${(order.customer as Customer)?.email.slice(0, 2)}${'*'.repeat((order.customer as Customer)?.email.indexOf('@') - 2)}${(order.customer as Customer)?.email.slice((order.customer as Customer)?.email.indexOf('@'))}` })}
             </p>
             <div className="flex flex-1/2 gap-3.5 mt-6">
-              <Link href="/login">
+              {!user && (
+                <Link href="/login">
+                  <Button variant="tailwind" className="w-full h-full">
+                    Přihlásit se
+                  </Button>
+                </Link>
+              )}
+              <Link href={user ? "/account/orders" : "/login"}>
                 <Button variant="tailwind" className="w-full h-full">
-                  Přihlásit se
-                </Button>
-              </Link>
-              <Link href="/login">
-                <Button variant="tailwind" className="w-full h-full">
-                  Změnit objednávku
+                  {user ? "Zobrazit moje objednávky" : "Změnit objednávku"}
                 </Button>
               </Link>
             </div>
