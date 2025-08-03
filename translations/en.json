@@ -22,7 +22,9 @@
     "additional-details": "Additional details",
     "add-to-favs": "Add to favorites",
     "stock-left": "Stock left:",
-    "maximum-stock": "You already have maximum stock of this item in your cart."
+    "maximum-stock": "You already have maximum stock of this item in your cart.",
+    "added-to-cart": "Added to cart ({count} pcs)",
+    "product-added-description": "Product {name} has been added to cart."
   },
   "ProductList": {
     "variants-singular": "variant",

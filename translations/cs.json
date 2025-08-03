@@ -22,7 +22,9 @@
     "additional-details": "Další podrobnosti",
     "add-to-favs": "Přidat k oblíbeným",
     "stock-left": "Zbývá na skladě:",
-    "maximum-stock": "Máte již maximální množství tohoto produktu v košíku."
+    "maximum-stock": "Máte již maximální množství tohoto produktu v košíku.",
+    "added-to-cart": "Přidáno do košíku ({count} ks)",
+    "product-added-description": "Produkt {name} byl přidán do košíku."
   },
   "ProductList": {
     "variants-singular": "varianta",
@@ -45,7 +47,7 @@
     "remove": "Odebrat",
     "subtotal": "Mezisoučet",
     "subtotal-info": "Náklady na dopravu budou vypočítány u pokladny.",
-    "checkout": "K pokladně",
+    "checkout": "Pokračovat k pokladně",
     "or": "nebo",
     "continue-shopping": "Pokračovat v nakupování"
   },
