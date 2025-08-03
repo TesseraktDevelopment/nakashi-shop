@@ -51,6 +51,7 @@ export const OrderSummary = ({
 }) => {
   const totalPriceWithShipping = mergeAmounts(totalPrice, shippingCost);
   const { cart, updateCart, setCart, removeFromCart } = useCart();
+  const t = useTranslations("OrderSummary");
 
   const setCartQuantity = (quantity: number, productID: string, productVariantSlug: string | undefined) => {
     setCart([
@@ -72,8 +73,6 @@ export const OrderSummary = ({
       },
     ]);
   };
-
-  const t = useTranslations("OrderSummary");
 
   return (
     <div className="mt-10 lg:sticky lg:top-28 lg:mt-0 lg:h-fit">
@@ -185,7 +184,11 @@ export const OrderSummary = ({
           <div className="flex items-center justify-between">
             <dt className="text-sm">{t("shipping")}</dt>
             <dd className="text-sm font-medium text-gray-900">
-              <PriceClient pricing={shippingCost ?? []} />
+              {shippingCost?.[0]?.value === 0 ? (
+                <span className="text-green-600 font-semibold">{t("free-shipping")}</span>
+              ) : (
+                <PriceClient pricing={shippingCost ?? []} />
+              )}
             </dd>
           </div>
           <div className="flex items-center justify-between border-t border-gray-200 pt-6">
