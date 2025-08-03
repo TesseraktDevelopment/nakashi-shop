@@ -47,7 +47,7 @@ export const ProductForm = ({
         item.id === product.id &&
         item.choosenVariantSlug === (selectedVariant?.slug ?? undefined),
     )
-    .reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
+    .reduce((sum, item) => sum + (item.quantity || 0), 0) ?? 0;
 
   const updateQuantity = (delta: number) => {
     setQuantity((prev) => prev + delta);
