@@ -14,7 +14,7 @@ type Customer = {
   email?: string | null;
   fullName?: string | null;
   stripeCustomerId?: string | null;
-}
+};
 
 export const getStripePaymentURL = async ({
   filledProducts,
@@ -41,8 +41,8 @@ export const getStripePaymentURL = async ({
   currency: Currency;
   locale: Locale;
   apiKey: string;
-  orderSecret: string,
   orderID: string;
+  orderSecret: string,
   checkoutData: CheckoutFormData;
 }) => {
   const stripe = new Stripe(apiKey, { apiVersion: "2025-06-30.basil" });
@@ -87,6 +87,7 @@ export const getStripePaymentURL = async ({
         },
         //unit_amount: productPrice * 100,
         unit_amount: Math.round(productPrice * 100), // Ensure integer cents
+        tax_behavior: "exclusive",
       },
       quantity: product.quantity ?? 1,
     };
@@ -121,7 +122,7 @@ export const getStripePaymentURL = async ({
             line1: checkoutData.shipping.address ?? "neznámá adresa",
             city: checkoutData.shipping.city ?? "neznámé město",
             postal_code: checkoutData.shipping.postalCode ?? "neznámé PSČ",
-            country: checkoutData.shipping.country ?? "neznámá země",
+            country: checkoutData.shipping.country ?? "CZ",
             state: checkoutData.shipping.region || undefined,
           },
           invoice_settings: {
@@ -133,7 +134,7 @@ export const getStripePaymentURL = async ({
               line1: checkoutData.shipping.address ?? "neznámá adresa",
               city: checkoutData.shipping.city ?? "neznámé město",
               postal_code: checkoutData.shipping.postalCode ?? "neznámé PSČ",
-              country: checkoutData.shipping.country ?? "neznámá země",
+              country: checkoutData.shipping.country ?? "CZ",
               state: checkoutData.shipping.region || undefined,
             },
             phone: checkoutData.shipping.phone ?? null,
@@ -171,7 +172,6 @@ export const getStripePaymentURL = async ({
           shipping_rate_data: {
             type: "fixed_amount",
             fixed_amount: {
-              //amount: shippingCost * 100,
               amount: Math.round(shippingCost * 100), // Ensure integer cents
               currency: currency.toLowerCase(),
             },
@@ -189,6 +189,7 @@ export const getStripePaymentURL = async ({
               locale: locale,
               currency: currency.toLowerCase(),
             },
+            tax_behavior: "exclusive",
           },
         },
       ],
@@ -197,27 +198,37 @@ export const getStripePaymentURL = async ({
           orderID,
         },
       },
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}?cancelled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}?x=${orderSecret}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}?x=${orderSecret}&cancelled=true`,
+      automatic_tax: {
+        enabled: true,
+      },
+      customer: customerId,
+      customer_update: customerId
+        ? {
+            address: "auto",
+            name: "auto",
+          }
+        : undefined,
+      customer_email: customerId ? undefined : checkoutData.shipping.email ?? "unknown@example.com",
+      tax_id_collection: {
+        enabled: true,
+      },
     };
 
-    // Add customer information if available
-    if (customerId) {
-      sessionConfig.customer = customerId;
-      sessionConfig.customer_update = {
-        address: "auto",
-        name: "auto",
-      };
-    } else {
-      sessionConfig.customer_email = checkoutData.shipping.email ?? "unknown@example.com";
-    }
-
     const session = await stripe.checkout.sessions.create(sessionConfig);
+    console.log("Stripe session details:", {
+      id: session.id,
+      url: session.url,
+      status: session.status,
+      payment_status: session.payment_status,
+      metadata: session.metadata,
+    });
 
-    console.log("Stripe session created:", session.id, session.url);
+    // console.log("Stripe session created:", session.id, session.url);
     return session.url;
   } catch (error) {
     console.error("Stripe session creation error:", JSON.stringify(error, null, 2));
-    throw error; // Rethrow the original error for better debugging
+    throw error;
   }
 };
