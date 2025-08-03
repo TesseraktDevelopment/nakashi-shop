@@ -129,11 +129,18 @@
       "postal-code": "Postal code",
       "postal-code-placeholder": "10001",
       "delivery-method": "Delivery method",
+      "delivery-method": "Delivery Method",
+      "delivery-method-summary": "Select the fastest and most suitable delivery method for your purchase.",
+      "no-shipping": "No available shipping methods",
+      "payment-method": "Payment Method",
+      "payment-method-summary": "Choose a secure and fast payment method. We recommend Stripe for instant payment.",
+      "payment-method-disabled": "Temporarily unavailable",
+      "recommended": "Recommended",
       "payment-method": "Payment method",
       "change": "Change",
       "invoice-data": "Invoice data",
-      "no-shipping": "No shipping methods available, please contact support.",
-      "internal-server-error": "An unexpected error occurred. Please contact support."
+      "no-shipping": "No shipping methods available, please contact support at podpora@nakashi-army.cz.",
+      "internal-server-error": "An unexpected error occurred. Please contact support at podpora@nakashi-army.cz."
     },
     "change-address-dialog": {
       "change-address": "Change your address",
@@ -222,16 +229,25 @@
     "inpost-pickup": "InPost lockers",
     "inpost-courier": "InPost courier",
     "choose-pickup": "Choose point",
-    "close": "Close"
+    "close": "Close",
+    "free-shipping": "Free Shipping"
   },
   "OrderSummary": {
+    "order-summary": "Order Summary",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "total": "Total",
     "confirm": "Confirm order",
     "remove": "Remove",
     "items-in-cart": "Items in your cart",
-    "order-summary": "Order summary"
+    "free-shipping": "Free Shipping!",
+    "agree-terms": "I agree with ",
+    "terms-link": "Terms and Conditions",
+    "terms": "Terms and Conditions",
+    "and-privacy": " and privacy policy.",
+    "subscribe-newsletter": "I want to receive a newsletter with news and offers (I can unsubscribe anytime). ",
+    "privacy-link": "Privacy Policy",
+    "confirm": "Confirm Order"
   },
   "Account": {
     "navigation": {

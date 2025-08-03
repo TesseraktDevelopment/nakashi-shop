@@ -129,7 +129,13 @@
       "phone-placeholder": "+420 123 456 789",
       "postal-code": "PSČ",
       "postal-code-placeholder": "110 00",
-      "delivery-method": "Způsob doručení",
+      "delivery-method": "Způsob dopravy",
+      "delivery-method-summary": "Vyberte nejrychlejší a nejvhodnější způsob dopravy pro váš nákup.",
+      "no-shipping": "Žádné dostupné dopravní metody",
+      "payment-method": "Způsob platby",
+      "payment-method-summary": "Vyberte bezpečný a rychlý způsob platby. Doporučujeme Stripe pro okamžitou úhradu.",
+      "payment-method-disabled": "Dočasně nedostupné",
+      "recommended": "Doporučeno",
       "payment-method": "Způsob platby",
       "change": "Změnit",
       "invoice-data": "Fakturační údaje",
@@ -226,16 +232,25 @@
     "inpost-pickup": "Boxy InPost",
     "inpost-courier": "Kurýr InPost",
     "choose-pickup": "Vyberte box",
-    "close": "Zavřít"
+    "close": "Zavřít",
+    "free-shipping": "Doprava zdarma"
   },
   "OrderSummary": {
+    "order-summary": "Shrnutí objednávky",
     "subtotal": "Mezisoučet",
     "shipping": "Doprava",
     "total": "Celkem",
     "confirm": "Potvrdit objednávku",
     "remove": "Odebrat",
     "items-in-cart": "Položky ve vašem košíku",
-    "order-summary": "Shrnutí objednávky"
+    "free-shipping": "Doprava zdarma!",
+    "agree-terms": "Souhlasím s ",
+    "terms-link": "Obchodními podmínkami",
+    "terms": "Obchodní podmínky",
+    "and-privacy": " a zásadami ochrany osobních údajů.",
+    "subscribe-newsletter": "Chci přijímat newsletter s novinkami a nabídkami (mohu kdykoliv odhlásit). ",
+    "privacy-link": "Zásady ochrany osobních údajů",
+    "confirm": "Potvrdit objednávku"
   },
   "Account": {
     "navigation": {
