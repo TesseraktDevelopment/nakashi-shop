@@ -1,4 +1,4 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPayload } from "payload";
 
 import { WithInlinePrice } from "@/globals/(ecommerce)/Layout/ProductList/variants/listings/WithInlinePrice";
@@ -9,7 +9,16 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-const SearchPage = async ({ searchParams }: { searchParams: Promise<{ search: string }> }) => {
+const SearchPage = async ({
+  params,
+  searchParams,
+}: {
+  params: { locale: string };
+  searchParams: Promise<{ search: string }>;
+}) => {
+  // Set the locale for static rendering
+  setRequestLocale(params.locale);
+
   const { search } = await searchParams;
   const payload = await getPayload({ config });
   // TODO: pagination for more products
@@ -49,4 +58,5 @@ const SearchPage = async ({ searchParams }: { searchParams: Promise<{ search: st
     </main>
   );
 };
+
 export default SearchPage;
