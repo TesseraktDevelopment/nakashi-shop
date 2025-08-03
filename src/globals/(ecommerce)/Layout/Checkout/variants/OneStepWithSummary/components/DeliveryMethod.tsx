@@ -160,7 +160,11 @@ export const DeliveryMethod = ({
           <span className="block items-center text-sm text-gray-500">{turnaround}</span>
         </div>
         <span className="ml-auto text-right text-sm font-medium text-gray-900">
-          <PriceClient pricing={pricing ?? []} />
+          {pricing?.[0]?.value === 0 ? (
+            <span className="ml-2 rounded-full bg-green-600 px-2 py-0.5 text-xs text-gray-200">{t("free-shipping")}</span>
+          ) : (
+            <PriceClient pricing={pricing ?? []} />
+          )}
         </span>
       </span>
       {Additional}
