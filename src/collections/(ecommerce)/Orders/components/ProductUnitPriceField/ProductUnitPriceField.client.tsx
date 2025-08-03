@@ -54,7 +54,7 @@ export const ProductUnitPriceFieldClient = ({
       />
 
       <p className="mt-2 cursor-pointer" onClick={handleUnlock}>
-        {!checkboxValue ? "Włącz auto-cenę" : "Wyłącz auto-cenę"}
+        {!checkboxValue ? "Povolit automatické stanovení cen" : "Zakázat automatické stanovení ceny"}
       </p>
     </div>
   );
