@@ -28,6 +28,7 @@ export const getStripePaymentURL = async ({
   locale,
   apiKey,
   orderID,
+  orderSecret,
   checkoutData,
 }: {
   filledProducts: FilledProduct[];
@@ -40,6 +41,7 @@ export const getStripePaymentURL = async ({
   currency: Currency;
   locale: Locale;
   apiKey: string;
+  orderSecret: string,
   orderID: string;
   checkoutData: CheckoutFormData;
 }) => {
