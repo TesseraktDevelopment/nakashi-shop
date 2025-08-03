@@ -2,8 +2,9 @@
 
 import { Button, Radio, RadioGroup } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { isAxiosError } from "axios"; // Import isAxiosError
+import axios, { isAxiosError } from "axios";
 import debounce from "lodash.debounce";
+import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -18,7 +19,7 @@ import { type Country } from "@/globals/(ecommerce)/Couriers/utils/countryList";
 import { type ProductWithFilledVariants } from "@/globals/(ecommerce)/Layout/Cart/variants/SlideOver";
 import { type Locale } from "@/i18n/config";
 import { useRouter } from "@/i18n/routing";
-import { type ZasilkovnaBox, type Customer, type Media } from "@/payload-types";
+import { type Customer, type Media } from "@/payload-types";
 import { type CheckoutFormData, useCheckoutFormSchema } from "@/schemas/checkoutForm.schema";
 import { useCart } from "@/stores/CartStore";
 import { type Cart } from "@/stores/CartStore/types";
@@ -30,7 +31,6 @@ import { ChangeAddressDialog } from "./ChangeAddressDialog";
 import { DeliveryMethod } from "./DeliveryMethod";
 import { OrderSummary } from "./OrderSummary";
 
-// Interface for ARES response data
 type AresResponse = {
   obchodniJmeno?: string;
   sidlo?: {
@@ -42,42 +42,41 @@ type AresResponse = {
     nazevKraje?: string;
   };
   ico?: string;
-}
+};
 
 export type FilledCourier = {
   slug: string;
   title: string;
   turnaround: string;
   icon?: Media;
-  pricing:
-    | {
-        value: number;
-        currency: Currency;
-        id?: string | null;
-      }[]
-    | undefined;
-}
+  pricing: { value: number; currency: Currency; id?: string | null }[] | undefined;
+};
 
-export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowidgetToken?: string, zasilkovnaSettings?: ZasilkovnaBox }) => {
+export type PaymentMethod = {
+  id: string;
+  title: string;
+  description: string;
+  icon?: string;
+  disabled?: boolean;
+  recommended?: boolean;
+};
+
+export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowidgetToken?: string; }) => {
   const { CheckoutFormSchemaResolver } = useCheckoutFormSchema();
   const t = useTranslations("CheckoutForm.form");
   const c = useTranslations("CheckoutForm.countries");
   const e = useTranslations("CheckoutForm.errors");
 
-  const shippingAddresses = user?.shippings && user?.shippings?.length > 0 ? user?.shippings : null;
-
-  const defaultShippingAddress = shippingAddresses
-    ? (shippingAddresses.find((address) => address.default) ?? shippingAddresses[0])
-    : null;
+  const shippingAddresses = user?.shippings?.length ? user.shippings : null;
+  const defaultShippingAddress = useMemo(
+    () => shippingAddresses?.find((address) => address.default) ?? shippingAddresses?.[0] ?? null,
+    [shippingAddresses],
+  );
 
   const formatPostalCode = (value: string): string => {
     const digits = value.replace(/[^0-9]/g, "");
-    if (digits.length > 5) {
-      return digits.slice(0, 5);
-    }
-    if (digits.length >= 4) {
-      return `${digits.slice(0, 3)} ${digits.slice(3)}`;
-    }
+    if (digits.length > 5) return digits.slice(0, 5);
+    if (digits.length >= 4) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
     return digits;
   };
 
@@ -110,12 +109,15 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
         pickupPointAddress: "",
       },
       deliveryMethod: "",
+      paymentMethod: "stripe",
     },
   });
+
   const [shippingDialogOpen, setShippingDialogOpen] = useState(false);
   const [addShippingDialogOpen, setAddShippingDialogOpen] = useState(false);
   const [isLoadingAresOrsr, setIsLoadingAresOrsr] = useState(false);
   const [aresOrsrError, setAresOrsrError] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
 
   const wantsInvoice = useWatch({ control: form.control, name: "individualInvoice" });
   const isCompany = useWatch({ control: form.control, name: "buyerType" }) === "company";
@@ -123,18 +125,19 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
   const shipping = useWatch({ control: form.control, name: "shipping" });
   const invoiceCountry = useWatch({ control: form.control, name: "invoice.country" });
 
-  const [checkoutProducts, setCheckoutProducts] = useState<ProductWithFilledVariants[]>();
-  const [totalPrice, setTotalPrice] = useState<
-    {
-      currency: Currency;
-      value: number;
-    }[]
-  >();
+  const [checkoutProducts, setCheckoutProducts] = useState<ProductWithFilledVariants[] | null>(null);
+  const [totalPrice, setTotalPrice] = useState<{ currency: Currency; value: number }[] | null>(null);
   const [deliveryMethods, setDeliveryMethods] = useState<FilledCourier[]>([]);
+  const paymentMethods = useMemo<PaymentMethod[]>( () => [
+    { id: "stripe", title: "Stripe", description: "Bezpečná a rychlá platební brána", icon: "https://cdn.nakashi.cz/nakashi/stripe.svg", recommended: true },
+    { id: "bank_transfer", title: "Bankovní převod", description: "Platba předem na účet", icon: "", disabled: true },
+    { id: "cash_on_delivery", title: "Dobírka", description: "Platba při doručení", icon: "", disabled: true },
+  ],[] );
 
   const { cart, setCart } = useCart();
   const locale = useLocale() as Locale;
   const currency = useCurrency();
+  const router = useRouter();
 
   const fetchCartProducts = useCallback(
     async (cartToCalculate: Cart | null, countryToCalculate: string) => {
@@ -143,10 +146,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
           status: number;
           productsWithTotalAndCouriers: {
             filledProducts: ProductWithFilledVariants[];
-            total: {
-              currency: Currency;
-              value: number;
-            }[];
+            total: { currency: Currency; value: number }[];
             totalQuantity: number;
             couriers: FilledCourier[];
           };
@@ -156,16 +156,21 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
         setDeliveryMethods(couriers);
         setTotalPrice(total);
       } catch (error) {
-        console.error(error);
+        console.error("Failed to fetch cart products:", error);
+        setErrorMessage(t("fetch-cart-error"));
       }
     },
-    [locale, setCheckoutProducts, setDeliveryMethods, setTotalPrice],
+    [locale, t],
   );
 
-  const debouncedFetchCartProducts = useMemo(() => debounce(fetchCartProducts, 300), [fetchCartProducts]);
+  const debouncedFetchCartProducts = useMemo(
+    () => debounce(fetchCartProducts, 300, { leading: false, trailing: true }),
+    [fetchCartProducts],
+  );
 
   useEffect(() => {
     void debouncedFetchCartProducts(cart, shipping.country);
+    return () => debouncedFetchCartProducts.cancel();
   }, [cart, debouncedFetchCartProducts, shipping.country]);
 
   const fetchAresOrsrData = useCallback(
@@ -188,15 +193,12 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
           const response = await axios.get<AresResponse>(`/next/services/ares?ico=${ico}`, {
             headers: { accept: "application/json" },
           });
-          console.log("ARES response:", response.data);
           const data = response.data;
           if (data?.obchodniJmeno) {
             form.setValue("invoice.name", data.obchodniJmeno ?? "");
             form.setValue(
               "invoice.address",
-              `${data.sidlo?.nazevUlice ?? ""} ${data.sidlo?.cisloDomovni ?? ""}`.trim() ??
-                data.sidlo?.textovaAdresa ??
-                "",
+              `${data.sidlo?.nazevUlice ?? ""} ${data.sidlo?.cisloDomovni ?? ""}`.trim() ?? data.sidlo?.textovaAdresa ?? "",
             );
             form.setValue("invoice.city", data.sidlo?.nazevObce ?? "");
             form.setValue("invoice.country", "cz");
@@ -210,15 +212,17 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
         } else if (country === "sk") {
           setAresOrsrError(e("invoice.tinNotFound"));
         }
-      } catch (error: unknown) {
-        if (isAxiosError(error) && error.response?.status === 429) {
-          setAresOrsrError(e("invoice.tooManyRequests"));
-        } else if (isAxiosError(error) && error.response?.status === 400) {
-          setAresOrsrError(e("invoice.tinInvalid"));
-        } else {
-          setAresOrsrError(e("invoice.tinNotFound"));
+      } catch (error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 429) {
+            setAresOrsrError(e("invoice.tooManyRequests"));
+          } else if (error.response?.status === 400) {
+            setAresOrsrError(e("invoice.tinInvalid"));
+          } else {
+            setAresOrsrError(e("invoice.tinNotFound"));
+          }
         }
-        console.error(error);
+        console.error("ARES/ORSR error:", error);
       } finally {
         setIsLoadingAresOrsr(false);
       }
@@ -226,26 +230,27 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
     [form, e],
   );
 
-  const router = useRouter();
-
   const onSubmit = async (values: CheckoutFormData) => {
     try {
-      const { data } = await axios.post<{ status: number; url?: string }>("/next/payment", {
-        cart,
-        selectedCountry: shipping.country,
-        checkoutData: values,
-        locale,
-        currency: currency.currency,
-      });
+      const { data } = await axios.post<{ status: number; url?: string; message?: string; error?: string }>(
+        "/next/payment",
+        {
+          cart,
+          selectedCountry: shipping.country,
+          checkoutData: values,
+          locale,
+          currency: currency.currency,
+        },
+      );
       if (data.status === 200 && data.url) {
         setCart(null);
         router.push(data.url);
       } else {
-        form.setError("root", { message: t("internal-server-error") });
+        setErrorMessage(data.error ?? t("internal-server-error"));
       }
     } catch (error) {
-      form.setError("root", { message: t("internal-server-error") });
-      console.error(error);
+      setErrorMessage(t("internal-server-error"));
+      console.error("Payment error:", error);
     }
   };
 
@@ -256,9 +261,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
           open={addShippingDialogOpen}
           setOpen={setAddShippingDialogOpen}
           user={user}
-          setShipping={(shipping) => {
-            form.setValue("shipping", shipping);
-          }}
+          setShipping={(shipping) => form.setValue("shipping", shipping)}
         />
       )}
       {user && shippingAddresses && (
@@ -268,16 +271,16 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
           setAddShippingDialogOpen={setAddShippingDialogOpen}
           shippingAddresses={shippingAddresses}
           selectedID={shipping.id}
-          setShipping={(shipping) => {
-            form.setValue("shipping", shipping);
-          }}
+          setShipping={(shipping) => form.setValue("shipping", shipping)}
         />
       )}
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+          {form.formState.errors.root && (
+            <div className="col-span-2 mb-4 p-4 bg-red-100 text-red-800 rounded-md">
+              {form.formState.errors.root.message}
+            </div>
+          )}
           <div>
             <div className="mt-10 border-t border-gray-200 pt-10">
               <h2 className="text-lg font-medium text-gray-900">{t("buy-as")}</h2>
@@ -287,12 +290,12 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Tabs defaultValue="individual" onValueChange={field.onChange} className="my-4">
+                      <Tabs defaultValue="individual" value={field.value} onValueChange={field.onChange} className="my-4">
                         <TabsList className="w-full">
-                          <TabsTrigger className="w-1/2" value="individual">
+                          <TabsTrigger className="w-1/2 cursor-pointer" value="individual">
                             {t("individual")}
                           </TabsTrigger>
-                          <TabsTrigger className="w-1/2" value="company">
+                          <TabsTrigger className="w-1/2 cursor-pointer" value="company">
                             {t("company")}
                           </TabsTrigger>
                         </TabsList>
@@ -303,29 +306,26 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                 )}
               />
               <h2 className="text-lg font-medium text-gray-900">{t("shipping-address")}</h2>
-
               <div className="mt-4 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                 {shippingAddresses ? (
-                  <div className="group relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-xs ring-2 ring-main-500 focus:outline-hidden">
-                    <span className="flex flex-1">
-                      <span className="flex w-full flex-col">
-                        <span className="block text-sm font-medium text-gray-900">{shipping.name}</span>
-                        <span className="mt-1 flex items-center text-sm text-gray-500">
-                          {shipping.address}
-                        </span>
-                        <span className="mt-1 text-sm font-medium text-gray-500">
-                          {shipping.postalCode}, {shipping.city}, {c(shipping.country as Country)}
-                        </span>
-                        <span className="mt-1 flex items-center text-sm text-gray-500">{shipping.phone}</span>
-                        <span className="mt-1 flex items-center text-sm text-gray-500">{shipping.email}</span>
-                        <Button
-                          type="button"
-                          onClick={() => setShippingDialogOpen(true)}
-                          className="ml-auto mt-1 text-sm text-main-600"
-                        >
-                          {t("change")}
-                        </Button>
+                  <div
+                    className="group relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-xs ring-2 ring-main-500"
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setShippingDialogOpen(true)}
+                    onKeyDown={(e) => e.key === "Enter" && setShippingDialogOpen(true)}
+                  >
+                    <span className="flex flex-1 flex-col">
+                      <span className="text-sm font-medium text-gray-900">{shipping.name}</span>
+                      <span className="mt-1 text-sm text-gray-500">{shipping.address}</span>
+                      <span className="mt-1 text-sm font-medium text-gray-500">
+                        {shipping.postalCode}, {shipping.city}, {c(shipping.country as Country)}
                       </span>
+                      <span className="mt-1 text-sm text-gray-500">{shipping.phone}</span>
+                      <span className="mt-1 text-sm text-gray-500">{shipping.email}</span>
+                      <Button type="button" className="ml-auto mt-1 text-sm text-main-600">
+                        {t("change")}
+                      </Button>
                     </span>
                   </div>
                 ) : (
@@ -336,7 +336,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                     control={form.control}
                     name="individualInvoice"
                     render={({ field }) => (
-                      <FormItem className="rounded-md p-4 flex flex-row items-start space-x-3 space-y-0 sm:col-span-2">
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-4 sm:col-span-2">
                         <FormControl>
                           <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                         </FormControl>
@@ -373,13 +373,31 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                             render={({ field }) => (
                               <>
                                 <FormControl>
-                                  <Input placeholder={t("tin-placeholder")} autoComplete="off" maxLength={11} {...field} pattern="[0-9]*" type="text" inputMode="numeric" onChange={(e) => { const value = e.target.value.replace(/[^0-9]/g, ""); if (value.length <= 10) { field.onChange(value); }}} />
+                                  <Input
+                                    placeholder={t("tin-placeholder")}
+                                    autoComplete="off"
+                                    required
+                                    maxLength={11}
+                                    pattern="[0-9]*"
+                                    {...field}
+                                    type="text"
+                                    inputMode="numeric"
+                                    onChange={(e) => {
+                                      const value = e.target.value.replace(/[^0-9]/g, "");
+                                      if (value.length <= 10) field.onChange(value);
+                                    }}
+                                  />
                                 </FormControl>
                                 <Button
                                   type="button"
-                                  disabled={isLoadingAresOrsr || !field.value || field.value.trim().length < 8 || field.value.trim().length > 10}
+                                  disabled={
+                                    isLoadingAresOrsr ||
+                                    !field.value ||
+                                    field.value.trim().length < 8 ||
+                                    field.value.trim().length > 10
+                                  }
                                   onClick={() => fetchAresOrsrData((field.value ?? "").trim(), invoiceCountry as "cz" | "sk")}
-                                  className="h-10 w-[45%] text-sm font-medium text-main-600 cursor-pointer disabled:bg-slate-300 disabled:text-slate-800 disabled:cursor-not-allowed rounded-md border border-transparent bg-white outline outline-gray-300"
+                                  className="h-10 w-[45%] rounded-md border border-transparent bg-white text-sm font-medium text-main-600 outline outline-gray-300 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-800"
                                 >
                                   {isLoadingAresOrsr ? t("loading") : t("fill-from-ares-orsr")}
                                 </Button>
@@ -423,19 +441,17 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel htmlFor="country-select">{t("country")}</FormLabel>
-                          <FormControl>
-                            <Select onValueChange={field.onChange} autoComplete="country" defaultValue={field.value ?? "cz"}>
-                              <FormControl>
-                                <SelectTrigger className="w-full appearance-none rounded-md bg-white py-2 pr-3 text-base text-gray-900 outline-solid outline-1 -outline-offset-1 outline-gray-300 focus:outline-solid focus:outline-2 focus:-outline-offset-2 focus:outline-main-600 focus:ring-0 focus:ring-offset-0 sm:text-sm/6">
-                                  <SelectValue placeholder={t("country-placeholder")} />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="cz">{c("cz")}</SelectItem>
-                                <SelectItem value="sk">{c("sk")}</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
+                          <Select onValueChange={field.onChange} autoComplete="country" defaultValue={field.value ?? "cz"}>
+                            <FormControl>
+                              <SelectTrigger className="w-full appearance-none rounded-md bg-white py-2 pr-3 text-base text-gray-900 outline-solid outline-1 -outline-offset-1 outline-gray-300 focus:outline-solid focus:outline-2 focus:-outline-offset-2 focus:outline-main-600 focus:ring-0 focus:ring-offset-0 sm:text-sm/6">
+                                <SelectValue placeholder={t("country-placeholder")} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="cz">{c("cz")}</SelectItem>
+                              <SelectItem value="sk">{c("sk")}</SelectItem>
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -460,7 +476,13 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                         <FormItem>
                           <FormLabel htmlFor="postal-code">{t("postal-code")}</FormLabel>
                           <FormControl>
-                            <Input placeholder={t("postal-code-placeholder")} id="postal-code" autoComplete="postal-code" {...field} onChange={(e) => { const formattedValue = formatPostalCode(e.target.value); field.onChange(formattedValue); }} />
+                            <Input
+                              placeholder={t("postal-code-placeholder")}
+                              id="postal-code"
+                              autoComplete="postal-code"
+                              {...field}
+                              onChange={(e) => field.onChange(formatPostalCode(e.target.value))}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -475,44 +497,125 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
             <div className="mt-10 border-t border-gray-200 pt-10">
               <fieldset>
                 <legend className="text-lg font-medium text-gray-900">{t("delivery-method")}</legend>
+                <p className="mt-2 text-sm text-gray-600">{t("delivery-method-summary")}</p>
                 <FormField
                   control={form.control}
                   name="deliveryMethod"
                   render={({ field }) => (
-                    <RadioGroup
-                      value={field.value}
-                      onChange={field.onChange}
-                      className="mt-4 grid grid-cols-1 gap-y-3 sm:gap-x-4"
-                    >
-                      {deliveryMethods.map((deliveryMethod) => (
-                        <Radio
-                          key={deliveryMethod.slug}
-                          value={deliveryMethod.slug}
-                          aria-label={deliveryMethod.title}
-                          aria-description={`${deliveryMethod.turnaround} for price`}
-                          className="group relative flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white p-4 shadow-xs focus:outline-hidden data-checked:border-transparent data-focus:ring-2 data-focus:ring-main-500"
-                        >
-                          <span
-                            aria-hidden="true"
-                            className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-focus:border group-data-checked:border-main-500"
-                          />
-                          <DeliveryMethod geowidgetToken={geowidgetToken} deliveryMethod={deliveryMethod} />
-                        </Radio>
-                      ))}
-                      {deliveryMethods.length === 0 && <p>{t("no-shipping")}</p>}
+                    <FormItem>
+                      <RadioGroup
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="mt-4 grid grid-cols-1 gap-y-3 sm:gap-x-4"
+                        aria-labelledby="delivery-method-label"
+                      >
+                        {deliveryMethods.map((deliveryMethod) => (
+                          <Radio
+                            key={deliveryMethod.slug}
+                            value={deliveryMethod.slug}
+                            aria-label={deliveryMethod.title}
+                            aria-description={`${deliveryMethod.turnaround} for price ${deliveryMethod.pricing?.[0]?.value} ${deliveryMethod.pricing?.[0]?.currency}`}
+                            className="group relative flex cursor-pointer items-center rounded-lg border border-gray-300 bg-white p-4 shadow-xs data-checked:border-transparent data-focus:ring-2 data-focus:ring-main-500"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-checked:border-main-500"
+                            />
+                            <DeliveryMethod geowidgetToken={geowidgetToken} deliveryMethod={deliveryMethod} />
+                          </Radio>
+                        ))}
+                        {deliveryMethods.length === 0 && (
+                          <p className="mb-4 text-sm text-red-600">{t("no-shipping")}</p>
+                        )}
+                      </RadioGroup>
                       <FormMessage />
-                    </RadioGroup>
+                    </FormItem>
+                  )}
+                />
+              </fieldset>
+            </div>
+
+            <div className="mt-10 border-t border-gray-200 pt-10">
+              <fieldset>
+                <legend className="text-lg font-medium text-gray-900">{t("payment-method")}</legend>
+                <p className="mt-2 text-sm text-gray-600">{t("payment-method-summary")}</p>
+                <FormField
+                  control={form.control}
+                  name="paymentMethod"
+                  render={({ field }) => (
+                    <FormItem>
+                      <RadioGroup
+                        value={field.value}
+                        onChange={(value) => {
+                          const recommendedMethod = paymentMethods.find((m) => m.recommended && !m.disabled)?.id;
+                          field.onChange(recommendedMethod ?? value);
+                        }}
+                        className="mt-4 grid grid-cols-1 gap-y-3 sm:gap-x-4"
+                        aria-labelledby="payment-method-label"
+                      >
+                        {paymentMethods.map((method) => (
+                          <Radio
+                            key={method.id}
+                            value={method.id}
+                            aria-label={method.title}
+                            disabled={method.disabled}
+                            className={`group relative flex items-center rounded-lg border border-gray-300 bg-white p-4 shadow-xs data-checked:border-transparent data-focus:ring-2 data-focus:ring-main-500${method.disabled ? (" cursor-not-allowed select-none opacity-50") : " cursor-pointer" }`}
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent group-data-checked:border-main-500"
+                            />
+                            <div className="flex flex-1 flex-col">
+                              <span className="flex flex-1 items-center gap-3">
+                                {method.icon && (
+                                  <Image
+                                    src={method.icon}
+                                    width={300}
+                                    height={125}
+                                    alt={`${method.title} logo`}
+                                    className={`max-h-12 w-fit max-w-[62px] ${method.icon === "" ? "hidden" : ""}`}
+                                  />
+                                )}
+                                <div className="flex-1">
+                                  <span className="block text-sm font-medium text-gray-900">
+                                    {method.title}
+                                    {method.recommended && (
+                                      <span className="ml-2 rounded-full bg-green-600 px-2 py-0.5 text-xs text-gray-200">
+                                        {t("recommended")}
+                                      </span>
+                                    )}
+                                  </span>
+                                  <span className="block text-sm text-gray-500">{method.description}</span>
+                                  {method.disabled && (
+                                    <span className="block text-xs text-red-600">{t("payment-method-disabled")}</span>
+                                  )}
+                                </div>
+                              </span>
+                            </div>
+                          </Radio>
+                        ))}
+                      </RadioGroup>
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
               </fieldset>
             </div>
           </div>
           <OrderSummary
-            products={checkoutProducts}
-            totalPrice={totalPrice}
+            products={checkoutProducts ?? []}
+            totalPrice={totalPrice ?? []}
             shippingCost={deliveryMethods.find((method) => method.slug === selectedDelivery)?.pricing}
-            errorMessage={form.formState.errors.root?.message}
+            errorMessage={errorMessage}
           />
+          {errorMessage && (
+            <div className="col-span-2 mt-4 p-4 bg-red-100 text-red-800 rounded-md">
+              {errorMessage}
+              <Button type="button" onClick={() => setErrorMessage(undefined)} className="ml-4 text-main-600">
+                {t("try-again")}
+              </Button>
+            </div>
+          )}
         </form>
       </Form>
     </>
