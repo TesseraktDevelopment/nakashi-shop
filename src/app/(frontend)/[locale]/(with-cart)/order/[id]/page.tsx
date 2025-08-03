@@ -124,7 +124,7 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
                 </Button>
               </Link>
             </div>
-            <p className="mt-2 text-base text-gray-500">{t("created-at")} {new Date(order.createdAt).toLocaleString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+            <p className="mt-2 text-sm text-gray-400">{t("created-at")} {new Date(order.createdAt).toLocaleString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
             <div className="mt-10 border-t border-gray-200">
               <h2 className="sr-only">{t("your-order")}</h2>
               <h3 className="sr-only">{t("items")}</h3>
@@ -230,6 +230,7 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
           )}
         </div>
 
+        <p className="mt-2 text-sm text-gray-400">{t("created-at")} {new Date(order.createdAt).toLocaleString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
         <div className="mt-10 border-t border-gray-200">
           <h2 className="sr-only">{t("your-order")}</h2>
 
