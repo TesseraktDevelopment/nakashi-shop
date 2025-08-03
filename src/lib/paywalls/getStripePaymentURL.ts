@@ -45,7 +45,7 @@ export const getStripePaymentURL = async ({
   orderSecret: string,
   checkoutData: CheckoutFormData;
 }) => {
-  const stripe = new Stripe(apiKey, { apiVersion: "2025-06-30.basil" });
+  const stripe = new Stripe(apiKey, { apiVersion: "2025-07-30.basil" });
 
   console.log(checkoutData)
   const stripeMappedProducts = filledProducts.map((product) => {
