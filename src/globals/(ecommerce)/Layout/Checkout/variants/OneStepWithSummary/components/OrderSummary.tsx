@@ -116,7 +116,7 @@ export const OrderSummary = ({
                   <div className="ml-4 flow-root shrink-0">
                     <button
                       type="button"
-                      className="-m-2.5 flex items-center justify-center bg-white p-2.5 text-gray-400 hover:text-gray-500"
+                      className="-m-2.5 flex cursor-pointer items-center justify-center bg-white p-2.5 text-gray-400 hover:text-gray-500"
                       onClick={() => {
                         removeFromCart(product.id, product.variant?.slug ?? undefined);
                       }}
@@ -205,7 +205,7 @@ export const OrderSummary = ({
           </button>
         </div>
       </div>
-      {errorMessage && <p className="text-sm text-red-500">{errorMessage}</p>}
+      {errorMessage && <p className="text-sm mb-4 text-red-500">{errorMessage}</p>}
     </div>
   );
 };
