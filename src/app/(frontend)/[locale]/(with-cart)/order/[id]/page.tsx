@@ -107,8 +107,32 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
             </div>
             <p className="mt-12 text-base text-orange-500">
               {user
-                ? t("unauthorized-message", { email: `${(order.customer as Customer)?.email.slice(0, 2)}${'*'.repeat((order.customer as Customer)?.email.indexOf('@') - 2)}${(order.customer as Customer)?.email.slice((order.customer as Customer)?.email.indexOf('@'))}` })
-                : t("warning-message", { email: `${(order.customer as Customer)?.email.slice(0, 2)}${'*'.repeat((order.customer as Customer)?.email.indexOf('@') - 2)}${(order.customer as Customer)?.email.slice((order.customer as Customer)?.email.indexOf('@'))}` })}
+                ? t("unauthorized-message", {
+                    email: order.customer
+                      ? `${(order.customer as Customer).email.slice(0, 2)}${'*'.repeat(
+                          (order.customer as Customer).email.indexOf('@') - 2,
+                        )}${(order.customer as Customer).email.slice(
+                          (order.customer as Customer).email.indexOf('@'),
+                        )}`
+                      : order.shippingAddress.email
+                        ? `${order.shippingAddress.email.slice(0, 2)}${'*'.repeat(
+                            order.shippingAddress.email.indexOf('@') - 2,
+                          )}${order.shippingAddress.email.slice(order.shippingAddress.email.indexOf('@'))}`
+                        : `no${'*'.repeat(5)}@email.com`,
+                  })
+                : t("warning-message", {
+                    email: order.customer
+                      ? `${(order.customer as Customer).email.slice(0, 2)}${'*'.repeat(
+                          (order.customer as Customer).email.indexOf('@') - 2,
+                        )}${(order.customer as Customer).email.slice(
+                          (order.customer as Customer).email.indexOf('@'),
+                        )}`
+                      : order.shippingAddress.email
+                        ? `${order.shippingAddress.email.slice(0, 2)}${'*'.repeat(
+                            order.shippingAddress.email.indexOf('@') - 2,
+                          )}${order.shippingAddress.email.slice(order.shippingAddress.email.indexOf('@'))}`
+                        : `no${'*'.repeat(5)}@email.com`,
+                  })}
             </p>
             <div className="flex flex-1/2 gap-3.5 mt-6">
               {!user && (
