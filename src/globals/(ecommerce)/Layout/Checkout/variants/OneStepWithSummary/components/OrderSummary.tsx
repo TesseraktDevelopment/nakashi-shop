@@ -85,9 +85,9 @@ export const OrderSummary = ({
             <li key={`${product.id}-${product.variant?.slug}`} className="flex px-4 py-6 sm:px-6">
               <div className="shrink-0">
                 {product.variant?.image?.url ? (
-                  <Media resource={product.variant.image} className="w-20 rounded-md" />
+                  <Media resource={product.variant.image} imgClassName="aspect-square object-cover" className="w-20 rounded-md" />
                 ) : product.image?.url ? (
-                  <Media resource={product.image} className="w-20 rounded-md" />
+                  <Media resource={product.image} imgClassName="aspect-square object-cover" className="w-20 rounded-md" />
                 ) : null}
               </div>
 
