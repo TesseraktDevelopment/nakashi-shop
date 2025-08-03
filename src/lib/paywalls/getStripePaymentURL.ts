@@ -42,13 +42,13 @@ export const getStripePaymentURL = async ({
   locale: Locale;
   apiKey: string;
   orderID: string;
-  orderSecret: string,
+  orderSecret: string;
   checkoutData: CheckoutFormData;
 }) => {
   const stripe = new Stripe(apiKey, { apiVersion: "2025-07-30.basil" });
 
-  console.log(checkoutData)
-  const stripeMappedProducts = filledProducts.map((product) => {
+  console.log(checkoutData);
+  const stripeMappedProducts: Stripe.Checkout.SessionCreateParams.LineItem[] = filledProducts.map((product) => {
     const productPrice = product.enableVariantPrices
       ? product.variant?.pricing?.find((price) => price.currency === currency)?.value
       : product.pricing?.find((price) => price.currency === currency)?.value;
@@ -74,8 +74,8 @@ export const getStripePaymentURL = async ({
       product.enableVariants && product.variant?.image?.filename
         ? `https://cdn.nakashi.cz/nakashi/${product.variant.image.filename}`
         : product.image?.filename
-          ? `https://cdn.nakashi.cz/nakashi/${product.image.filename}`
-          : "";
+        ? `https://cdn.nakashi.cz/nakashi/${product.image.filename}`
+        : "";
 
     return {
       price_data: {
@@ -85,9 +85,8 @@ export const getStripePaymentURL = async ({
           description: description,
           images: productImage ? [productImage] : [],
         },
-        //unit_amount: productPrice * 100,
         unit_amount: Math.round(productPrice * 100), // Ensure integer cents
-        tax_behavior: "exclusive",
+        tax_behavior: "exclusive" as const, // Explicitly set as "exclusive"
       },
       quantity: product.quantity ?? 1,
     };
@@ -189,7 +188,7 @@ export const getStripePaymentURL = async ({
               locale: locale,
               currency: currency.toLowerCase(),
             },
-            tax_behavior: "exclusive",
+            tax_behavior: "exclusive" as const, // Explicitly set as "exclusive"
           },
         },
       ],
@@ -225,7 +224,7 @@ export const getStripePaymentURL = async ({
       metadata: session.metadata,
     });
 
-    // console.log("Stripe session created:", session.id, session.url);
+    console.log("Stripe session created:", session.id, session.url);
     return session.url;
   } catch (error) {
     console.error("Stripe session creation error:", JSON.stringify(error, null, 2));
