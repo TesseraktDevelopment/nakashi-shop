@@ -15,6 +15,39 @@ import { getCustomer } from "@/utilities/getCustomer";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import config from "@payload-config";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function generateOrderSecret(payload: any, length = 24): Promise<string> {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  let isUnique = false;
+
+  while (!isUnique) {
+    result = "";
+    const randomBytesArray = randomBytes(length);
+    for (let i = 0; i < length; i++) {
+      const index = randomBytesArray[i] % characters.length;
+      result += characters[index];
+    }
+
+    // Check if the secret already exists in the orders collection
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    const existingOrder = await payload.find({
+      collection: "orders",
+      where: {
+        "orderDetails.orderSecret": { equals: result },
+      },
+      limit: 1,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    if (existingOrder.docs.length === 0) {
+      isUnique = true;
+    }
+  }
+
+  return result;
+}
+
 const createCouriers = async (locale: Locale) => {
   const couriersModule = await import("@/globals/(ecommerce)/Couriers/utils/couriersConfig");
   return couriersModule.createCouriers(locale);
@@ -127,6 +160,9 @@ export async function POST(req: Request) {
     const user = await getCustomer();
     console.log("Customer fetched:", user);
 
+    const generatedSecret = await generateOrderSecret(payload);
+    console.log("Generated order secret:", generatedSecret);
+
     console.log("Creating order with data...");
     const order = await payload.create({
       collection: "orders",
@@ -189,6 +225,7 @@ export async function POST(req: Request) {
           total: total.find((price) => price.currency === currency)?.value ?? 0,
           totalWithShipping: (total.find((price) => price.currency === currency)?.value ?? 0) + shippingCost,
           currency: currency,
+          orderSecret: generatedSecret,
         },
         shippingAddress: {
           name: checkoutData.shipping.name,
@@ -294,6 +331,7 @@ export async function POST(req: Request) {
             checkoutData,
             apiKey: paywalls?.stripe?.secret ?? "",
             orderID: order.id,
+            orderSecret: generatedSecret,
           });
           console.log("Stripe redirect URL:", redirectURL);
           break;
