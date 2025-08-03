@@ -3,6 +3,7 @@
 import { Radio, RadioGroup } from "@headlessui/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as FilledHeartIcon } from "@heroicons/react/24/solid";
+import * as Toast from "@radix-ui/react-toast";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -31,15 +32,22 @@ export const ProductForm = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const { updateCart, cart } = useCart();
-
   const defaultVariant = filledVariants?.find((variant) => variant.stock > 0) ?? filledVariants?.[0];
-
   const { toggleWishList, wishlist } = useWishList();
-
   const t = useTranslations("ProductDetails");
   const [overStock, setOverStock] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // Výpočet celkového množství produktu v košíku pouze pro vybranou variantu
+  const totalQuantityInCart = cart
+    ?.filter(
+      (item) =>
+        item.id === product.id &&
+        item.choosenVariantSlug === (selectedVariant?.slug ?? undefined),
+    )
+    .reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
 
   const updateQuantity = (delta: number) => {
     setQuantity((prev) => prev + delta);
@@ -47,13 +55,11 @@ export const ProductForm = ({
 
   const setSelectedVariant = (slug?: string) => {
     const params = new URLSearchParams(searchParams?.toString());
-
     if (slug) {
       params.set("variant", slug);
     } else {
       params.delete("variant");
     }
-
     router.replace(`?${params.toString()}`, { scroll: false });
   };
 
@@ -112,156 +118,188 @@ export const ProductForm = ({
   );
 
   return (
-    <form className="mt-6">
-      {/* Colors */}
-      {product.variants && product.enableVariants && product.variantsType !== "sizes" && (
-        <div>
-          <h3 className="text-sm font-medium text-gray-600">{t("color")}</h3>
-
-          <fieldset aria-label={t("choose-color")} className="mt-2">
-            <RadioGroup
-              value={selectedVariant?.color?.id ?? defaultVariant?.color?.id}
-              onChange={handleChangeColor}
-              className="flex items-center gap-x-3"
-            >
-              {product.colors?.map((color) => {
-                const isAvailable = isColorAvailable(color.id ?? "");
-                return (
-                  <Radio
-                    key={color.id}
-                    value={color.id}
-                    aria-label={color.label}
-                    disabled={!isAvailable}
-                    className={cn(
-                      "ring-gray-500",
-                      "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-hidden data-checked:ring-2 data-focus:data-checked:ring-3 data-focus:data-checked:ring-offset-1",
-                      !isAvailable && "cursor-not-allowed opacity-25",
-                    )}
-                  >
-                    <span
-                      aria-hidden="true"
-                      style={{ background: color.colorValue ?? "" }}
-                      className={cn("size-8 rounded-full border border-black/10")}
-                    />
-                  </Radio>
-                );
-              })}
-            </RadioGroup>
-          </fieldset>
-        </div>
-      )}
-
-      {/* Size picker */}
-      {product.variants && product.enableVariants && product.variantsType !== "colors" && (
-        <div className="mt-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-medium text-gray-900">{t("size")}</h2>
+    <>
+      <form className="mt-6">
+        {/* Colors */}
+        {product.variants && product.enableVariants && product.variantsType !== "sizes" && (
+          <div>
+            <h3 className="text-sm font-medium text-gray-600">{t("color")}</h3>
+            <fieldset aria-label={t("choose-color")} className="mt-2">
+              <RadioGroup
+                value={selectedVariant?.color?.id ?? defaultVariant?.color?.id}
+                onChange={handleChangeColor}
+                className="flex items-center gap-x-3"
+              >
+                {product.colors?.map((color) => {
+                  const isAvailable = isColorAvailable(color.id ?? "");
+                  return (
+                    <Radio
+                      key={color.id}
+                      value={color.id}
+                      aria-label={color.label}
+                      disabled={!isAvailable}
+                      className={cn(
+                        "ring-gray-500",
+                        "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-hidden data-checked:ring-2 data-focus:data-checked:ring-3 data-focus:data-checked:ring-offset-1",
+                        !isAvailable && "cursor-not-allowed opacity-25",
+                      )}
+                    >
+                      <span
+                        aria-hidden="true"
+                        style={{ background: color.colorValue ?? "" }}
+                        className={cn("size-8 rounded-full border border-black/10")}
+                      />
+                    </Radio>
+                  );
+                })}
+              </RadioGroup>
+            </fieldset>
           </div>
+        )}
 
-          <fieldset aria-label={t("choose-size")} className="mt-2">
-            <RadioGroup
-              value={selectedVariant?.size?.id ?? defaultVariant?.size?.id}
-              onChange={handleChangeSize}
-              className="grid grid-cols-3 gap-3 sm:grid-cols-6"
-            >
-              {product.sizes?.map((size) => {
-                const matchingVariant = findAvailableSizeVariant(size.id ?? "");
+        {/* Size picker */}
+        {product.variants && product.enableVariants && product.variantsType !== "colors" && (
+          <div className="mt-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-medium text-gray-900">{t("size")}</h2>
+            </div>
+            <fieldset aria-label={t("choose-size")} className="mt-2">
+              <RadioGroup
+                value={selectedVariant?.size?.id ?? defaultVariant?.size?.id}
+                onChange={handleChangeSize}
+                className="grid grid-cols-3 gap-3 sm:grid-cols-6"
+              >
+                {product.sizes?.map((size) => {
+                  const matchingVariant = findAvailableSizeVariant(size.id ?? "");
+                  return (
+                    <Radio
+                      key={
+                        matchingVariant
+                          ? `${matchingVariant?.size?.id}-${matchingVariant?.color?.id}`
+                          : `${size.id}-unavailable`
+                      }
+                      value={matchingVariant ? matchingVariant?.size?.id : `${size.id}-unavailable`}
+                      disabled={!matchingVariant}
+                      className={cn(
+                        matchingVariant
+                          ? "cursor-pointer focus:outline-hidden"
+                          : "cursor-not-allowed opacity-25",
+                        "data-checked:bg-main-600 data-focus:ring-main-500 data-checked:hover:bg-main-700 flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-900 uppercase hover:bg-gray-50 data-checked:border-transparent data-checked:text-white data-focus:ring-2 data-focus:ring-offset-2 sm:flex-1",
+                      )}
+                    >
+                      {size.label}
+                    </Radio>
+                  );
+                })}
+              </RadioGroup>
+            </fieldset>
+          </div>
+        )}
 
-                return (
-                  <Radio
-                    key={
-                      matchingVariant
-                        ? `${matchingVariant?.size?.id}-${matchingVariant?.color?.id}`
-                        : `${size.id}-unavailable`
-                    }
-                    value={matchingVariant ? matchingVariant?.size?.id : `${size.id}-unavailable`}
-                    disabled={!matchingVariant}
-                    className={cn(
-                      matchingVariant
-                        ? "cursor-pointer focus:outline-hidden"
-                        : "cursor-not-allowed opacity-25",
-                      "data-checked:bg-main-600 data-focus:ring-main-500 data-checked:hover:bg-main-700 flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-900 uppercase hover:bg-gray-50 data-checked:border-transparent data-checked:text-white data-focus:ring-2 data-focus:ring-offset-2 sm:flex-1",
-                    )}
-                  >
-                    {size.label}
-                  </Radio>
-                );
-              })}
-            </RadioGroup>
-          </fieldset>
-        </div>
-      )}
-
-      <div className="mt-10 grid grid-cols-2 gap-y-4 sm:flex">
-        <button
-          type="submit"
-          disabled={!isProductAvailable}
-          className={cn(
-            "bg-main-600 hover:bg-main-700 focus:ring-main-500 col-span-2 row-start-2 flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden sm:w-full",
-            !isProductAvailable && "cursor-not-allowed opacity-25",
-          )}
-          onClick={(e) => {
-            e.preventDefault();
-            if (!isProductAvailable) return;
-            if (quantity <= maxQuantity - (cartItem?.quantity ?? 0)) {
-              setOverStock(false);
-              updateCart([
-                {
-                  id: product.id,
-                  quantity: quantity,
-                  choosenVariantSlug: selectedVariant?.slug ?? undefined,
-                },
-              ]);
-            } else {
-              setOverStock(true);
-            }
-          }}
-        >
-          {isProductAvailable ? t("add-to-cart") : t("product-unavailable")}
-        </button>
-
-        <div className="flex">
-          <QuantityInput
-            maxQuantity={maxQuantity}
-            minQuantity={minQuantity}
-            setQuantity={setQuantity}
-            updateQuantity={updateQuantity}
-            quantity={quantity}
-          />
-
+        <div className="mt-10 grid grid-cols-2 gap-y-4 sm:flex">
           <button
+            type="submit"
+            disabled={!isProductAvailable}
+            className={cn(
+              "bg-main-600 hover:bg-main-700 focus:ring-main-500 col-span-2 row-start-2 flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent px-8 py-3 text-base font-medium text-white focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden sm:w-full",
+              !isProductAvailable && "cursor-not-allowed opacity-25",
+            )}
             onClick={(e) => {
               e.preventDefault();
-              toggleWishList([
-                {
-                  id: product.id,
-                  choosenVariantSlug: selectedVariant?.slug ?? undefined,
-                },
-              ]);
+              if (!isProductAvailable) return;
+              if (quantity <= maxQuantity - (cartItem?.quantity ?? 0)) {
+                setOverStock(false);
+                updateCart([
+                  {
+                    id: product.id,
+                    quantity: quantity,
+                    choosenVariantSlug: selectedVariant?.slug ?? undefined,
+                  },
+                ]);
+                setOpenToast(true);
+              } else {
+                setOverStock(true);
+              }
             }}
-            type="button"
-            className="ml-4 flex w-fit items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
           >
-            {wishlist?.find(
-              (item) =>
-                item.id === product.id &&
-                (product.enableVariants ? item.choosenVariantSlug === selectedVariant?.slug : true),
-            ) ? (
-              <FilledHeartIcon aria-hidden="true" className="size-6 shrink-0" />
-            ) : (
-              <HeartIcon aria-hidden="true" className="size-6 shrink-0" />
-            )}
-            <span className="sr-only">{t("add-to-favs")}</span>
+            {isProductAvailable ? t("add-to-cart") : t("product-unavailable")}
           </button>
+
+          <div className="flex">
+            <QuantityInput
+              maxQuantity={maxQuantity}
+              minQuantity={minQuantity}
+              setQuantity={setQuantity}
+              updateQuantity={updateQuantity}
+              quantity={quantity}
+            />
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                toggleWishList([
+                  {
+                    id: product.id,
+                    choosenVariantSlug: selectedVariant?.slug ?? undefined,
+                  },
+                ]);
+              }}
+              type="button"
+              className="ml-4 flex w-fit items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+            >
+              {wishlist?.find(
+                (item) =>
+                  item.id === product.id &&
+                  (product.enableVariants ? item.choosenVariantSlug === selectedVariant?.slug : true),
+              ) ? (
+                <FilledHeartIcon aria-hidden="true" className="size-6 shrink-0" />
+              ) : (
+                <HeartIcon aria-hidden="true" className="size-6 shrink-0" />
+              )}
+              <span className="sr-only">{t("add-to-favs")}</span>
+            </button>
+          </div>
         </div>
-      </div>
-      {overStock && (
-        <p className="mt-4 text-red-500">
-          {maxQuantity - (cartItem?.quantity ?? 0) > 0
-            ? `${t("stock-left")} ${maxQuantity - (cartItem?.quantity ?? 0)}`
-            : t("maximum-stock")}
-        </p>
-      )}
-    </form>
+        {overStock && (
+          <p className="mt-4 text-red-500">
+            {maxQuantity - (cartItem?.quantity ?? 0) > 0
+              ? `${t("stock-left")} ${maxQuantity - (cartItem?.quantity ?? 0)}`
+              : t("maximum-stock")}
+          </p>
+        )}
+      </form>
+
+      {/* Toast notifikace */}
+      <Toast.Provider swipeDirection="right" duration={3000}>
+        <Toast.Root
+          open={openToast}
+          onOpenChange={setOpenToast}
+          className="fixed bottom-4 right-4 z-50 rounded-md bg-main-600 p-4 text-white shadow-lg"
+        >
+          <Toast.Title className="text-sm font-medium">
+            {t("added-to-cart", { count: totalQuantityInCart + quantity })}
+          </Toast.Title>
+          <Toast.Description className="mt-1 text-xs">
+            {t("product-added-description", { name: product.title })}
+          </Toast.Description>
+          <Toast.Close className="absolute right-2 top-2 rounded-full p-1 hover:bg-main-700 focus:outline-none">
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </Toast.Close>
+        </Toast.Root>
+        <Toast.Viewport className="fixed bottom-0 right-0 p-4" />
+      </Toast.Provider>
+    </>
   );
 };
