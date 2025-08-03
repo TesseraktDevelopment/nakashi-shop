@@ -72,7 +72,7 @@ export const WithInlinePriceSlider = ({
                 <div className="mt-4 flex justify-between">
                   <div className="w-3/5">
                     <h3 className="text-sm text-gray-700">
-                      <Link href={`/product/${product.slug}`}>
+                      <Link aria-label="Produkt" href={`/product/${product.slug}`}>
                         <span aria-hidden="true" className="absolute inset-0" />
                         {product.title}
                       </Link>
