@@ -86,7 +86,7 @@ export const getStripePaymentURL = async ({
           images: productImage ? [productImage] : [],
         },
         unit_amount: Math.round(productPrice * 100), // Ensure integer cents
-        tax_behavior: "exclusive" as const, // Explicitly set as "exclusive"
+        tax_behavior: "inclusive" as const, // Explicitly set as "inclusive"
       },
       quantity: product.quantity ?? 1,
     };
@@ -188,7 +188,7 @@ export const getStripePaymentURL = async ({
               locale: locale,
               currency: currency.toLowerCase(),
             },
-            tax_behavior: "exclusive" as const, // Explicitly set as "exclusive"
+            tax_behavior: "inclusive" as const, // Explicitly set as "inclusive"
           },
         },
       ],
