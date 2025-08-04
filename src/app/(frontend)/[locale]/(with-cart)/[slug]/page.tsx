@@ -1,3 +1,4 @@
+import { draftMode } from "next/headers";
 import { setRequestLocale } from "next-intl/server";
 import { getPayload } from "payload";
 import React, { cache } from "react";
@@ -27,11 +28,13 @@ export async function generateStaticParams() {
     },
   });
 
-  const params = routing.locales.flatMap((locale) =>
-    pages.docs
+  const params = routing.locales.flatMap((locale) => {
+    return pages.docs
       ?.filter((doc) => doc.slug !== "home")
-      .map(({ slug }) => ({ locale, slug }))
-  );
+      .map(({ slug }) => {
+        return { locale, slug };
+      });
+  });
 
   return params;
 }
@@ -41,27 +44,24 @@ type Args = {
     locale: Locale;
     slug?: string;
   }>;
-  searchParams?: Promise<{ draft?: string }>;
 };
 
-export default async function Page({ params: paramsPromise, searchParams }: Args) {
+export default async function Page({ params: paramsPromise }: Args) {
+  // const { isEnabled: draft } = await draftMode();
   const { slug = "home", locale } = await paramsPromise;
-  const searchParamsResolved = await searchParams;
-  const isDraft = searchParamsResolved?.draft === "true";
 
   const url = `/${locale}/${slug}`;
-
-  setRequestLocale(locale);
 
   const page = await queryPageBySlug({
     slug,
     locale,
-    draft: isDraft,
   });
 
   if (!page) {
     return <PayloadRedirects url={url} locale={locale} />;
   }
+
+  setRequestLocale(locale);
 
   const { hero, layout } = page;
 
@@ -70,6 +70,9 @@ export default async function Page({ params: paramsPromise, searchParams }: Args
       <PageClient />
       {/* Allows redirects for valid pages too */}
       {!page && slug !== "home" && <PayloadRedirects locale={locale} url={url} />}
+
+      {/* {draft && <LivePreviewListener />} */}
+
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
@@ -78,17 +81,17 @@ export default async function Page({ params: paramsPromise, searchParams }: Args
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = "home", locale } = await paramsPromise;
-  setRequestLocale(locale); // Required for generateMetadata to be static
   const page = await queryPageBySlug({
     slug,
     locale,
-    draft: false, // Metadata should not use draft content
   });
 
   return generateMeta({ doc: page! });
 }
 
-const queryPageBySlug = cache(async ({ slug, locale, draft = false }: { slug: string; locale: Locale; draft?: boolean }) => {
+const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: Locale }) => {
+  const { isEnabled: draft } = await draftMode();
+
   const payload = await getPayload({ config });
 
   try {
