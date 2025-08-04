@@ -382,8 +382,8 @@
     "shipping": "Doprava",
     "subtotal": "Mezisoučet",
     "total": "Celkem",
-    "payment-cancelled": "Vaše platba byla zrušena nebo se nezdařila. Zkuste to prosím znovu.",
-    "retry-payment": "Opakovat platbu"
+    "payment-cancelled": "Vaše platba za objednávku #{orderID} byla zrušena nebo selhala. Zkuste to prosím znovu.",
+    "retry-payment": "Zkusit platbu znovu"
   },
   "OrderEmail": {
     "thank-you": "Děkujeme!",
@@ -494,5 +494,8 @@
     "search": "Hledat...",
     "categories": "Kategorie",
     "products": "Produkty"
+  },
+  "Errors": {
+    "server-error": "Vnitřní chyba serveru. Kontaktujte technickou podporu."
   }
 }

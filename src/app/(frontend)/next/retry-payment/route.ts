@@ -80,6 +80,9 @@ export async function GET(req: Request) {
       const filledProducts = (await getOrderProducts(order.products, locale)) as unknown as FilledProduct[];
       const courier = order.orderDetails.shipping && (await getCachedGlobal(order.orderDetails.shipping, locale, 1)());
 
+      // Log products for debugging
+      console.log("Order products:", JSON.stringify(filledProducts, null, 2));
+
       // Ensure all required fields are strings, provide defaults if null/undefined
       const checkoutData: CheckoutFormData = {
         buyerType: order.invoice?.isCompany ? "company" : "individual",
@@ -116,7 +119,7 @@ export async function GET(req: Request) {
       try {
         const stripeResult = await getStripePaymentURL({
           filledProducts,
-          shippingCost: order.orderDetails.shippingCost,
+          shippingCost: order.orderDetails.shippingCost ?? 0,
           pickupPointID: order.shippingAddress.pickupPointID ?? "",
           pickupPointName: order.shippingAddress.pickupPointName ?? "",
           pickupPointBranchCode: order.shippingAddress.pickupPointBranchCode ?? "",
@@ -139,6 +142,7 @@ export async function GET(req: Request) {
           id: order.id,
           data: {
             orderDetails: {
+              ...order.orderDetails,
               stripeSessionId: newSessionID,
             },
           },
@@ -146,13 +150,23 @@ export async function GET(req: Request) {
         console.log(`Order ${order.id} updated with new Stripe session ID: ${newSessionID}`);
       } catch (error) {
         console.error("Error creating new Stripe session:", error);
-        return Response.json({ status: 500, message: "Failed to create payment session" });
+        return Response.json({
+          status: 500,
+          message: error instanceof Error ? error.message : "Failed to create payment session",
+        });
       }
+    }
+
+    if (!stripePaymentURL) {
+      return Response.json({ status: 500, message: "Failed to generate payment URL" });
     }
 
     return Response.json({ status: 200, url: stripePaymentURL });
   } catch (error) {
     console.error("Error in retry-payment route:", error);
-    return Response.json({ status: 500, message: "Internal server error" });
+    return Response.json({
+      status: 500,
+      message: error instanceof Error ? error.message : "Internal server error",
+    });
   }
 }

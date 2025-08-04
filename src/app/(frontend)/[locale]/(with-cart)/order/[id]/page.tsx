@@ -236,7 +236,7 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
   let stripePaymentURL: string | null = null;
   if (order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") {
     try {
-      const response = await axios.get<RetryPaymentResponse>(
+      const response = await axios.get(
         `/next/retry-payment?orderId=${order.id}&locale=${locale}${providedSecret ? `&x=${providedSecret}` : ""}`,
       );
       const result = RetryPaymentResponseSchema.safeParse(response.data);
@@ -263,12 +263,13 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
           <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
             {t(`${order.orderDetails.status}.title`)}
           </p>
-          <p className="mt-2 text-base text-gray-500">
-            {t(`${order.orderDetails.status}.subtitle`, { orderID: order.id })}
-          </p>
-          {(order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") && cancelled && (
+          {(order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") && cancelled ? (
             <p className="mt-2 text-base text-red-500">
-              {t("payment-cancelled", { defaultValue: "Your payment was cancelled or failed. Please try again." })}
+              {t("payment-cancelled", { orderID: order.id })}
+            </p>
+          ) : (
+            <p className="mt-2 text-base text-gray-500">
+              {t(`${order.orderDetails.status}.subtitle`, { orderID: order.id })}
             </p>
           )}
           {order.orderDetails.trackingNumber && (

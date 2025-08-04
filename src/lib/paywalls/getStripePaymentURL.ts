@@ -47,15 +47,25 @@ export const getStripePaymentURL = async ({
 }) => {
   const stripe = new Stripe(apiKey, { apiVersion: "2025-07-30.basil" });
 
-  console.log(checkoutData);
-  const stripeMappedProducts: Stripe.Checkout.SessionCreateParams.LineItem[] = filledProducts.map((product) => {
-    const productPrice = product.enableVariantPrices
-      ? product.variant?.pricing?.find((price) => price.currency === currency)?.value
-      : product.pricing?.find((price) => price.currency === currency)?.value;
+  // Log product details for debugging
+  console.log("Filled products:", JSON.stringify(filledProducts, null, 2));
 
+  const stripeMappedProducts: Stripe.Checkout.SessionCreateParams.LineItem[] = filledProducts.map((product) => {
+    let productPrice: number | undefined;
+
+    // Try to get price from variant or product pricing
+    if (product.enableVariantPrices && product.variant?.pricing) {
+      productPrice = product.variant.pricing.find((price) => price.currency === currency)?.value;
+    } else if (product.pricing) {
+      productPrice = product.pricing.find((price) => price.currency === currency)?.value;
+    }
+
+    // Fallback: Use a default price or throw an error
     if (!productPrice) {
-      console.error(`Product price not found for product: ${product.id}, title: ${product.title}`);
-      throw new Error(`Product price not found for product: ${product.id}`);
+      console.error(
+        `Product price not found for product: ${product.id}, title: ${product.title}, currency: ${currency}, variant: ${product.enableVariantPrices ? product.variant?.variantSlug ?? "none" : "none"}`,
+      );
+      throw new Error(`Product price not found for product: ${product.id}, title: ${product.title}`);
     }
 
     if (!product.title) {
@@ -86,7 +96,7 @@ export const getStripePaymentURL = async ({
           images: productImage ? [productImage] : [],
         },
         unit_amount: Math.round(productPrice * 100), // Ensure integer cents
-        tax_behavior: "inclusive" as const, // Explicitly set as "inclusive"
+        tax_behavior: "inclusive" as const,
       },
       quantity: product.quantity ?? 1,
     };
@@ -171,7 +181,7 @@ export const getStripePaymentURL = async ({
           shipping_rate_data: {
             type: "fixed_amount",
             fixed_amount: {
-              amount: Math.round(shippingCost * 100), // Ensure integer cents
+              amount: Math.round(shippingCost * 100),
               currency: currency.toLowerCase(),
             },
             display_name: `${shippingLabel}${pickupPointID ? ` (${pickupPointID})` : ""}` || "Doprava (Shipping)",
@@ -188,7 +198,7 @@ export const getStripePaymentURL = async ({
               locale: locale,
               currency: currency.toLowerCase(),
             },
-            tax_behavior: "inclusive" as const, // Explicitly set as "inclusive"
+            tax_behavior: "inclusive" as const,
           },
         },
       ],
