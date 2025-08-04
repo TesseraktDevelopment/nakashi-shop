@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { getPayload } from "payload";
+import { z } from "zod";
 
 import { Media as MediaComponent } from "@/components/Media";
 import RichText from "@/components/RichText";
@@ -13,13 +14,21 @@ import { getCustomer } from "@/utilities/getCustomer";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { getOrderProducts } from "@/utilities/getOrderProducts";
 
-const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: Locale; id: string }>; searchParams: Promise<{ x?: string }> }) => {
+const RetryPaymentResponseSchema = z.object({
+  status: z.number(),
+  url: z.string().optional(),
+  message: z.string().optional(),
+});
+
+type RetryPaymentResponse = z.infer<typeof RetryPaymentResponseSchema>;
+
+const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: Locale; id: string }>; searchParams: Promise<{ x?: string; cancelled?: string }> }) => {
   const { locale, id: rawId } = await params;
   const payload = await getPayload({ config });
   const user = await getCustomer();
-  const { x: providedSecret } = await searchParams;
+  const { x: providedSecret, cancelled } = await searchParams;
 
-  const id = rawId.replace(/[^0-9a-fA-F]/g, '');
+  const id = rawId.replace(/[^0-9a-fA-F]/g, "");
   if (!id || id.length !== rawId.length) {
     return (
       <div className="bg-white">
@@ -38,7 +47,6 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
     );
   }
 
-  // Fetch the order with error handling
   let order: Order;
   try {
     order = await payload.findByID({
@@ -90,48 +98,44 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
   const isValidSecret = !user && providedSecret && providedSecret === order.orderDetails.orderSecret;
 
   if (!isAuthorized && !isValidSecret) {
-    if (user) {
-      console.warn(`Unauthorized access attempt: User ${user.id} tried to access order ${id}`);
-    }
     return (
       <div className="container pt-16">
         <div className="mx-auto">
           <div className="max-w-2xl">
             <h1 className="text-base font-medium text-indigo-600">{t("thank-you")}</h1>
-              <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
-                {t(`${order.orderDetails.status}.title`)}
-              </p>
-              <p className="mt-2 text-base text-gray-500">
-                {t(`${order.orderDetails.status}.subtitle`, { orderID: order.id })}
-              </p>
-            </div>
+            <p className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+              {t(`${order.orderDetails.status}.title`)}
+            </p>
+            <p className="mt-2 text-base text-gray-500">
+              {t(`${order.orderDetails.status}.subtitle`, { orderID: order.id })}
+            </p>
             <p className="mt-12 text-base text-orange-500">
               {user
                 ? t("unauthorized-message", {
                     email: order.customer
-                      ? `${(order.customer as Customer).email.slice(0, 2)}${'*'.repeat(
-                          (order.customer as Customer).email.indexOf('@') - 2,
+                      ? `${(order.customer as Customer).email.slice(0, 2)}${"*".repeat(
+                          (order.customer as Customer).email.indexOf("@") - 2,
                         )}${(order.customer as Customer).email.slice(
-                          (order.customer as Customer).email.indexOf('@'),
+                          (order.customer as Customer).email.indexOf("@"),
                         )}`
                       : order.shippingAddress.email
-                        ? `${order.shippingAddress.email.slice(0, 2)}${'*'.repeat(
-                            order.shippingAddress.email.indexOf('@') - 2,
-                          )}${order.shippingAddress.email.slice(order.shippingAddress.email.indexOf('@'))}`
-                        : `no${'*'.repeat(5)}@email.com`,
+                        ? `${order.shippingAddress.email.slice(0, 2)}${"*".repeat(
+                            order.shippingAddress.email.indexOf("@") - 2,
+                          )}${order.shippingAddress.email.slice(order.shippingAddress.email.indexOf("@"))}`
+                        : `no${"*".repeat(5)}@email.com`,
                   })
                 : t("warning-message", {
                     email: order.customer
-                      ? `${(order.customer as Customer).email.slice(0, 2)}${'*'.repeat(
-                          (order.customer as Customer).email.indexOf('@') - 2,
+                      ? `${(order.customer as Customer).email.slice(0, 2)}${"*".repeat(
+                          (order.customer as Customer).email.indexOf("@") - 2,
                         )}${(order.customer as Customer).email.slice(
-                          (order.customer as Customer).email.indexOf('@'),
+                          (order.customer as Customer).email.indexOf("@"),
                         )}`
                       : order.shippingAddress.email
-                        ? `${order.shippingAddress.email.slice(0, 2)}${'*'.repeat(
-                            order.shippingAddress.email.indexOf('@') - 2,
-                          )}${order.shippingAddress.email.slice(order.shippingAddress.email.indexOf('@'))}`
-                        : `no${'*'.repeat(5)}@email.com`,
+                        ? `${order.shippingAddress.email.slice(0, 2)}${"*".repeat(
+                            order.shippingAddress.email.indexOf("@") - 2,
+                          )}${order.shippingAddress.email.slice(order.shippingAddress.email.indexOf("@"))}`
+                        : `no${"*".repeat(5)}@email.com`,
                   })}
             </p>
             <div className="flex flex-1/2 gap-3.5 mt-6">
@@ -148,7 +152,9 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
                 </Button>
               </Link>
             </div>
-            <p className="mt-2 text-sm text-gray-400">{t("created-at")} {new Date(order.createdAt).toLocaleString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+            <p className="mt-2 text-sm text-gray-400">
+              {t("created-at")} {new Date(order.createdAt).toLocaleString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+            </p>
             <div className="mt-10 border-t border-gray-200">
               <h2 className="sr-only">{t("your-order")}</h2>
               <h3 className="sr-only">{t("items")}</h3>
@@ -177,10 +183,8 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
                   </div>
                 ))}
               </div>
-
               <div className="sm:ml-40 sm:pl-6">
                 <h3 className="sr-only">{t("your-information")}</h3>
-
                 <h4 className="sr-only">{t("shipping")}</h4>
                 <dl className="grid grid-cols-2 gap-x-6 border-gray-200 py-10 text-sm">
                   <div>
@@ -201,18 +205,14 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
                     </dd>
                   </div>
                 </dl>
-
                 <h3 className="sr-only">{t("summary")}</h3>
-
                 <dl className="space-y-6 border-t border-gray-200 pt-10 text-sm mb-15">
                   <div className="flex justify-between">
                     <dt className="font-medium text-gray-500">{t("subtotal")}</dt>
                     <dd className="text-gray-500">•••</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="flex font-medium text-gray-500">
-                      {t("shipping")}
-                    </dt>
+                    <dt className="flex font-medium text-gray-500">{t("shipping")}</dt>
                     <dd className="text-gray-500">•••</dd>
                   </div>
                   <div className="flex justify-between">
@@ -224,15 +224,37 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
             </div>
           </div>
         </div>
+      </div>
     );
   }
 
   const c = await getTranslations("CheckoutForm.countries");
-
   const filledProducts = await getOrderProducts(order.products, locale);
+  const courier = order.orderDetails.shipping && (await getCachedGlobal(order.orderDetails.shipping, locale, 1)());
 
-  const courier =
-    order.orderDetails.shipping && (await getCachedGlobal(order.orderDetails.shipping, locale, 1)());
+  let stripePaymentURL: string | null = null;
+  if (order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") {
+    try {
+      const response = await fetch(
+        `/next/retry-payment?orderId=${order.id}&locale=${locale}${providedSecret ? `&x=${providedSecret}` : ""}`,
+      );
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const rawData = await response.json();
+      const result = RetryPaymentResponseSchema.safeParse(rawData);
+      if (result.success) {
+        const data: RetryPaymentResponse = result.data;
+        if (data.status === 200 && data.url) {
+          stripePaymentURL = data.url;
+        } else {
+          console.error("Failed to fetch retry payment URL:", data.message ?? "Unknown error");
+        }
+      } else {
+        console.error("Invalid retry payment response:", result.error.flatten());
+      }
+    } catch (error) {
+      console.error("Error fetching retry payment URL:", error);
+    }
+  }
 
   return (
     <div className="container pt-16">
@@ -245,19 +267,32 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
           <p className="mt-2 text-base text-gray-500">
             {t(`${order.orderDetails.status}.subtitle`, { orderID: order.id })}
           </p>
-
+          {(order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") && cancelled && (
+            <p className="mt-2 text-base text-red-500">
+              {t("payment-cancelled", { defaultValue: "Your payment was cancelled or failed. Please try again." })}
+            </p>
+          )}
           {order.orderDetails.trackingNumber && (
             <dl className="mt-12 text-sm font-medium">
               <dt className="text-gray-900">{t("tracking-number")}</dt>
               <dd className="mt-2 text-indigo-600">{order.orderDetails.trackingNumber}</dd>
             </dl>
           )}
+          {(order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") && stripePaymentURL && (
+            <div className="mt-6">
+              <a href={stripePaymentURL}>
+                <Button variant="tailwind" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white">
+                  {t("retry-payment", { defaultValue: "Retry Payment" })}
+                </Button>
+              </a>
+            </div>
+          )}
         </div>
-
-        <p className="mt-2 text-sm text-gray-400">{t("created-at")} {new Date(order.createdAt).toLocaleString('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+        <p className="mt-2 text-sm text-gray-400">
+          {t("created-at")} {new Date(order.createdAt).toLocaleString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+        </p>
         <div className="mt-10 border-t border-gray-200">
           <h2 className="sr-only">{t("your-order")}</h2>
-
           <h3 className="sr-only">{t("items")}</h3>
           {filledProducts?.map((product) => {
             const selectedVariant = product.variants?.find(
@@ -315,10 +350,8 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
               </div>
             );
           })}
-
           <div className="sm:ml-40 sm:pl-6">
             <h3 className="sr-only">{t("your-information")}</h3>
-
             <h4 className="sr-only">{t("shipping")}</h4>
             <dl className="grid grid-cols-2 gap-x-6 border-gray-200 py-10 text-sm">
               <div>
@@ -339,16 +372,26 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
                 <dt className="font-medium text-gray-900">{t("billing-address")}</dt>
                 <dd className="mt-2 text-gray-700">
                   <span className="block">{courier?.settings.label}</span>
-                    {order.shippingAddress.pickupPointID && (
-                      <>
-                        <span className="block mt-0.5">
-                          <Link target="_blank" className="text-main-500" href={order.orderDetails.shipping === 'zasilkovna-box' ? `https://www.zasilkovna.cz/pobocky/${order.shippingAddress.pickupPointBranchCode ?? order.shippingAddress.pickupPointID ?? ""}` : "#"}>{order.shippingAddress.pickupPointName}</Link>
-                        </span>
-                        {order.shippingAddress.pickupPointAddress && (
-                          <span>{order.shippingAddress.pickupPointAddress}</span>
-                        )}
-                      </>
-                    )}
+                  {order.shippingAddress.pickupPointID && (
+                    <>
+                      <span className="block mt-0.5">
+                        <Link
+                          target="_blank"
+                          className="text-main-500"
+                          href={
+                            order.orderDetails.shipping === "zasilkovna-box"
+                              ? `https://www.zasilkovna.cz/pobocky/${order.shippingAddress.pickupPointBranchCode ?? order.shippingAddress.pickupPointID ?? ""}`
+                              : "#"
+                          }
+                        >
+                          {order.shippingAddress.pickupPointName}
+                        </Link>
+                      </span>
+                      {order.shippingAddress.pickupPointAddress && (
+                        <span>{order.shippingAddress.pickupPointAddress}</span>
+                      )}
+                    </>
+                  )}
                 </dd>
               </div>
             </dl>
@@ -358,11 +401,13 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
                 <dd className="mt-2 text-gray-700">
                   <address className="not-italic">
                     <span className="block">
-                      Tato informace není k dispozici.
+                      {order.orderDetails.status === "paid" ? "Stripe" : "Čeká na platbu"}
                     </span>
-                    <span className="block text-gray-500">
-                      Chyba: 0x30201
-                    </span>
+                    {order.orderDetails.transactionID && (
+                      <span className="block text-gray-500">
+                        ID transakce: {order.orderDetails.transactionID}
+                      </span>
+                    )}
                   </address>
                 </dd>
               </div>
@@ -375,7 +420,6 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
               </div>
             </dl>
             <h3 className="sr-only">{t("summary")}</h3>
-
             <dl className="space-y-6 border-t border-gray-200 pt-10 text-sm mb-15">
               <div className="flex justify-between">
                 <dt className="font-medium text-gray-900">{t("subtotal")}</dt>
@@ -383,15 +427,6 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
                   {formatPrice(order.orderDetails.total, order.orderDetails.currency, locale)}
                 </dd>
               </div>
-              {/* <div className="flex justify-between">
-                <dt className="flex font-medium text-gray-900">
-                  Sleva
-                  <span className="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-600">
-                    STUDENT50
-                  </span>
-                </dt>
-                <dd className="text-gray-700">- 149.99Kč (50%)</dd>
-              </div> */}
               <div className="flex justify-between">
                 <dt className="font-medium text-gray-900">{t("shipping")}</dt>
                 <dd className="text-gray-700">
@@ -411,4 +446,5 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
     </div>
   );
 };
+
 export default OrdersPage;

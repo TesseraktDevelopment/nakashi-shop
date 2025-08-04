@@ -31,10 +31,7 @@ export async function POST(req: Request) {
       console.log(`Webhook event received: ${event.type}`);
     } catch (error) {
       console.error("Webhook signature verification failed:", error);
-      if (error instanceof Error) {
-        return new Response(`Webhook Error: ${error.message}`, { status: 400 });
-      }
-      return new Response("Webhook Error: Unknown error", { status: 400 });
+      return new Response(`Webhook Error: ${error instanceof Error ? error.message : "Unknown error"}`, { status: 400 });
     }
 
     switch (event.type) {
@@ -65,7 +62,7 @@ export async function POST(req: Request) {
             data: {
               orderDetails: {
                 status: "paid",
-                transactionID: session.payment_intent as string,
+                transactionID: paymentIntentId,
                 amountPaid: (session.amount_total ?? 0) / 100,
               },
             },
@@ -129,12 +126,12 @@ export async function POST(req: Request) {
             id: orderID,
             data: {
               orderDetails: {
-                status: "unpaid",
+                status: event.type === "payment_intent.canceled" ? "cancelled" : "unpaid",
                 transactionID: paymentIntent.id,
               },
             },
           });
-          console.log(`Order ${orderID} updated to unpaid with transactionID: ${paymentIntent.id}`);
+          console.log(`Order ${orderID} updated to ${event.type === "payment_intent.canceled" ? "cancelled" : "unpaid"} with transactionID: ${paymentIntent.id}`);
         } catch (updateError) {
           console.error(`Failed to update order ${orderID}:`, updateError);
           return Response.json({ status: 500, message: `Failed to update order ${orderID}` });
@@ -151,15 +148,15 @@ export async function POST(req: Request) {
         try {
           await payload.update({
             collection: "customers",
-            id: customerId,
+            where: { stripeCustomerId: { equals: customerId } },
             data: {
               stripeCustomerId: null,
             },
           });
-          console.log(`Customer ${customerId} updated to remove Stripe ID`);
+          console.log(`Customer with Stripe ID ${customerId} updated to remove Stripe ID`);
         } catch (updateError) {
-          console.error(`Failed to update customer ${customerId}:`, updateError);
-          return Response.json({ status: 500, message: `Failed to update customer ${customerId}` });
+          console.error(`Failed to update customer with Stripe ID ${customerId}:`, updateError);
+          return Response.json({ status: 500, message: `Failed to update customer with Stripe ID ${customerId}` });
         }
         break;
       }
@@ -172,9 +169,6 @@ export async function POST(req: Request) {
     return Response.json({ status: 200, received: true });
   } catch (error) {
     console.error("Webhook processing error:", error);
-    if (error instanceof Error) {
-      return new Response(`Webhook Error: ${error.message}`, { status: 400 });
-    }
-    return new Response("Webhook Error: Unknown error", { status: 400 });
+    return new Response(`Webhook Error: ${error instanceof Error ? error.message : "Unknown error"}`, { status: 400 });
   }
 }

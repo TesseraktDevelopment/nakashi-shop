@@ -381,7 +381,9 @@
     "your-information": "Vaše údaje",
     "shipping": "Doprava",
     "subtotal": "Mezisoučet",
-    "total": "Celkem"
+    "total": "Celkem",
+    "payment-cancelled": "Vaše platba byla zrušena nebo se nezdařila. Zkuste to prosím znovu.",
+    "retry-payment": "Opakovat platbu",
   },
   "OrderEmail": {
     "thank-you": "Děkujeme!",

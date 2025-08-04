@@ -158,6 +158,7 @@ export async function POST(req: Request) {
     console.log("Paywalls fetched:", paywalls);
 
     let redirectURL: string | null = null;
+    let stripeSessionId: string | null = null;
 
     const user = await getCustomer();
     console.log("Customer fetched:", user);
@@ -228,6 +229,7 @@ export async function POST(req: Request) {
           totalWithShipping: (total.find((price) => price.currency === currency)?.value ?? 0) + shippingCost,
           currency: currency,
           orderSecret: generatedSecret,
+          stripeSessionId: null,
         },
         shippingAddress: {
           name: checkoutData.shipping.name,
@@ -319,8 +321,8 @@ export async function POST(req: Request) {
     try {
       switch (paywalls.paywall) {
         case "stripe":
-          console.log("Processing Stripe payment...");
-          redirectURL = await getStripePaymentURL({
+          { console.log("Processing Stripe payment...");
+          const stripeResult = await getStripePaymentURL({
             filledProducts,
             shippingCost,
             pickupPointID: checkoutData.shipping.pickupPointID ?? "",
@@ -335,8 +337,22 @@ export async function POST(req: Request) {
             orderID: order.id,
             orderSecret: generatedSecret,
           });
-          console.log("Stripe redirect URL:", redirectURL);
-          break;
+          redirectURL = stripeResult.url;
+          stripeSessionId = stripeResult.sessionID;
+          console.log("Stripe redirect URL:", redirectURL, "Session ID:", stripeSessionId);
+
+          // Update order with Stripe session ID
+          await payload.update({
+            collection: "orders",
+            id: order.id,
+            data: {
+              orderDetails: {
+                stripeSessionId,
+              },
+            },
+          });
+          console.log(`Order ${order.id} updated with Stripe session ID: ${stripeSessionId}`);
+          break; }
 
         case "autopay":
           console.log("Processing Autopay payment...");

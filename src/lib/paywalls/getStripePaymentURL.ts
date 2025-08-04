@@ -225,7 +225,7 @@ export const getStripePaymentURL = async ({
     });
 
     console.log("Stripe session created:", session.id, session.url);
-    return session.url;
+    return { url: session.url, sessionID: session.id };
   } catch (error) {
     console.error("Stripe session creation error:", JSON.stringify(error, null, 2));
     throw error;

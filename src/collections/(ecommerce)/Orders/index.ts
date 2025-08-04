@@ -796,14 +796,6 @@ export const Orders: CollectionConfig = {
           type: "text",
         },
         {
-          name: "orderNote",
-          label: {
-            en: "Order Note",
-            cs: "Poznámka k objednávce",
-          },
-          type: "textarea",
-        },
-        {
           name: "orderSecret",
           type: "text",
           label: {
@@ -813,6 +805,25 @@ export const Orders: CollectionConfig = {
           admin: {
             readOnly: true,
           },
+        },
+        {
+          name: "stripeSessionId",
+          type: "text",
+          label: {
+            en: "Stripe Session",
+            cs: "Stripe Session",
+          },
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: "orderNote",
+          label: {
+            en: "Order Note",
+            cs: "Poznámka k objednávce",
+          },
+          type: "textarea",
         },
       ],
     },
