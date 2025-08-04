@@ -1477,8 +1477,9 @@ export interface Order {
     status: 'pending' | 'paid' | 'unpaid' | 'processing' | 'shipped' | 'completed' | 'cancelled' | 'returned';
     shippingDate?: string | null;
     trackingNumber?: string | null;
-    orderNote?: string | null;
     orderSecret?: string | null;
+    stripeSessionId?: string | null;
+    orderNote?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -2321,8 +2322,9 @@ export interface OrdersSelect<T extends boolean = true> {
         status?: T;
         shippingDate?: T;
         trackingNumber?: T;
-        orderNote?: T;
         orderSecret?: T;
+        stripeSessionId?: T;
+        orderNote?: T;
       };
   updatedAt?: T;
   createdAt?: T;
