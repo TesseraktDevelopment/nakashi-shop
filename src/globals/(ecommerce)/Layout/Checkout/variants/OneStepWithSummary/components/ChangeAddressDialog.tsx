@@ -58,7 +58,7 @@ export const ChangeAddressDialog = ({
               }}
               key={shipping.id}
               className={cn(
-                "group relative flex cursor-pointer rounded-lg border border-gray-300 border-transparent bg-white p-4 shadow-xs ring-2 ring-gray-200 focus:outline-hidden",
+                "group relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 shadow-xs ring-2 ring-gray-200 focus:outline-hidden",
                 shipping.id === selectedID && "ring-main-500",
               )}
             >
