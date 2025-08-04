@@ -1,3 +1,4 @@
+import axios from "axios";
 import { getTranslations } from "next-intl/server";
 import { getPayload } from "payload";
 import { z } from "zod";
@@ -66,7 +67,7 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
               Order Not Found
             </p>
             <p className="mt-2 text-base text-gray-500">
-              The order with ID {id} could not be found. Please check the order number or contact support.
+              The order with ID #{id} could not be found. Please check the order number or contact support.
             </p>
           </div>
         </div>
@@ -84,7 +85,7 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
               Order Not Found
             </p>
             <p className="mt-2 text-base text-gray-500">
-              The order with ID {id} could not be found. Please check the order number or contact support.
+              The order with ID #{id} could not be found. Please check the order number or contact support.
             </p>
           </div>
         </div>
@@ -235,12 +236,10 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
   let stripePaymentURL: string | null = null;
   if (order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") {
     try {
-      const response = await fetch(
+      const response = await axios.get<RetryPaymentResponse>(
         `/next/retry-payment?orderId=${order.id}&locale=${locale}${providedSecret ? `&x=${providedSecret}` : ""}`,
       );
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const rawData = await response.json();
-      const result = RetryPaymentResponseSchema.safeParse(rawData);
+      const result = RetryPaymentResponseSchema.safeParse(response.data);
       if (result.success) {
         const data: RetryPaymentResponse = result.data;
         if (data.status === 200 && data.url) {
