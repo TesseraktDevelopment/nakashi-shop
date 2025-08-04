@@ -383,7 +383,7 @@
     "subtotal": "Mezisoučet",
     "total": "Celkem",
     "payment-cancelled": "Vaše platba byla zrušena nebo se nezdařila. Zkuste to prosím znovu.",
-    "retry-payment": "Opakovat platbu",
+    "retry-payment": "Opakovat platbu"
   },
   "OrderEmail": {
     "thank-you": "Děkujeme!",
