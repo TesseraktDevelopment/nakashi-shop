@@ -237,7 +237,7 @@ const OrdersPage = async ({ params, searchParams }: { params: Promise<{ locale: 
   if (order.orderDetails.status === "unpaid" || order.orderDetails.status === "cancelled") {
     try {
       const response = await axios.get(
-        `/next/retry-payment?orderId=${order.id}&locale=${locale}${providedSecret ? `&x=${providedSecret}` : ""}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/next/retry-payment?orderId=${order.id}&locale=${locale}${providedSecret ? `&x=${providedSecret}` : ""}`,
       );
       const result = RetryPaymentResponseSchema.safeParse(response.data);
       if (result.success) {
