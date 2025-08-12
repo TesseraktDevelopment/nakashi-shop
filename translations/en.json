@@ -235,6 +235,7 @@
     "inpost-pickup": "InPost lockers",
     "inpost-courier": "InPost courier",
     "choose-pickup": "Choose point",
+    "change-pickup": "Change point",
     "close": "Close",
     "free-shipping": "Free Shipping"
   },

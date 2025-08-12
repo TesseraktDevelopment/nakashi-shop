@@ -65,7 +65,6 @@ export const DeliveryMethod = ({
   const pickupPointID = useWatch({ control: form.control, name: "shipping.pickupPointID" });
   const pickupPointName = useWatch({ control: form.control, name: "shipping.pickupPointName" });
   const pickupPointAddress = useWatch({ control: form.control, name: "shipping.pickupPointAddress" });
-  const pickupPointBranchCode = useWatch({ control: form.control, name: "shipping.pickupPointBranchCode" });
   const selectedDeliveryMethod = useWatch({ control: form.control, name: "deliveryMethod" });
 
   const onPointSelect = (event: PointSelectEvent) => {
@@ -97,7 +96,7 @@ export const DeliveryMethod = ({
           <Dialog>
             <DialogTrigger asChild>
               <Button type="button" variant="tailwind" className="ml-auto w-fit">
-                {t("choose-pickup")}
+                {pickupPointID ? t("change-pickup") : t("choose-pickup")}
               </Button>
             </DialogTrigger>
             <DialogContent className="flex h-[75dvh] w-[95vw] max-w-(--breakpoint-xl) flex-col sm:w-[80vw]">
@@ -138,10 +137,9 @@ export const DeliveryMethod = ({
             }}
             onPointSelect={onPointSelect}
           />
-
           {pickupPointID && (
             <p className="mr-auto flex items-center text-sm">
-              ID: {pickupPointID} / {pickupPointAddress} / {pickupPointName} / {pickupPointBranchCode}
+              {pickupPointName}
             </p>
           )}
         </div>

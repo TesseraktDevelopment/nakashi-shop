@@ -237,7 +237,8 @@
   "DeliveryMethods": {
     "inpost-pickup": "Boxy InPost",
     "inpost-courier": "Kurýr InPost",
-    "choose-pickup": "Vyberte box",
+    "choose-pickup": "Vybrat box",
+    "change-pickup": "Změnit box",
     "close": "Zavřít",
     "free-shipping": "Doprava zdarma"
   },

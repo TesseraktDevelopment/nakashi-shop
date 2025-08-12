@@ -3,8 +3,10 @@
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import React, { useEffect, useRef } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
+import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
 
 type PacketaWidget = {
   pick: (
@@ -56,6 +58,8 @@ type ZasilkovnaWidgetProps = {
 const ZasilkovnaWrapper = ({ apiKey, options, onPointSelect }: ZasilkovnaWidgetProps) => {
   const t = useTranslations("DeliveryMethods");
   const scriptLoaded = useRef(false);
+  const form = useFormContext<CheckoutFormData>();
+  const pickupPointID = useWatch({ control: form.control, name: "shipping.pickupPointID" });
 
   useEffect(() => {
     if (!scriptLoaded.current) {
@@ -110,8 +114,8 @@ const ZasilkovnaWrapper = ({ apiKey, options, onPointSelect }: ZasilkovnaWidgetP
 
   return (
     <Button type="button" variant="tailwind" className="ml-auto w-fit" onClick={openWidget}>
-      {t("choose-pickup")}
-     </Button>
+      {pickupPointID ? t("change-pickup") : t("choose-pickup")}
+    </Button>
   );
 };
 
