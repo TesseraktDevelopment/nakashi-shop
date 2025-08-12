@@ -103,6 +103,10 @@
   },
   "CheckoutForm": {
     "form": {
+      "empty-cart": "Cart is empty.",
+      "empty-cart-message": "Add products to your cart to continue your order.",
+      "go-to-products": "Explore the store",
+      "fetch-cart-error": "Failed to retrive cart products. Please try again.",
       "buy-as": "You are buying as",
       "individual": "Individual",
       "company": "Company",

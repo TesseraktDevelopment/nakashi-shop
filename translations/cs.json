@@ -103,6 +103,10 @@
   },
   "CheckoutForm": {
     "form": {
+      "empty-cart": "Košík je prázdný",
+      "empty-cart-message": "Přidejte produkty do košíku, abyste mohli pokračovat v objednávce.",
+      "go-to-products": "Prozkoumat obchod",
+      "fetch-cart-error": "Nepodařilo se načíst produkty košíku. Zkuste to prosím znovu.",
       "buy-as": "Nakupujete jako",
       "individual": "Fyzická osoba",
       "company": "Firma",

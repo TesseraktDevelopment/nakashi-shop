@@ -61,7 +61,7 @@ export type PaymentMethod = {
   recommended?: boolean;
 };
 
-export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowidgetToken?: string; }) => {
+export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowidgetToken?: string }) => {
   const { CheckoutFormSchemaResolver } = useCheckoutFormSchema();
   const t = useTranslations("CheckoutForm.form");
   const c = useTranslations("CheckoutForm.countries");
@@ -132,7 +132,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
     { id: "stripe", title: "Stripe", description: "Bezpečná a rychlá platební brána", icon: "https://cdn.nakashi.cz/nakashi/stripe.svg", recommended: true },
     { id: "bank_transfer", title: "Bankovní převod", description: "Platba předem na účet", icon: "", disabled: true },
     { id: "cash_on_delivery", title: "Dobírka", description: "Platba při doručení", icon: "", disabled: true },
-  ],[] );
+  ], []);
 
   const { cart, setCart } = useCart();
   const locale = useLocale() as Locale;
@@ -144,13 +144,20 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
       try {
         const { data } = await axios.post<{
           status: number;
-          productsWithTotalAndCouriers: {
+          productsWithTotalAndCouriers?: {
             filledProducts: ProductWithFilledVariants[];
             total: { currency: Currency; value: number }[];
             totalQuantity: number;
             couriers: FilledCourier[];
           };
+          error?: string;
         }>("/next/checkout", { cart: cartToCalculate, selectedCountry: countryToCalculate, locale });
+
+        if (data.status !== 200 || !data.productsWithTotalAndCouriers) {
+          setErrorMessage(data.error ?? t("fetch-cart-error"));
+          return;
+        }
+
         const { filledProducts, total, couriers } = data.productsWithTotalAndCouriers;
         setCheckoutProducts(filledProducts);
         setDeliveryMethods(couriers);
@@ -243,7 +250,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
         },
       );
       if (data.status === 200 && data.url) {
-        setCart(null);
+        setCart([]);
         router.push(data.url);
       } else {
         setErrorMessage(data.error ?? t("internal-server-error"));
@@ -253,6 +260,22 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
       console.error("Payment error:", error);
     }
   };
+
+  if (!cart?.length) {
+    return (
+      <div className="col-span-2 p-4 bg-yellow-100 text-yellow-800 rounded-md">
+        <p className="text-lg font-medium">{t("empty-cart")}</p>
+        <p className="mt-2 text-sm">{t("empty-cart-message")}</p>
+        <Button
+          type="button"
+          onClick={() => router.push("/")}
+          className="mt-4 rounded-md bg-main-600 px-4 py-2 text-white hover:bg-main-700 cursor-pointer"
+        >
+          {t("go-to-products")}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -559,7 +582,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                             value={method.id}
                             aria-label={method.title}
                             disabled={method.disabled}
-                            className={`group relative flex items-center rounded-lg border border-gray-300 bg-white p-4 shadow-xs data-checked:border-transparent data-focus:ring-2 data-focus:ring-main-500${method.disabled ? (" cursor-not-allowed select-none opacity-50") : " cursor-pointer" }`}
+                            className={`group relative flex items-center rounded-lg border border-gray-300 bg-white p-4 shadow-xs data-checked:border-transparent data-focus:ring-2 data-focus:ring-main-500${method.disabled ? " cursor-not-allowed select-none opacity-50" : " cursor-pointer"}`}
                           >
                             <span
                               aria-hidden="true"
