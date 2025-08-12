@@ -1,48 +1,40 @@
-# Payload Ecommerce Template
+# Nakashi Army
 
-A modern ecommerce storefront powered by Payload and Next.js. This template provides all the essential features to build and manage a beautiful online store.
+A modern ecommerce storefront for Nakashi Army, powered by Payload and Next.js. This is a fully functional online store tailored to deliver a unique shopping experience for Nakashi Army’s customers.
 
 ## 🌐 Live demo
 
-You can access the live demo of the template at [https://ecommerce.mandala.sh/en](https://ecommerce.mandala.sh/en).
+You can access the live Nakashi Army store at [https://nakashi-army.cz/](https://nakashi-army.cz/cs).
 
 ## ✨ Features
 
-- **Modern Storefront**: A beautiful and fast storefront built with Next.js and Tailwind CSS.
-- **Powerful Admin Panel**: Manage your products, orders, and customers with the powerful Payload admin UI.
-- **Product Management**: Easily add and manage products with variants (size, color, etc.).
-- **Shopping Cart & Checkout**: A complete and secure checkout flow.
-- **User Accounts**: Customers can create accounts to view their order history and manage their profiles.
-- **SEO Friendly**: Pre-configured for search engine optimization.
-- **Multi-language**: Supports multiple languages out of the box.
-- **Payments and Shipping**: Supports payments and shipping out of the box.
-- **Customizable**: Easily extend and customize the design and functionality to fit your brand.
-
-## 📸 Screenshots
-
-- **Example storefront**
-  ![Example storefront](./public/storefront.png)
-
-- **Admin panel Dashboard**
-  ![Admin panel Dashboard](./public/admin-dashboard.png)
+- **Modern Storefront**: A sleek and responsive storefront built with Next.js, Tailwind CSS, and Radix UI components.
+- **Powerful Admin Panel**: Manage products, orders, and customers effortlessly with Payload’s intuitive admin UI.
+- **Product Management**: Easily add and manage products with variants (e.g., size, color) using Payload’s payload.find queries.
+- **Shopping Cart & Checkout**: A secure and user-friendly checkout flow.
+- **User Accounts**: Customers can create accounts to view order history and manage their profiles.
+- **SEO Friendly**: Optimized for search engines with @payloadcms/plugin-seo.
+- **Multi-language**: Supports multiple languages out of the box with next-intl.
+- **Payments and Shipping**: Integrated with Stripe for payments and customizable shipping options.
+- **Customizable**: Tailored to the Nakashi Army brand, with flexible design and functionality using Tailwind CSS and Payload.
 
 ## 🚀 Getting Started
 
-Follow these steps to get your ecommerce store up and running on your local machine.
+Follow these steps to set up the Nakashi Army store locally.
 
 ### Installation & Setup
 
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/Mandala-Software-House/payload-ecommerce-template.git
-    cd payload-ecommerce
+    git clone https://github.com/TesseraktDevelopment/nakashi-shop.git
+    cd nakashi-shop
     ```
 
 2.  **Install dependencies:**
 
     ```bash
-    pnpm install
+    bun install
     ```
 
 3.  **Set up environment variables:**
@@ -53,19 +45,19 @@ Follow these steps to get your ecommerce store up and running on your local mach
     cp .env.example .env
     ```
 
-    Now, open the `.env` file and fill in the required variables, especially your `MONGODB_URI` and `PAYLOAD_SECRET`.
+    Open the `.env` file and configure the required variables, such as `MONGODB_URI`, `PAYLOAD_SECRET`, and any Stripe or S3 credentials if using `@payloadcms/storage-s3`.
 
 4.  **Run the development server:**
 
     ```bash
-    pnpm dev
+    bun dev
     ```
 
 5.  **Access your store:**
-    - Your website will be available at [http://localhost:3000](http://localhost:3000)
-    - The Payload admin panel will be at [http://localhost:3000/admin](http://localhost:3000/admin)
+    - The Nakashi Army website will be available at [http://localhost:3000](http://localhost:3000)
+    - The Payload admin panel will be accessible at [http://localhost:3000/admin](http://localhost:3000/admin)
 
-    When you first visit the admin panel, you will be prompted to create your first admin user.
+    On your first visit to the admin panel, you’ll be prompted to create an admin user.
 
 ## Usage
 
@@ -73,4 +65,4 @@ Follow these steps to get your ecommerce store up and running on your local mach
 - **Viewing Orders**: Customer orders will appear in the 'Orders' collection in the admin panel.
 - **Customizing Pages**: You can edit pages like 'About Us' or create new ones using the 'Pages' collection.
 
-Feel free to explore the admin panel to discover all the features!
+Explore the admin panel to manage and customize the Nakashi Army store!
