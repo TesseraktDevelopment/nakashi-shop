@@ -3,6 +3,8 @@ import type { FieldHook } from "payload";
 
 export const formatSlug = (val: string): string =>
   val
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/ /g, "-")
     .replace(/[^\w-]+/g, "")
     .toLowerCase();
