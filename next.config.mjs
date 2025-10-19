@@ -13,6 +13,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   output: "standalone",
   images: {
+    qualities: [25, 50, 75, 80, 90, 100],
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL, 'https://cdn.nakashi.cz/' ].map((item) => {
         const url = new URL(item);

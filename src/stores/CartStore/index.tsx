@@ -6,25 +6,49 @@ import canUseDOM from "@/utilities/canUseDOM";
 
 import { type Cart } from "./types";
 
+type CheckoutState = {
+  currentStep: number;
+  deliveryMethod: string;
+  paymentMethod: string;
+  shipping: {
+    id: string;
+    name: string;
+    address: string;
+    city: string;
+    country: string;
+    region: string;
+    postalCode: string;
+    phone: string;
+    email: string;
+  };
+  products: { id: string; title: string; variant?: { slug: string; title: string } }[];
+  pickupPointID?: string | undefined;
+  pickupPointName?: string | undefined;
+  pickupPointBranchCode?: string | undefined;
+  pickupPointAddress?: string | undefined;
+};
+
 type CartState = {
   cart: Cart | null;
+  checkoutState: CheckoutState | null;
   setCart: (cartToSet: Cart | null) => void;
   updateCart: (cartToSet: Cart) => void;
   removeFromCart: (productId: string, variantSlug?: string) => void;
+  setCheckoutState: (state: CheckoutState) => void;
   synchronizeCart: () => Promise<void>;
 };
 
-const saveCartToUserAccount = async (cart: Cart) => {
+const saveCartToUserAccount = async (cart: Cart | null, checkoutState: CheckoutState | null) => {
   try {
-    await axios.post("/next/cart", cart);
+    await axios.post("/next/cart", { cart, checkoutState }, { withCredentials: true });
   } catch (error) {
     console.error("Failed to save cart to UserAccount:", error);
   }
 };
 
-const fetchCartFromUserAccount = async (): Promise<Cart | null> => {
+const fetchCartFromUserAccount = async (): Promise<{ cart: Cart | null; checkoutState: CheckoutState | null } | null> => {
   try {
-    const { data } = await axios.get<{ data: Cart; status: number }>("/next/cart");
+    const { data } = await axios.get<{ data: { cart: Cart; checkoutState: CheckoutState }; status: number }>("/next/cart", { withCredentials: true });
     if (data.status === 400) return null;
     return data.data;
   } catch (error) {
@@ -34,7 +58,6 @@ const fetchCartFromUserAccount = async (): Promise<Cart | null> => {
 };
 
 const debouncedFetchCartFromUserAccount = debounce(fetchCartFromUserAccount, 1000);
-
 const debouncedSaveCartToUserAccount = debounce(saveCartToUserAccount, 1000);
 
 const useCartStore = create<CartState>((set) => ({
@@ -43,39 +66,45 @@ const useCartStore = create<CartState>((set) => ({
         const cartData = window.localStorage.getItem("cart");
         if (cartData && cartData.length > 1) {
           try {
-            return cartData ? (JSON.parse(cartData) as Cart) : [];
+            return JSON.parse(cartData) as Cart;
           } catch (error) {
             console.error("Error parsing cart data from localStorage", error);
             return [];
           }
-        } else {
-          return [];
         }
+        return [];
+      })()
+    : null,
+  checkoutState: canUseDOM
+    ? (() => {
+        const checkoutData = window.localStorage.getItem("checkoutState");
+        if (checkoutData && checkoutData.length > 1) {
+          try {
+            return JSON.parse(checkoutData) as CheckoutState;
+          } catch (error) {
+            console.error("Error parsing checkoutState data from localStorage", error);
+            return null;
+          }
+        }
+        return null;
       })()
     : null,
 
-  setCart: (cartToSet: Cart) => {
+  setCart: (cartToSet: Cart | null) => {
     if (canUseDOM) {
       window.localStorage.setItem("cart", JSON.stringify(cartToSet));
     }
-    void debouncedSaveCartToUserAccount(cartToSet);
-    set({ cart: cartToSet });
+    set((state) => {
+      void debouncedSaveCartToUserAccount(cartToSet, state.checkoutState);
+      return { cart: cartToSet };
+    });
   },
 
   updateCart: (cartToSet: Cart) => {
     set((state) => {
-      const prevCart = state.cart;
-
-      if (prevCart === null) {
-        if (canUseDOM) {
-          window.localStorage.setItem("cart", JSON.stringify(cartToSet));
-        }
-        void debouncedSaveCartToUserAccount(cartToSet);
-        return { cart: cartToSet };
-      }
+      const prevCart = state.cart ?? [];
 
       const updatedCart = [...prevCart];
-
       cartToSet.forEach((newProduct) => {
         const existingProductIndex = updatedCart.findIndex(
           (product) =>
@@ -94,14 +123,14 @@ const useCartStore = create<CartState>((set) => ({
       if (canUseDOM) {
         window.localStorage.setItem("cart", JSON.stringify(updatedCart));
       }
-      void debouncedSaveCartToUserAccount(updatedCart);
+      void debouncedSaveCartToUserAccount(updatedCart, state.checkoutState);
       return { cart: updatedCart };
     });
   },
 
   removeFromCart: (productId: string, variantSlug?: string) => {
     set((state) => {
-      const updatedCart = state.cart?.filter((product) => {
+      const updatedCart = (state.cart ?? []).filter((product) => {
         if (variantSlug) {
           return product.id !== productId || product.choosenVariantSlug !== variantSlug;
         }
@@ -111,8 +140,18 @@ const useCartStore = create<CartState>((set) => ({
       if (canUseDOM) {
         window.localStorage.setItem("cart", JSON.stringify(updatedCart));
       }
-      void debouncedSaveCartToUserAccount(updatedCart ?? []);
+      void debouncedSaveCartToUserAccount(updatedCart, state.checkoutState);
       return { cart: updatedCart };
+    });
+  },
+
+  setCheckoutState: (state: CheckoutState) => {
+    if (canUseDOM) {
+      window.localStorage.setItem("checkoutState", JSON.stringify(state));
+    }
+    set((prevState) => {
+      void debouncedSaveCartToUserAccount(prevState.cart, state);
+      return { checkoutState: state };
     });
   },
 
@@ -120,18 +159,22 @@ const useCartStore = create<CartState>((set) => ({
     if (!canUseDOM) return;
 
     const cartFromLocalStorage = JSON.parse(window.localStorage.getItem("cart") ?? "[]") as Cart;
+    const checkoutStateFromLocalStorage = JSON.parse(window.localStorage.getItem("checkoutState") ?? "null") as CheckoutState | null;
     const cartFromUserAccount = await debouncedFetchCartFromUserAccount();
 
     if (!cartFromUserAccount) {
-      if (cartFromLocalStorage.length > 0) {
-        void debouncedSaveCartToUserAccount(cartFromLocalStorage);
+      if (cartFromLocalStorage.length > 0 || checkoutStateFromLocalStorage) {
+        void debouncedSaveCartToUserAccount(cartFromLocalStorage, checkoutStateFromLocalStorage);
       }
+      set({ cart: cartFromLocalStorage, checkoutState: checkoutStateFromLocalStorage });
       return;
     }
 
-    window.localStorage.setItem("cart", JSON.stringify(cartFromUserAccount));
-    set({ cart: cartFromUserAccount });
+    window.localStorage.setItem("cart", JSON.stringify(cartFromUserAccount.cart));
+    window.localStorage.setItem("checkoutState", JSON.stringify(cartFromUserAccount.checkoutState));
+    set({ cart: cartFromUserAccount.cart, checkoutState: cartFromUserAccount.checkoutState });
   },
 }));
 
+export { useCartStore };
 export const useCart = () => useCartStore((state) => state);
