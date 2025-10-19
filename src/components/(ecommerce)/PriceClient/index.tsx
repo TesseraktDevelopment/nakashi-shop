@@ -5,19 +5,24 @@ import { useCurrency } from "@/stores/Currency";
 import { formatPrice } from "@/utilities/formatPrices";
 
 export const PriceClient = ({
-  pricing,
+	pricing,
 }: {
-  pricing: {
-    value: number;
-    currency: string;
-  }[];
+	pricing: {
+		value: number;
+		currency: string;
+	}[];
 }) => {
-  const { currency } = useCurrency();
-  const locale = useLocale();
-  const price =
-    pricing.length > 0
-      ? (pricing.find((price) => price.currency === currency)?.value ?? pricing[0].value)
-      : 0;
+	const { currency } = useCurrency();
+	const locale = useLocale();
+	const price =
+		pricing.length > 0
+			? (pricing.find((price) => price.currency === currency)?.value ??
+				pricing[0].value)
+			: 0;
 
-  return <>{formatPrice(price, currency, locale)}</>;
+	if (isNaN(price)) {
+		return <>{formatPrice(0, currency, locale)}</>;
+	} else {
+		return <>{formatPrice(price, currency, locale)}</>;
+	}
 };

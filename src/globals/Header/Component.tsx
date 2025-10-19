@@ -8,8 +8,8 @@ import { HeaderClient } from "./Component.client";
 import type { Header } from "@/payload-types";
 
 export async function Header({ disableCart }: { disableCart?: boolean }) {
-  const locale = (await getLocale()) as Locale;
-  const headerData: Header = await getCachedGlobal("header", locale, 1)();
+	const locale = (await getLocale()) as Locale;
+	const headerData: Header = await getCachedGlobal("header", locale, 1)();
 
-  return <HeaderClient data={headerData} disableCart={disableCart} />;
+	return <HeaderClient data={headerData} disableCart={disableCart} />;
 }

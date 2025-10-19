@@ -7,100 +7,130 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { type RegisterFormData, useRegisterFormSchema } from "@/schemas/registerForm.schema";
+import {
+	type RegisterFormData,
+	useRegisterFormSchema,
+} from "@/schemas/registerForm.schema";
 
 export const RegisterForm = () => {
-  const { RegisterFormSchemaResolver } = useRegisterFormSchema();
+	const { RegisterFormSchemaResolver } = useRegisterFormSchema();
 
-  const form = useForm<RegisterFormData>({
-    resolver: zodResolver(RegisterFormSchemaResolver),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
+	const form = useForm<RegisterFormData>({
+		resolver: zodResolver(RegisterFormSchemaResolver),
+		defaultValues: {
+			name: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
+		},
+	});
 
-  const [message, setMessage] = useState("");
+	const [message, setMessage] = useState("");
 
-  const t = useTranslations("RegisterForm");
+	const t = useTranslations("RegisterForm");
 
-  const onSubmit = async (values: RegisterFormData) => {
-    setMessage("");
-    try {
-      const res = await axios.post("/api/customers", {
-        email: values.email,
-        password: values.password,
-      });
+	const onSubmit = async (values: RegisterFormData) => {
+		setMessage("");
+		try {
+			const res = await axios.post("/api/customers", {
+				email: values.email,
+				password: values.password,
+				fullName: values.name,
+			});
 
-      if (res.status === 200 || res.status === 201) {
-        setMessage(t("success"));
-      }
-    } catch (error) {
-      if (isAxiosError(error)) {
-        console.log(error?.response);
-        form.setError("root", { message: t("errors.server-error") });
-      } else {
-        console.log(error);
-        form.setError("root", { message: t("errors.server-error") });
-      }
-    }
-  };
+			if (res.status === 200 || res.status === 201) {
+				setMessage(t("success"));
+			}
+		} catch (error) {
+			if (isAxiosError(error)) {
+				console.log(error?.response);
+				form.setError("root", { message: t("errors.server-error") });
+			} else {
+				console.log(error);
+				form.setError("root", { message: t("errors.server-error") });
+			}
+		}
+	};
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col space-y-6">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("email")}</FormLabel>
-              <FormControl>
-                <Input placeholder={t("email-placeholder")} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("password")}</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="••••••••••••" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("confirm-password")}</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="••••••••••••" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+	return (
+		<Form {...form}>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="flex flex-col space-y-6"
+			>
+				<FormField
+					control={form.control}
+					name="name"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>{t("name")}</FormLabel>
+							<FormControl>
+								<Input placeholder={t("name-placeholder")} {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="email"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>{t("email")}</FormLabel>
+							<FormControl>
+								<Input placeholder={t("email-placeholder")} {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="password"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>{t("password")}</FormLabel>
+							<FormControl>
+								<Input type="password" placeholder="••••••••••••" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="confirmPassword"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>{t("confirm-password")}</FormLabel>
+							<FormControl>
+								<Input type="password" placeholder="••••••••••••" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
-        {form.formState.errors.root?.message && (
-          <p className="text-sm text-red-500">{form.formState.errors.root.message}</p>
-        )}
-        {message && <p className="text-sm text-green-600">{message}</p>}
+				{form.formState.errors.root?.message && (
+					<p className="text-sm text-red-500">
+						{form.formState.errors.root.message}
+					</p>
+				)}
+				{message && <p className="text-sm text-green-600">{message}</p>}
 
-        <Button type="submit" variant="tailwind">
-          {t("submit")}
-        </Button>
-      </form>
-    </Form>
-  );
+				<Button type="submit" variant="tailwind">
+					{t("submit")}
+				</Button>
+			</form>
+		</Form>
+	);
 };

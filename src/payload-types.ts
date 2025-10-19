@@ -644,6 +644,31 @@ export interface ContentBlock {
  */
 export interface MediaBlock {
   media: string | Media;
+  isLink?: boolean | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   spacingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
   spacingTop?: ('none' | 'small' | 'medium' | 'large') | null;
   paddingBottom?: ('none' | 'small' | 'medium' | 'large') | null;
@@ -1087,6 +1112,10 @@ export interface Product {
   title: string;
   slug?: string | null;
   slugLock?: boolean | null;
+  /**
+   * Zadejte EAN kód nebo vlastní kód.
+   */
+  code: string;
   description?: {
     root: {
       type: string;
@@ -1127,6 +1156,21 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   enableVariants?: boolean | null;
   /**
    * If false, price is in Product Details
@@ -1338,6 +1382,7 @@ export interface Order {
         price?: number | null;
         autoprice?: boolean | null;
         priceTotal: number;
+        base64Image?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1931,6 +1976,22 @@ export interface ContentBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  isLink?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
   spacingBottom?: T;
   spacingTop?: T;
   paddingBottom?: T;
@@ -2269,6 +2330,7 @@ export interface OrdersSelect<T extends boolean = true> {
         price?: T;
         autoprice?: T;
         priceTotal?: T;
+        base64Image?: T;
         id?: T;
       };
   invoice?:
@@ -2337,6 +2399,7 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   slugLock?: T;
+  code?: T;
   description?: T;
   images?: T;
   details?:
@@ -2346,6 +2409,7 @@ export interface ProductsSelect<T extends boolean = true> {
         content?: T;
         id?: T;
       };
+  longDescription?: T;
   enableVariants?: T;
   enableVariantPrices?: T;
   enableVariantWeights?: T;
@@ -2930,7 +2994,7 @@ export interface ShopLayout {
     type: 'slideOver';
   };
   checkout: {
-    type: 'OneStepWithSummary';
+    type: 'OneStepWithSummary' | 'MultiStepCheckoutForm';
   };
   clientPanel: {
     type: 'withSidebar';

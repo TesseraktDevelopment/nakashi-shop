@@ -6,24 +6,24 @@ import { FloatingHeader } from "./variants/FloatingHeader";
 import type { Header } from "@/payload-types";
 
 type HeaderClientProps = {
-  data: Header;
-  disableCart?: boolean;
+	data: Header;
+	disableCart?: boolean;
 };
 
 export const HeaderClient = ({ data, disableCart }: HeaderClientProps) => {
-  let header: ReactNode = null;
+	let header: ReactNode = null;
 
-  switch (data.type) {
-    case "default":
-      header = <DefaultHeader disableCart={disableCart} data={data} />;
-      break;
-    case "floating":
-      header = <FloatingHeader data={data} />;
-      break;
-    default:
-      header = <DefaultHeader disableCart={disableCart} data={data} />;
-      break;
-  }
+	switch (data.type) {
+		case "default":
+			header = <DefaultHeader disableCart={disableCart} data={data} />;
+			break;
+		case "floating":
+			header = <FloatingHeader data={data} />;
+			break;
+		default:
+			header = <DefaultHeader disableCart={disableCart} data={data} />;
+			break;
+	}
 
-  return header;
+	return header;
 };

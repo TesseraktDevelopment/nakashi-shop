@@ -1,3 +1,5 @@
 export const Error = () => {
-  return <div className="mt-2 text-sm text-red-500">This field is required</div>;
+	return (
+		<div className="mt-2 text-sm text-red-500">This field is required</div>
+	);
 };

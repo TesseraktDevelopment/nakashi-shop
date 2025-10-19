@@ -9,13 +9,13 @@ import { Text } from "./Text";
 import { Textarea } from "./Textarea";
 
 export const fields = {
-  checkbox: Checkbox,
-  country: Country,
-  email: Email,
-  message: Message,
-  number: Number,
-  select: Select,
-  state: State,
-  text: Text,
-  textarea: Textarea,
+	checkbox: Checkbox,
+	country: Country,
+	email: Email,
+	message: Message,
+	number: Number,
+	select: Select,
+	state: State,
+	text: Text,
+	textarea: Textarea,
 };

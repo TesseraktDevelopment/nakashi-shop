@@ -241,6 +241,7 @@
   },
   "OrderSummary": {
     "order-summary": "Order Summary",
+    "your-cart": "Your Cart",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "total": "Total",

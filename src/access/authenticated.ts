@@ -4,5 +4,5 @@ import type { AccessArgs } from "payload";
 type isAuthenticated = (args: AccessArgs<Administrator>) => boolean;
 
 export const authenticated: isAuthenticated = ({ req: { user } }) => {
-  return Boolean(user?.collection === "administrators");
+	return Boolean(user?.collection === "administrators");
 };

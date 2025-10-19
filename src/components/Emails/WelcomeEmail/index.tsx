@@ -7,14 +7,20 @@ import { getCachedGlobal } from "@/utilities/getGlobals";
 
 import { Default } from "./variants/Default";
 
-export const WelcomeEmail = async ({ customer, locale }: { customer: Customer; locale: Locale }) => {
-  const { messages } = await getCachedGlobal("emailMessages", locale, 1)();
+export const WelcomeEmail = async ({
+	customer,
+	locale,
+}: {
+	customer: Customer;
+	locale: Locale;
+}) => {
+	const { messages } = await getCachedGlobal("emailMessages", locale, 1)();
 
-  let Email: ReactNode = <Html></Html>;
+	let Email: ReactNode = <Html></Html>;
 
-  switch (messages.template) {
-    case "default":
-      Email = <Default customer={customer} locale={locale} />;
-  }
-  return Email;
+	switch (messages.template) {
+		case "default":
+			Email = <Default customer={customer} locale={locale} />;
+	}
+	return Email;
 };

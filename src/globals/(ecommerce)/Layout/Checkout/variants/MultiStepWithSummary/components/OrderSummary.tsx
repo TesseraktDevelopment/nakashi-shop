@@ -1,13 +1,15 @@
 import { TrashIcon } from "@heroicons/react/20/solid";
 import { useTranslations } from "next-intl";
+import { useFormContext } from "react-hook-form";
 
 import { PriceClient } from "@/components/(ecommerce)/PriceClient";
 import { QuantityInput } from "@/components/(ecommerce)/QuantityInput";
 import { Media } from "@/components/Media";
-import { type ProductWithFilledVariants } from "@/globals/(ecommerce)/Layout/Cart/variants/SlideOver";
+import type { ProductWithFilledVariants } from "@/globals/(ecommerce)/Layout/Cart/variants/SlideOver";
 import { Link } from "@/i18n/routing";
+import type { CheckoutFormData } from "@/schemas/multiCheckoutForm.schema";
 import { useCart } from "@/stores/CartStore";
-import { type Currency } from "@/stores/Currency/types";
+import type { Currency } from "@/stores/Currency/types";
 
 /**
  * This function merges two arrays of objects with currency and value, summing up the values with the same currency.
@@ -16,215 +18,297 @@ import { type Currency } from "@/stores/Currency/types";
  * @returns - merged array of objects with currency and value
  */
 const mergeAmounts = (
-  arr1: { currency: Currency; value: number }[] | undefined,
-  arr2: { currency: Currency; value: number }[] | undefined,
+	arr1: { currency: Currency; value: number }[] | undefined,
+	arr2: { currency: Currency; value: number }[] | undefined,
 ) => {
-  const merged = new Map<Currency, number>();
+	const merged = new Map<Currency, number>();
 
-  arr1?.forEach((item) => {
-    merged.set(item.currency, (merged.get(item.currency) ?? 0) + item.value);
-  });
+	arr1?.forEach((item) => {
+		merged.set(item.currency, (merged.get(item.currency) ?? 0) + item.value);
+	});
 
-  arr2?.forEach((item) => {
-    merged.set(item.currency, (merged.get(item.currency) ?? 0) + item.value);
-  });
+	arr2?.forEach((item) => {
+		merged.set(item.currency, (merged.get(item.currency) ?? 0) + item.value);
+	});
 
-  return Array.from(merged).map(([currency, value]) => ({ currency, value }));
+	return Array.from(merged).map(([currency, value]) => ({ currency, value }));
 };
 
 export const OrderSummary = ({
-  products,
-  totalPrice,
-  shippingCost,
-  errorMessage,
-  readOnly = false,
+	products,
+	totalPrice,
+	shippingCost,
+	errorMessage,
+	readOnly = false,
+	isSummaryStep = false,
 }: {
-  products?: ProductWithFilledVariants[];
-  totalPrice?: {
-    currency: Currency;
-    value: number;
-  }[];
-  shippingCost?: {
-    currency: Currency;
-    value: number;
-  }[];
-  errorMessage?: string;
-  readOnly?: boolean;
+	products?: ProductWithFilledVariants[];
+	totalPrice?: { currency: Currency; value: number }[];
+	shippingCost?: { currency: Currency; value: number }[];
+	errorMessage?: string;
+	readOnly?: boolean;
+	isSummaryStep?: boolean;
 }) => {
-  const totalPriceWithShipping = mergeAmounts(totalPrice, shippingCost);
-  const { cart, updateCart, setCart, removeFromCart } = useCart();
-  const t = useTranslations("OrderSummary");
+	const totalPriceWithShipping = mergeAmounts(totalPrice, shippingCost);
+	const { cart, updateCart, setCart, removeFromCart } = useCart();
+	const t = useTranslations("OrderSummary");
+	const form = useFormContext<CheckoutFormData>();
 
-  const setCartQuantity = (quantity: number, productID: string, productVariantSlug: string | undefined) => {
-    setCart([
-      ...(cart?.filter((cartProduct) => cartProduct.id !== productID) ?? []),
-      {
-        id: productID,
-        quantity,
-        choosenVariantSlug: productVariantSlug,
-      },
-    ]);
-  };
+	const setCartQuantity = (
+		quantity: number,
+		productID: string,
+		productVariantSlug: string | undefined,
+	) => {
+		setCart([
+			...(cart?.filter((cartProduct) => cartProduct.id !== productID) ?? []),
+			{
+				id: productID,
+				quantity,
+				choosenVariantSlug: productVariantSlug,
+			},
+		]);
+	};
 
-  const updateCartQuantity = (delta: number, productID: string, productVariantSlug: string | undefined) => {
-    updateCart([
-      {
-        id: productID,
-        quantity: delta,
-        choosenVariantSlug: productVariantSlug,
-      },
-    ]);
-  };
+	const updateCartQuantity = (
+		delta: number,
+		productID: string,
+		productVariantSlug: string | undefined,
+	) => {
+		updateCart([
+			{
+				id: productID,
+				quantity: delta,
+				choosenVariantSlug: productVariantSlug,
+			},
+		]);
+	};
 
-  return (
-    <div className="mt-10 lg:sticky lg:top-28 lg:mt-0 lg:h-fit">
-      <h2 className="text-lg font-medium text-gray-900">{t("order-summary")}</h2>
+	return (
+		<div className="mt-10 lg:sticky lg:top-28 lg:mt-0 lg:h-fit">
+			<h2 className="text-lg font-medium text-gray-900">
+				{t("order-summary")}
+			</h2>
 
-      <div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-xs">
-        <h3 className="sr-only">{t("items-in-cart")}</h3>
-        <ul role="list" className="divide-y divide-gray-200">
-          {products?.map((product) => (
-            <li key={`${product.id}-${product.variant?.slug}`} className="flex px-4 py-6 sm:px-6">
-              <div className="shrink-0">
-                {product.variant?.image?.url ? (
-                  <Media resource={product.variant.image} imgClassName="aspect-square object-cover" className="w-20 rounded-md" />
-                ) : product.image?.url ? (
-                  <Media resource={product.image} imgClassName="aspect-square object-cover" className="w-20 rounded-md" />
-                ) : null}
-              </div>
+			<div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-xs">
+				<h3 className="sr-only">{t("items-in-cart")}</h3>
+				<ul className="divide-y divide-gray-200">
+					{products?.map((product) => (
+						<li
+							key={`${product.id}-${product.variant?.slug}`}
+							className="flex px-4 py-6 sm:px-6"
+						>
+							<div className="shrink-0">
+								{product.variant?.image?.url ? (
+									<Media
+										resource={product.variant.image}
+										imgClassName="aspect-square object-cover"
+										className="w-20 rounded-md"
+									/>
+								) : product.image?.url ? (
+									<Media
+										resource={product.image}
+										imgClassName="aspect-square object-cover"
+										className="w-20 rounded-md"
+									/>
+								) : null}
+							</div>
 
-              <div className="ml-6 flex flex-1 flex-col">
-                <div className="flex">
-                  <div className="min-w-0 flex-1">
-                    <h4 className="text-sm">
-                      <Link
-                        className="font-medium text-gray-700 hover:text-gray-800"
-                        href={`/product/${product.slug}${product.enableVariants && product?.variant?.slug ? `?variant=${product.variant.slug}` : ""}`}
-                      >
-                        {product.title}
-                      </Link>
-                    </h4>
-                    <p className="mt-1 text-sm text-gray-500">
-                      {[
-                        product.enableVariants && product.variant?.color?.label,
-                        product.enableVariants && product.variant?.size?.label,
-                      ]
-                        .filter(Boolean)
-                        .join(", ")}
-                    </p>
-                  </div>
-                  {!readOnly && (
-                  <div className="ml-4 flow-root shrink-0">
-                    <button
-                      type="button"
-                      className="-m-2.5 flex cursor-pointer items-center justify-center bg-white p-2.5 text-gray-400 hover:text-gray-500"
-                      onClick={() => {
-                        removeFromCart(product.id, product.variant?.slug ?? undefined);
-                      }}
-                    >
-                      <span className="sr-only">{t("remove")}</span>
-                      <TrashIcon aria-hidden="true" className="size-5" />
-                    </button>
-                  </div>
-                  )}
-                </div>
+							<div className="ml-6 flex flex-1 flex-col">
+								<div className="flex">
+									<div className="min-w-0 flex-1">
+										<h4 className="text-sm">
+											<Link
+												className="font-medium text-gray-700 hover:text-gray-800"
+												href={`/product/${product.slug}${product.enableVariants && product?.variant?.slug ? `?variant=${product.variant.slug}` : ""}`}
+											>
+												{product.title}
+											</Link>
+										</h4>
+										<p className="mt-1 text-sm text-gray-500">
+											{[
+												product.enableVariants && product.variant?.color?.label,
+												product.enableVariants && product.variant?.size?.label,
+											]
+												.filter(Boolean)
+												.join(", ")}
+										</p>
+									</div>
+									{!readOnly && (
+										<div className="ml-4 flow-root shrink-0">
+											<button
+												type="button"
+												className="-m-2.5 flex cursor-pointer items-center justify-center bg-white p-2.5 text-gray-400 hover:text-gray-500"
+												onClick={() => {
+													removeFromCart(
+														product.id,
+														product.variant?.slug ?? undefined,
+													);
+												}}
+											>
+												<span className="sr-only">{t("remove")}</span>
+												<TrashIcon aria-hidden="true" className="size-5" />
+											</button>
+										</div>
+									)}
+								</div>
 
-                <div className="flex flex-1 items-end justify-between pt-2">
-                  <p className="mt-1 text-sm font-medium text-gray-900">
-                    <PriceClient
-                      pricing={
-                        product.enableVariantPrices
-                          ? (product.variant?.pricing?.map((p) => ({
-                              ...p,
-                              value: p.value * product.quantity,
-                            })) ?? [])
-                          : product.pricing
-                            ? product.pricing.map((p) => ({
-                                ...p,
-                                value: p.value * product.quantity,
-                              }))
-                            : []
-                      }
-                    />
-                  </p>
+								<div className="flex flex-1 items-end justify-between pt-2">
+									<p className="mt-1 text-sm font-medium text-gray-900">
+										<PriceClient
+											pricing={
+												product.enableVariantPrices
+													? (product.variant?.pricing?.map((p) => ({
+															...p,
+															value: p.value * product.quantity,
+														})) ?? [])
+													: product.pricing
+														? product.pricing.map((p) => ({
+																...p,
+																value: p.value * product.quantity,
+															}))
+														: []
+											}
+										/>
+									</p>
 
-                  <div className="ml-4">
-                    <div className="grid grid-cols-1">
-                      {!readOnly ? (
-                      <QuantityInput
-                        quantity={
-                          cart?.find(
-                            (cartProduct) =>
-                              cartProduct.id === product.id &&
-                              cartProduct.choosenVariantSlug === product.variant?.slug,
-                          )?.quantity ?? 1
-                        }
-                        inputVariant="cart"
-                        setQuantity={(quantity) => {
-                          setCartQuantity(quantity, product.id, product.variant?.slug ?? undefined);
-                        }}
-                        updateQuantity={(delta) => {
-                          updateCartQuantity(delta, product.id, product.variant?.slug ?? undefined);
-                        }}
-                        maxQuantity={
-                          product.enableVariants ? (product.variant?.stock ?? 0) : (product.stock ?? 0)
-                        }
-                        minQuantity={1}
-                      />
-                      ) : (
-                        <p className="text-sm">{t("quantity")}: {product.quantity}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <dl className="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
-          <div className="flex items-center justify-between">
-            <dt className="text-sm">{t("subtotal")}</dt>
-            <dd className="text-sm font-medium text-gray-900">
-              <PriceClient pricing={totalPrice ?? []} />
-            </dd>
-          </div>
-          <div className="flex items-center justify-between">
-            <dt className="text-sm">{t("shipping")}</dt>
-            <dd className="text-sm font-medium text-gray-900">
-              {shippingCost?.[0]?.value === 0 ? (
-                <span className="text-green-600 font-semibold">{t("free-shipping")}</span>
-              ) : (
-                <PriceClient pricing={shippingCost ?? []} />
-              )}
-            </dd>
-          </div>
-          <div className="flex items-center justify-between border-t border-gray-200 pt-6">
-            <dt className="text-base font-medium">{t("total")}</dt>
-            <dd className="text-base font-medium text-gray-900">
-              <PriceClient pricing={totalPriceWithShipping} />
-            </dd>
-          </div>
-        </dl>
-        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-          <div className="flex items-start">
-            <input id="termsCheck" type="checkbox" value="" className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-main-600 focus:ring-2 focus:ring-main-500" required />
-            <label htmlFor="termsCheck" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{t("agree-terms")}<Link href="/obchodni-podminky" target="_blank" title={t("terms")} className="text-main-700 underline hover:no-underline">{t("terms-link")}</Link>{t("and-privacy")}</label>
-          </div>
-          <div className="flex items-start mt-4">
-            <input id="newsletterCheck" type="checkbox" value="" className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-main-600 focus:ring-2 focus:ring-main-500" defaultChecked />
-            <label htmlFor="newsletterCheck" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"><span>{t("subscribe-newsletter")}<a href="#" title="" className="text-main-700 underline hover:no-underline">{t("privacy-link")}</a></span></label>
-          </div>
-        </div>
-        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-          <button
-            type="submit"
-            className="w-full cursor-pointer disabled:cursor-not-allowed rounded-md border border-transparent bg-main-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-main-700 focus:outline-hidden focus:ring-2 focus:ring-main-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-          >
-            {t("confirm")}
-          </button>
-        </div>
-      </div>
-      {errorMessage && <p className="text-sm mb-4 text-red-500">{errorMessage}</p>}
-    </div>
-  );
+									<div className="ml-4">
+										<div className="grid grid-cols-1">
+											{!readOnly ? (
+												<QuantityInput
+													quantity={
+														cart?.find(
+															(cartProduct) =>
+																cartProduct.id === product.id &&
+																cartProduct.choosenVariantSlug ===
+																	product.variant?.slug,
+														)?.quantity ?? 1
+													}
+													inputVariant="cart"
+													setQuantity={(quantity) => {
+														setCartQuantity(
+															quantity,
+															product.id,
+															product.variant?.slug ?? undefined,
+														);
+													}}
+													updateQuantity={(delta) => {
+														updateCartQuantity(
+															delta,
+															product.id,
+															product.variant?.slug ?? undefined,
+														);
+													}}
+													maxQuantity={
+														product.enableVariants
+															? (product.variant?.stock ?? 0)
+															: (product.stock ?? 0)
+													}
+													minQuantity={1}
+												/>
+											) : (
+												<p className="text-sm">
+													{t("quantity")}: {product.quantity}
+												</p>
+											)}
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					))}
+				</ul>
+				<dl className="space-y-6 border-t border-gray-200 px-4 py-6 sm:px-6">
+					<div className="flex items-center justify-between">
+						<dt className="text-sm">{t("subtotal")}</dt>
+						<dd className="text-sm font-medium text-gray-900">
+							<PriceClient pricing={totalPrice ?? []} />
+						</dd>
+					</div>
+					<div className="flex items-center justify-between">
+						<dt className="text-sm">{t("shipping")}</dt>
+						<dd className="text-sm font-medium text-gray-900">
+							{shippingCost?.[0]?.value === 0 ? (
+								<span className="text-green-600 font-semibold">
+									{t("free-shipping")}
+								</span>
+							) : (
+								<PriceClient pricing={shippingCost ?? []} />
+							)}
+						</dd>
+					</div>
+					<div className="flex items-center justify-between border-t border-gray-200 pt-6">
+						<dt className="text-base font-medium">{t("total")}</dt>
+						<dd className="text-base font-medium text-gray-900">
+							<PriceClient pricing={totalPriceWithShipping} />
+						</dd>
+					</div>
+				</dl>
+				{isSummaryStep && (
+					<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+						<div className="flex items-start">
+							<input
+								id="termsCheck"
+								{...form.register("termsCheck")}
+								type="checkbox"
+								className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-main-600 focus:ring-2 focus:ring-main-500"
+							/>
+							<label
+								htmlFor="termsCheck"
+								className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+							>
+								{t("agree-terms")}
+								<Link
+									href="/obchodni-podminky"
+									target="_blank"
+									title={t("terms")}
+									className="text-main-700 underline hover:no-underline"
+								>
+									{t("terms-link")}
+								</Link>
+								{t("and-privacy")}
+							</label>
+						</div>
+						<div className="flex items-start mt-4">
+							<input
+								id="newsletterCheck"
+								{...form.register("newsletterCheck")}
+								type="checkbox"
+								className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-main-600 focus:ring-2 focus:ring-main-500"
+								defaultChecked
+							/>
+							<label
+								htmlFor="newsletterCheck"
+								className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+							>
+								<span>
+									{t("subscribe-newsletter")}
+									<a
+										href="#"
+										title=""
+										className="text-main-700 underline hover:no-underline"
+									>
+										{t("privacy-link")}
+									</a>
+								</span>
+							</label>
+						</div>
+					</div>
+				)}
+				{isSummaryStep && (
+					<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+						<button
+							type="submit"
+							className="w-full cursor-pointer disabled:cursor-not-allowed rounded-md border border-transparent bg-main-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-main-700 focus:outline-hidden focus:ring-2 focus:ring-main-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+							disabled={!form.watch("termsCheck")}
+						>
+							{t("confirm")}
+						</button>
+					</div>
+				)}
+				{errorMessage && (
+					<p className="text-sm mb-4 text-red-500">{errorMessage}</p>
+				)}
+			</div>
+		</div>
+	);
 };

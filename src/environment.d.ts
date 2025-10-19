@@ -4,15 +4,15 @@ import type en from "../translations/en.json";
 type Messages = typeof en;
 
 declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      PAYLOAD_SECRET: string;
-      DATABASE_URI: string;
-      NEXT_PUBLIC_SERVER_URL: string;
-      VERCEL_PROJECT_PRODUCTION_URL: string;
-    }
-  }
-  interface IntlMessages extends Messages {}
+	namespace NodeJS {
+		interface ProcessEnv {
+			PAYLOAD_SECRET: string;
+			DATABASE_URI: string;
+			NEXT_PUBLIC_SERVER_URL: string;
+			VERCEL_PROJECT_PRODUCTION_URL: string;
+		}
+	}
+	interface IntlMessages extends Messages {}
 }
 
 // If this file has no import/export statements (i.e. is a script)

@@ -5,10 +5,10 @@ import { redirect } from "@/i18n/routing";
 export const dynamic = "force-dynamic";
 
 const Page = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
-  const { locale } = await params;
-  setRequestLocale(locale);
+	const { locale } = await params;
+	setRequestLocale(locale);
 
-  return redirect({ locale, href: "/account/orders" });
+	return redirect({ locale, href: "/account/orders" });
 };
 
 export default Page;

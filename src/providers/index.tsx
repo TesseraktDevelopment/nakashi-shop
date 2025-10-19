@@ -9,7 +9,7 @@ import { type ReactNode } from "react";
 // import { getCachedGlobal } from "@/utilities/getGlobals";
 
 export const Providers = async ({ children }: { children: ReactNode }) => {
-  // const locale = (await getLocale()) as Locale;
-  // const shopSettings: ShopSetting = await getCachedGlobal("shopSettings", locale, 1)();
-  return children;
+	// const locale = (await getLocale()) as Locale;
+	// const shopSettings: ShopSetting = await getCachedGlobal("shopSettings", locale, 1)();
+	return children;
 };

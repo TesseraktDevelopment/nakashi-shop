@@ -40,127 +40,129 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
-  admin: {
-    avatar: {
-      Component: "@/components/AdminAvatar#AdminAvatar",
-    },
-    components: {
-      afterLogin: ["@/components/AdminResetPassword#AdminResetPassword"],
-      graphics: {
-        Logo: "@/components/AdminLogoBig/AdminLogoBig#AdminLogoBig",
-        Icon: "@/components/AdminLogoIcon/AdminLogoIcon#AdminLogoIcon",
-      },
-      Nav: {
-        path: "@/components/AdminNavbar#AdminNavbar",
-      },
-      views: {
-        dashboard: {
-          Component: "@/components/(ecommerce)/AdminDashboard#AdminDashboard",
-        },
-      },
-      beforeNavLinks: ["@/components/(ecommerce)/AdminDashboardNavLink#AdminDashboardNavLink"],
-    },
-    meta: {
-      icons: [
-        {
-          type: "image/svg+xml",
-          url: "/favicon.svg",
-          rel: "icon",
-        },
-      ],
-      title: "Admin Panel",
-      titleSuffix: "| Nakashi",
-    },
-    importMap: {
-      baseDir: path.resolve(dirname),
-    },
-    user: Administrators.slug,
-    livePreview: {
-      breakpoints: [
-        {
-          label: "Mobile",
-          name: "mobile",
-          width: 375,
-          height: 667,
-        },
-        {
-          label: "Tablet",
-          name: "tablet",
-          width: 768,
-          height: 1024,
-        },
-        {
-          label: "Desktop",
-          name: "desktop",
-          width: 1440,
-          height: 900,
-        },
-      ],
-    },
-  },
-  i18n: {
-    supportedLanguages: { en, cs },
-    fallbackLanguage: "cs",
-    translations: customTranslationsObject,
-  },
-  localization: {
-    locales: ["en", "cs"],
-    defaultLocale: "cs",
-  },
-  // This config helps us configure global or default features that the other editors can inherit
-  editor: defaultLexical,
-  db: mongooseAdapter({
-    url: process.env.DATABASE_URI ?? "",
-  }),
-  collections: [
-    Pages,
-    Posts,
-    Media,
-    Categories,
-    Administrators,
-    Customers,
-    Orders,
-    Products,
-    ProductCategories,
-    ProductSubCategories,
-    ProductReviews,
-  ],
-  cors: [getServerSideURL()].filter(Boolean),
-  globals: [
-    Header,
-    Footer,
-    EmailMessages,
-    ShopSettings,
-    ZasilkovnaBox,
-    ShopLayout,
-    InPostPickup,
-    InPostCourier,
-    InPostCourierCOD,
-    Paywalls,
-    Fulfilment,
-  ],
-  plugins: [
-    ...plugins,
-    s3Storage({
-      collections: {
-        [Media.slug]: true,
-      },
-      bucket: process.env.S3_BUCKET ?? "",
-      config: {
-        endpoint: process.env.S3_ENDPOINT ?? "",
-        region: "auto",
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
-        },
-        requestChecksumCalculation: "WHEN_REQUIRED",
-        responseChecksumValidation: "WHEN_REQUIRED",
-      },
-    }),
-  ],
-  secret: process.env.PAYLOAD_SECRET,
-  sharp,
-  typescript: {
-    outputFile: path.resolve(dirname, "payload-types.ts"),
-  },
+	admin: {
+		avatar: {
+			Component: "@/components/AdminAvatar#AdminAvatar",
+		},
+		components: {
+			afterLogin: ["@/components/AdminResetPassword#AdminResetPassword"],
+			graphics: {
+				Logo: "@/components/AdminLogoBig/AdminLogoBig#AdminLogoBig",
+				Icon: "@/components/AdminLogoIcon/AdminLogoIcon#AdminLogoIcon",
+			},
+			Nav: {
+				path: "@/components/AdminNavbar#AdminNavbar",
+			},
+			views: {
+				dashboard: {
+					Component: "@/components/(ecommerce)/AdminDashboard#AdminDashboard",
+				},
+			},
+			beforeNavLinks: [
+				"@/components/(ecommerce)/AdminDashboardNavLink#AdminDashboardNavLink",
+			],
+		},
+		meta: {
+			icons: [
+				{
+					type: "image/svg+xml",
+					url: "/favicon.svg",
+					rel: "icon",
+				},
+			],
+			title: "Admin Panel",
+			titleSuffix: "| Nakashi",
+		},
+		importMap: {
+			baseDir: path.resolve(dirname),
+		},
+		user: Administrators.slug,
+		livePreview: {
+			breakpoints: [
+				{
+					label: "Mobile",
+					name: "mobile",
+					width: 375,
+					height: 667,
+				},
+				{
+					label: "Tablet",
+					name: "tablet",
+					width: 768,
+					height: 1024,
+				},
+				{
+					label: "Desktop",
+					name: "desktop",
+					width: 1440,
+					height: 900,
+				},
+			],
+		},
+	},
+	i18n: {
+		supportedLanguages: { en, cs },
+		fallbackLanguage: "cs",
+		translations: customTranslationsObject,
+	},
+	localization: {
+		locales: ["en", "cs"],
+		defaultLocale: "cs",
+	},
+	// This config helps us configure global or default features that the other editors can inherit
+	editor: defaultLexical,
+	db: mongooseAdapter({
+		url: process.env.DATABASE_URI ?? "",
+	}),
+	collections: [
+		Pages,
+		Posts,
+		Media,
+		Categories,
+		Administrators,
+		Customers,
+		Orders,
+		Products,
+		ProductCategories,
+		ProductSubCategories,
+		ProductReviews,
+	],
+	cors: [getServerSideURL()].filter(Boolean),
+	globals: [
+		Header,
+		Footer,
+		EmailMessages,
+		ShopSettings,
+		ZasilkovnaBox,
+		ShopLayout,
+		InPostPickup,
+		InPostCourier,
+		InPostCourierCOD,
+		Paywalls,
+		Fulfilment,
+	],
+	plugins: [
+		...plugins,
+		s3Storage({
+			collections: {
+				[Media.slug]: true,
+			},
+			bucket: process.env.S3_BUCKET ?? "",
+			config: {
+				endpoint: process.env.S3_ENDPOINT ?? "",
+				region: "auto",
+				credentials: {
+					accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
+					secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
+				},
+				requestChecksumCalculation: "WHEN_REQUIRED",
+				responseChecksumValidation: "WHEN_REQUIRED",
+			},
+		}),
+	],
+	secret: process.env.PAYLOAD_SECRET,
+	sharp,
+	typescript: {
+		outputFile: path.resolve(dirname, "payload-types.ts"),
+	},
 });

@@ -101,6 +101,34 @@
   "CheckoutFormServer": {
     "checkout": "K pokladně"
   },
+  "CheckoutSteps": {
+    "back-to-cart": "Zpět do košíku",
+    "back-to-delivery-payment": "Zpět na doprava a platba",
+    "back-to-shipping": "Zpět na dodací údaje",
+    "back-to-shop": "Zpět do obchodu",
+    "back": "Zpět",
+    "shipping": {
+      "titleKey": "Dodací údaje"
+    },
+    "summary": {
+      "titleKey": "Souhrn"
+    },
+    "delivery": {
+      "titleKey": "Dopravba a platba",
+      "shipping": "Dodací údaje",
+      "cart": "Zpět do košíku"
+    },
+    "next": "Další",
+    "cart": {
+      "titleKey": "Košík",
+      "empty-cart": "Prázdný košík :c",
+      "empty-cart-description": "Přidejte produkty do košíku, abyste mohli pokračovat v objednávce.",
+      "items-count": "Počet produktů",
+      "continue-to-delivery": "Pokračovat k doručení",
+      "delivery-payment": "Doprava a Platba"
+    },
+    "confirm-order": "Potvrdit objednávku"
+  },
   "CheckoutForm": {
     "form": {
       "empty-cart": "Košík je prázdný",
@@ -142,7 +170,6 @@
       "payment-method-summary": "Vyberte bezpečný a rychlý způsob platby. Doporučujeme Stripe pro okamžitou úhradu.",
       "payment-method-disabled": "Dočasně nedostupné",
       "recommended": "Doporučeno",
-      "payment-method": "Způsob platby",
       "change": "Změnit",
       "invoice-data": "Fakturační údaje",
       "no-shipping": "Aktuálně nejsou dostupné žádné způsoby doručení. Kontaktujte nás prosím na podpora@nakashi-army.cz.",
@@ -231,22 +258,24 @@
         "email": "Neplatná e-mailová adresa"
       },
       "deliveryMethod": "Musíte vybrat způsob doručení",
-      "paymentMethod": "Musíte vybrat způsob platby"
+      "paymentMethod": "Musíte vybrat způsob platby",
+      "checkoutProducts": "Prázdné produkty"
     }
   },
   "DeliveryMethods": {
     "inpost-pickup": "Boxy InPost",
     "inpost-courier": "Kurýr InPost",
-    "choose-pickup": "Vybrat box",
-    "change-pickup": "Změnit box",
+    "choose-pickup": "Vybrat výdejní místo",
+    "change-pickup": "Změnit výdejní místo",
     "close": "Zavřít",
     "free-shipping": "Doprava zdarma"
   },
   "OrderSummary": {
     "order-summary": "Shrnutí objednávky",
+    "your-cart": "Tvůj košík",
     "subtotal": "Mezisoučet",
     "shipping": "Doprava",
-    "total": "Celkem",
+    "total": "Celková cena",
     "confirm": "Potvrdit objednávku",
     "remove": "Odebrat",
     "items-in-cart": "Položky ve vašem košíku",
@@ -257,7 +286,8 @@
     "and-privacy": " a zásadami ochrany osobních údajů.",
     "subscribe-newsletter": "Chci přijímat newsletter s novinkami a nabídkami (mohu kdykoliv odhlásit). ",
     "privacy-link": "Zásady ochrany osobních údajů",
-    "confirm": "Potvrdit objednávku"
+    "confirm": "Potvrdit objednávku",
+    "quantity": "Množství"
   },
   "Account": {
     "navigation": {

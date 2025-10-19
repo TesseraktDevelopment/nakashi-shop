@@ -6,34 +6,38 @@ import { Error } from "../Error";
 import { Width } from "../Width";
 
 import type { TextField } from "@payloadcms/plugin-form-builder/types";
-import type { FieldErrorsImpl, FieldValues, UseFormRegister } from "react-hook-form";
+import type {
+	FieldErrorsImpl,
+	FieldValues,
+	UseFormRegister,
+} from "react-hook-form";
 
 export const Textarea = ({
-  name,
-  defaultValue,
-  errors,
-  label,
-  register,
-  required: requiredFromProps,
-  rows = 3,
-  width,
+	name,
+	defaultValue,
+	errors,
+	label,
+	register,
+	required: requiredFromProps,
+	rows = 3,
+	width,
 }: TextField & {
-  errors: Partial<FieldErrorsImpl<Record<string, any>>>;
-  register: UseFormRegister<FieldValues>;
-  rows?: number;
+	errors: Partial<FieldErrorsImpl<Record<string, any>>>;
+	register: UseFormRegister<FieldValues>;
+	rows?: number;
 }) => {
-  return (
-    <Width width={width}>
-      <Label htmlFor={name}>{label}</Label>
+	return (
+		<Width width={width}>
+			<Label htmlFor={name}>{label}</Label>
 
-      <TextAreaComponent
-        defaultValue={defaultValue}
-        id={name}
-        rows={rows}
-        {...register(name, { required: requiredFromProps })}
-      />
+			<TextAreaComponent
+				defaultValue={defaultValue}
+				id={name}
+				rows={rows}
+				{...register(name, { required: requiredFromProps })}
+			/>
 
-      {requiredFromProps && errors[name] && <Error />}
-    </Width>
-  );
+			{requiredFromProps && errors[name] && <Error />}
+		</Width>
+	);
 };

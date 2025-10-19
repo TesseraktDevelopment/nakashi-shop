@@ -3,6 +3,6 @@ import { Orders } from "@/globals/(ecommerce)/Layout/ClientPanel/Orders/Componen
 export const dynamic = "force-dynamic";
 
 const OrdersPage = () => {
-  return <Orders />;
+	return <Orders />;
 };
 export default OrdersPage;

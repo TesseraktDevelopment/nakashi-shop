@@ -8,26 +8,33 @@ import { sendEmail } from "@/utilities/nodemailer";
 
 import type { CollectionAfterChangeHook } from "payload";
 
-export const sendWelcomeEmail: CollectionAfterChangeHook<Customer> = async ({ previousDoc, doc }) => {
-  if (previousDoc._verified === false && doc._verified === true) {
-    try {
-      const locale = (await getLocale()) as Locale;
+export const sendWelcomeEmail: CollectionAfterChangeHook<Customer> = async ({
+	previousDoc,
+	doc,
+}) => {
+	if (previousDoc._verified === false && doc._verified === true) {
+		try {
+			const locale = (await getLocale()) as Locale;
 
-      const html = await render(
-        await WelcomeEmail({
-          customer: doc,
-          locale,
-        }),
-      );
+			const html = await render(
+				await WelcomeEmail({
+					customer: doc,
+					locale,
+				}),
+			);
 
-      const t = await getTranslations({ locale, namespace: "Emails.welcome" });
+			const t = await getTranslations({ locale, namespace: "Emails.welcome" });
 
-      const res = await sendEmail({ to: doc.email, subject: t("subject"), html });
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+			const res = await sendEmail({
+				to: doc.email,
+				subject: t("subject"),
+				html,
+			});
+			console.log(res);
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
-  return doc;
+	return doc;
 };

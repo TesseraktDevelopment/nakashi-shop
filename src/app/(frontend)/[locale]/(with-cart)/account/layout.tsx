@@ -9,20 +9,20 @@ import { getCustomer } from "@/utilities/getCustomer";
 export const dynamic = "force-dynamic";
 
 const AccountPage = async ({
-  params,
-  children,
+	params,
+	children,
 }: {
-  params: Promise<{ locale: Locale }>;
-  children: ReactNode;
+	params: Promise<{ locale: Locale }>;
+	children: ReactNode;
 }) => {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  const user = await getCustomer();
+	const { locale } = await params;
+	setRequestLocale(locale);
+	const user = await getCustomer();
 
-  if (!user) {
-    return redirect({ locale, href: "/login" });
-  }
+	if (!user) {
+		return redirect({ locale, href: "/login" });
+	}
 
-  return <ClientPanel>{children}</ClientPanel>;
+	return <ClientPanel>{children}</ClientPanel>;
 };
 export default AccountPage;

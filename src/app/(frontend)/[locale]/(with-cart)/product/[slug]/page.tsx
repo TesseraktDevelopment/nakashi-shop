@@ -7,36 +7,36 @@ import { type Locale } from "@/i18n/config";
 import config from "@payload-config";
 
 const ProductPage = async ({
-  params,
-  searchParams,
+	params,
+	searchParams,
 }: {
-  params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
+	params: Promise<{ slug: string }>;
+	searchParams: Promise<Record<string, string | undefined>>;
 }) => {
-  try {
-    const payload = await getPayload({ config });
-    const locale = (await getLocale()) as Locale;
-    const { slug } = await params;
-    const { docs } = await payload.find({
-      collection: "products",
-      depth: 2,
-      locale,
-      where: {
-        slug: {
-          equals: slug,
-        },
-      },
-    });
-    const { variant } = await searchParams;
+	try {
+		const payload = await getPayload({ config });
+		const locale = (await getLocale()) as Locale;
+		const { slug } = await params;
+		const { docs } = await payload.find({
+			collection: "products",
+			depth: 2,
+			locale,
+			where: {
+				slug: {
+					equals: slug,
+				},
+			},
+		});
+		const { variant } = await searchParams;
 
-    if (docs.length === 0) {
-      notFound();
-    }
+		if (docs.length === 0) {
+			notFound();
+		}
 
-    return <ProductDetails variant={variant} product={docs[0]} />;
-  } catch {
-    notFound();
-  }
+		return <ProductDetails variant={variant} product={docs[0]} />;
+	} catch {
+		notFound();
+	}
 };
 
 export default ProductPage;

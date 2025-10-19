@@ -3,9 +3,9 @@
 import { useRowLabel } from "@payloadcms/ui";
 
 export const OptionLabel = () => {
-  const { data } = useRowLabel<{
-    slug: string;
-  }>();
+	const { data } = useRowLabel<{
+		slug: string;
+	}>();
 
-  return <p>{data.slug}</p>;
+	return <p>{data.slug}</p>;
 };

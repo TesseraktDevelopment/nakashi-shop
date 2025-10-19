@@ -6,7 +6,10 @@ import { GeistSans } from "geist/font/sans";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import React, { type ReactNode, unstable_ViewTransition as ViewTransition } from "react";
+import React, {
+	type ReactNode,
+	unstable_ViewTransition as ViewTransition,
+} from "react";
 
 import "../globals.css";
 // import { LivePreviewListener } from "@/components/LivePreviewListener";
@@ -18,71 +21,77 @@ import { getServerSideURL } from "@/utilities/getURL";
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
 import { cn } from "src/utilities/cn";
 
+import "../../../../sentry.client";
+
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
+	return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout({
-  params,
-  children,
+	params,
+	children,
 }: {
-  params: Promise<{ locale: string }>;
-  children: ReactNode;
+	params: Promise<{ locale: string }>;
+	children: ReactNode;
 }) {
-  // const { isEnabled } = await draftMode();
-  const { locale } = await params;
+	// const { isEnabled } = await draftMode();
+	const { locale } = await params;
 
-  if (!routing.locales.includes(locale as Locale)) {
-    notFound();
-  }
+	if (!routing.locales.includes(locale as Locale)) {
+		notFound();
+	}
 
-  setRequestLocale(locale);
+	setRequestLocale(locale);
 
-  const messages = await getMessages({ locale });
+	const messages = await getMessages({ locale });
 
-  return (
-    <html
-      className={cn(GeistSans.variable, GeistMono.variable, "twp overflow-x-clip lg:overflow-y-scroll")}
-      lang={locale}
-      // data-thmee="light"
-      // suppressHydrationWarning
-    >
-      <head>
-        {/* <InitTheme /> */}
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-      </head>
-      <body className="max-w-screen overflow-x-clip">
-        <ViewTransition>
-          <Providers>
-            <NextIntlClientProvider locale={locale} messages={messages}>
-              {/* <AdminBar
+	return (
+		<html
+			className={cn(
+				GeistSans.variable,
+				GeistMono.variable,
+				"twp overflow-x-clip lg:overflow-y-scroll",
+			)}
+			lang={locale}
+			// data-thmee="light"
+			// suppressHydrationWarning
+		>
+			<head>
+				{/* <InitTheme /> */}
+				<link href="/favicon.ico" rel="icon" sizes="32x32" />
+				<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+			</head>
+			<body className="max-w-screen overflow-x-clip">
+				<ViewTransition>
+					<Providers>
+						<NextIntlClientProvider locale={locale} messages={messages}>
+							{/* <AdminBar
               adminBarProps={{
                 preview: isEnabled,
               }}
             /> */}
-              {/* {isEnabled && <LivePreviewListener />} */}
-              {children}
-              <Footer />
-            </NextIntlClientProvider>
-          </Providers>
-        </ViewTransition>
-      </body>
-    </html>
-  );
+							{/* {isEnabled && <LivePreviewListener />} */}
+							{children}
+							<Footer />
+						</NextIntlClientProvider>
+					</Providers>
+				</ViewTransition>
+			</body>
+		</html>
+	);
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  openGraph: mergeOpenGraph(),
-  twitter: {
-    card: "summary_large_image",
-    creator: "@payloadcms",
-  },
-  robots: {
-    index: !(process.env.NEXT_PUBLIC_ROBOTS_INDEX === "false"),
-    follow: !(process.env.NEXT_PUBLIC_ROBOTS_INDEX === "false"),
-  },
+	metadataBase: new URL(getServerSideURL()),
+	openGraph: mergeOpenGraph(),
+	twitter: {
+		card: "summary_large_image",
+		creator: "@payloadcms",
+	},
+	robots: {
+		index: !(process.env.NEXT_PUBLIC_ROBOTS_INDEX === "false"),
+		follow: !(process.env.NEXT_PUBLIC_ROBOTS_INDEX === "false"),
+	},
 };

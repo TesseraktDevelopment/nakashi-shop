@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import { useCart } from "@/stores/CartStore";
 
 export const SynchronizeCart = () => {
-  const { synchronizeCart } = useCart();
-  useEffect(() => {
-    void synchronizeCart();
-  }, [synchronizeCart]);
-  return <></>;
+	const { synchronizeCart } = useCart();
+	useEffect(() => {
+		void synchronizeCart();
+	}, [synchronizeCart]);
+	return <></>;
 };

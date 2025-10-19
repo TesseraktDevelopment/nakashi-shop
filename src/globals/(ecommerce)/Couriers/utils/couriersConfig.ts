@@ -8,103 +8,130 @@ import { createPacketaZBoxShipment } from "@/lib/couriers/packages/createPacketa
 import { type Order } from "@/payload-types";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 
-const parseDimensions = (dimension: string, fallbackDimensions?: Dimensions): Dimensions => {
-  if (fallbackDimensions) {
-    return fallbackDimensions;
-  }
+const parseDimensions = (
+	dimension: string,
+	fallbackDimensions?: Dimensions,
+): Dimensions => {
+	if (fallbackDimensions) {
+		return fallbackDimensions;
+	}
 
-  const [width, height, length] = dimension.replace("mm", "").split("x").map(Number);
-  return {
-    width: width || 100,
-    height: height || 100,
-    length: length || 100,
-    weight: 1,
-  };
+	const [width, height, length] = dimension
+		.replace("mm", "")
+		.split("x")
+		.map(Number);
+	return {
+		width: width || 100,
+		height: height || 100,
+		length: length || 100,
+		weight: 1,
+	};
 };
 
 export const createCouriers = (locale: Locale) =>
-  [
-    {
-      key: "inpost-pickup",
-      getSettings: () => getCachedGlobal("inpost-pickup", locale, 1)(),
-      prepaid: true,
-      createPackage: (order: Order, dimension: string, _dimensions?: Dimensions) =>
-        createInpostPickupPackage(order, dimension),
-      getLabel: (packageID: string) => getInpostLabel(packageID, "inpost-pickup"),
-    },
-    {
-      key: "inpost-courier",
-      getSettings: () => getCachedGlobal("inpost-courier", locale, 1)(),
-      prepaid: true,
-      createPackage: (order: Order, _dimension: string, dimensions: Dimensions) =>
-        createInpostCourierPackage(order, dimensions),
-      getLabel: (packageID: string) => getInpostLabel(packageID, "inpost-courier"),
-    },
-    {
-      key: "inpost-courier-cod",
-      getSettings: () => getCachedGlobal("inpost-courier-cod", locale, 1)(),
-      prepaid: false,
-      createPackage: (order: Order, _dimension: string, dimensions: Dimensions) =>
-        createInpostCODCourierPackage(order, dimensions),
-      getLabel: (packageID: string) => getInpostLabel(packageID, "inpost-courier-cod"),
-    },
-    {
-      key: "zasilkovna-box",
-      getSettings: () => getCachedGlobal("zasilkovna-box", locale, 1)(),
-      prepaid: true,
-      createPackage: (order: Order, dimension: string, _dimensions?: Dimensions) =>
-        createPacketaZBoxShipment(order, parseDimensions(dimension, _dimensions)),
-      getLabel: (packageID: string) => getInpostLabel(packageID, "inpost-courier-cod"),
-    },
-  ] as const;
+	[
+		{
+			key: "inpost-pickup",
+			getSettings: () => getCachedGlobal("inpost-pickup", locale, 1)(),
+			prepaid: true,
+			createPackage: (
+				order: Order,
+				dimension: string,
+				_dimensions?: Dimensions,
+			) => createInpostPickupPackage(order, dimension),
+			getLabel: (packageID: string) =>
+				getInpostLabel(packageID, "inpost-pickup"),
+		},
+		{
+			key: "inpost-courier",
+			getSettings: () => getCachedGlobal("inpost-courier", locale, 1)(),
+			prepaid: true,
+			createPackage: (
+				order: Order,
+				_dimension: string,
+				dimensions: Dimensions,
+			) => createInpostCourierPackage(order, dimensions),
+			getLabel: (packageID: string) =>
+				getInpostLabel(packageID, "inpost-courier"),
+		},
+		{
+			key: "inpost-courier-cod",
+			getSettings: () => getCachedGlobal("inpost-courier-cod", locale, 1)(),
+			prepaid: false,
+			createPackage: (
+				order: Order,
+				_dimension: string,
+				dimensions: Dimensions,
+			) => createInpostCODCourierPackage(order, dimensions),
+			getLabel: (packageID: string) =>
+				getInpostLabel(packageID, "inpost-courier-cod"),
+		},
+		{
+			key: "zasilkovna-box",
+			getSettings: () => getCachedGlobal("zasilkovna-box", locale, 1)(),
+			prepaid: true,
+			createPackage: (
+				order: Order,
+				dimension: string,
+				_dimensions?: Dimensions,
+			) =>
+				createPacketaZBoxShipment(
+					order,
+					parseDimensions(dimension, _dimensions),
+				),
+			getLabel: (packageID: string) =>
+				getInpostLabel(packageID, "inpost-courier-cod"),
+		},
+	] as const;
 
 export const courierSelectOptions = [
-  {
-    value: "inpost-pickup",
-    label: {
-      en: "InPost Pickup",
-      cs: "InPost Paczkomat",
-    },
-  },
-  {
-    value: "inpost-courier",
-    label: {
-      en: "InPost Courier",
-      cs: "InPost Kurier",
-    },
-  },
-  {
-    value: "inpost-courier-cod",
-    label: {
-      en: "InPost Courier COD",
-      cs: "InPost Kurier COD",
-    },
-  },
-  {
-    value: "zasilkovna-box",
-    label: {
-      en: "Packeta Box",
-      cs: "Zásilkovna Box",
-    },
-  },
+	{
+		value: "inpost-pickup",
+		label: {
+			en: "InPost Pickup",
+			cs: "InPost Paczkomat",
+		},
+	},
+	{
+		value: "inpost-courier",
+		label: {
+			en: "InPost Courier",
+			cs: "InPost Kurier",
+		},
+	},
+	{
+		value: "inpost-courier-cod",
+		label: {
+			en: "InPost Courier COD",
+			cs: "InPost Kurier COD",
+		},
+	},
+	{
+		value: "zasilkovna-box",
+		label: {
+			en: "Packeta Box",
+			cs: "Zásilkovna Box",
+		},
+	},
 ];
 
 export const getCouriersArray = async (locale: Locale, withZones?: boolean) => {
-  const couriers = createCouriers(locale);
-  const deliveryMethods = await Promise.all(
-    couriers.map(async (courier) => {
-      const { settings, enabled, deliveryZones, icon } = await courier.getSettings();
-      return enabled && settings
-        ? {
-            slug: courier.key,
-            title: settings.label,
-            turnaround: settings.description ?? "",
-            icon: icon,
-            deliveryZones: withZones ? deliveryZones : undefined,
-          }
-        : null;
-    }),
-  ).then((methods) => methods.filter(Boolean));
+	const couriers = createCouriers(locale);
+	const deliveryMethods = await Promise.all(
+		couriers.map(async (courier) => {
+			const { settings, enabled, deliveryZones, icon } =
+				await courier.getSettings();
+			return enabled && settings
+				? {
+						slug: courier.key,
+						title: settings.label,
+						turnaround: settings.description ?? "",
+						icon: icon,
+						deliveryZones: withZones ? deliveryZones : undefined,
+					}
+				: null;
+		}),
+	).then((methods) => methods.filter(Boolean));
 
-  return deliveryMethods;
+	return deliveryMethods;
 };

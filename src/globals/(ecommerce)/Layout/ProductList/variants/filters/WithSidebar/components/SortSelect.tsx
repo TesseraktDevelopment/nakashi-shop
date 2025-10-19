@@ -4,25 +4,31 @@ import { type ReactNode } from "react";
 
 import { Select } from "@/components/ui/select";
 
-export const SortSelect = ({ children, defaultValue }: { children: ReactNode; defaultValue: string }) => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+export const SortSelect = ({
+	children,
+	defaultValue,
+}: {
+	children: ReactNode;
+	defaultValue: string;
+}) => {
+	const searchParams = useSearchParams();
+	const router = useRouter();
 
-  const handleSortingOptions = (value: string) => {
-    const currentParams = new URLSearchParams(searchParams?.toString());
+	const handleSortingOptions = (value: string) => {
+		const currentParams = new URLSearchParams(searchParams?.toString());
 
-    if (!value || value === "most-popular") {
-      currentParams.delete("sortBy");
-    } else {
-      currentParams.set("sortBy", value);
-    }
+		if (!value || value === "most-popular") {
+			currentParams.delete("sortBy");
+		} else {
+			currentParams.set("sortBy", value);
+		}
 
-    router.push(`?${currentParams.toString()}`);
-  };
+		router.push(`?${currentParams.toString()}`);
+	};
 
-  return (
-    <Select defaultValue={defaultValue} onValueChange={handleSortingOptions}>
-      {children}
-    </Select>
-  );
+	return (
+		<Select defaultValue={defaultValue} onValueChange={handleSortingOptions}>
+			{children}
+		</Select>
+	);
 };

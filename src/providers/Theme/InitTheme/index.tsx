@@ -3,11 +3,11 @@ import Script from "next/script";
 import { defaultTheme, themeLocalStorageKey } from "../ThemeSelector/types";
 
 export const InitTheme = () => {
-  return (
-    // eslint-disable-next-line
-    <Script
-      dangerouslySetInnerHTML={{
-        __html: `
+	return (
+		// eslint-disable-next-line
+		<Script
+			dangerouslySetInnerHTML={{
+				__html: `
   (function () {
     function getImplicitPreference() {
       var mediaQuery = '(prefers-color-scheme: dark)'
@@ -41,9 +41,9 @@ export const InitTheme = () => {
     document.documentElement.setAttribute('data-theme', themeToSet)
   })();
   `,
-      }}
-      id="theme-script"
-      strategy="beforeInteractive"
-    />
-  );
+			}}
+			id="theme-script"
+			strategy="beforeInteractive"
+		/>
+	);
 };

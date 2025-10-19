@@ -3,9 +3,9 @@
 import { useRowLabel } from "@payloadcms/ui";
 
 export const DetailLabel = () => {
-  const { data } = useRowLabel<{
-    title: string;
-  }>();
+	const { data } = useRowLabel<{
+		title: string;
+	}>();
 
-  return <p>{data?.title}</p>;
+	return <p>{data?.title}</p>;
 };
