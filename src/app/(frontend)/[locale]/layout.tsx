@@ -8,7 +8,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import React, {
 	type ReactNode,
-	unstable_ViewTransition as ViewTransition,
+	// unstable_ViewTransition as ViewTransition,
 } from "react";
 
 import "../globals.css";
@@ -64,7 +64,7 @@ export default async function RootLayout({
 				<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
 			</head>
 			<body className="max-w-screen overflow-x-clip">
-				<ViewTransition>
+				{/* <ViewTransition> */}
 					<Providers>
 						<NextIntlClientProvider locale={locale} messages={messages}>
 							{/* <AdminBar
@@ -77,7 +77,7 @@ export default async function RootLayout({
 							<Footer />
 						</NextIntlClientProvider>
 					</Providers>
-				</ViewTransition>
+				{/* </ViewTransition> */}
 			</body>
 		</html>
 	);
