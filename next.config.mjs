@@ -28,7 +28,6 @@ const nextConfig = {
   reactStrictMode: true,
   redirects,
   experimental: {
-    reactCompiler: true,
     viewTransition: true,
   },
 };
