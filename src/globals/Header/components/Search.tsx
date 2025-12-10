@@ -135,11 +135,11 @@ export const Search = () => {
 		}
 	}, 200);
 
-	useEffect(() => {
-		if (pathname !== "/search") {
-			void fetchProductsAndCategories("");
-		}
-	}, [pathname, fetchProductsAndCategories, router]);
+  useEffect(() => {
+    if (pathname !== "/search" && searchValue === "") {
+      fetchProductsAndCategories("");
+    }
+  }, [pathname]);
 
 	const handleSearchChange = async (value: string) => {
 		if (pathname === "/search") {
