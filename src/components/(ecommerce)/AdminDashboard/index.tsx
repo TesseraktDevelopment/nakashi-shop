@@ -56,16 +56,15 @@ export const AdminDashboard = async (req: PayloadRequest) => {
 			<section className="flex flex-wrap items-center gap-4">
 				<h1 className="mr-auto">{t("adminDashboard:linkTitle")}</h1>
 				<AdminSearch groups={groups} />
-				<Button
-					Link={Link}
-					url="/admin/collections/products/create"
-					to="/admin/collections/products/create"
-					el="link"
-					className="my-0 block min-h-11"
-					icon="plus"
-				>
-					{t("adminDashboard:addProduct")}
-				</Button>
+        <Button
+          url="/admin/collections/products/create"
+          to="/admin/collections/products/create"
+          el="link"
+          className="my-0 block min-h-11"
+          icon="plus"
+        >
+          {t("adminDashboard:addProduct")}
+        </Button>
 			</section>
 			<section className="twp my-6 flex flex-col justify-center gap-6 sm:flex-row sm:items-center sm:justify-between">
 				<AdminTabs />
