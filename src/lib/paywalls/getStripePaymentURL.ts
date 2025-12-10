@@ -45,7 +45,7 @@ export const getStripePaymentURL = async ({
 	orderSecret: string;
 	checkoutData: CheckoutFormData;
 }) => {
-	const stripe = new Stripe(apiKey, { apiVersion: "2025-07-30.basil" });
+	const stripe = new Stripe(apiKey, { apiVersion: "2025-08-27.basil" });
 
 	// Log product details for debugging
 	console.log("Filled products:", JSON.stringify(filledProducts, null, 2));
