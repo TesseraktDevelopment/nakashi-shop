@@ -7,7 +7,7 @@ import { getCustomer } from "@/utilities/getCustomer";
 
 async function updateCustomerData() {
 	"use server";
-	revalidateTag("user-auth");
+	revalidateTag("user-auth", "max");
 }
 
 const OrdersDataPage = async ({

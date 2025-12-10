@@ -37,7 +37,7 @@ export const Customers: CollectionConfig = {
 		afterOperation: [createTokenAndSendEmail],
 		afterLogin: [
 			async () => {
-				revalidateTag("user-auth");
+				revalidateTag("user-auth", "max");
 			},
 		],
 		beforeChange: [

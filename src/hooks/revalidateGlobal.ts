@@ -10,7 +10,7 @@ export const revalidateGlobal: GlobalAfterChangeHook = ({
 	if (!context.disableRevalidate) {
 		payload.logger.info(`Revalidating ${doc.globalType}`);
 
-		revalidateTag(`global_${doc.globalType}`);
+		revalidateTag(`global_${doc.globalType}`, "max");
 	}
 
 	return doc;
