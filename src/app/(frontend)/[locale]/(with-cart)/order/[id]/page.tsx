@@ -281,11 +281,12 @@ const OrdersPage = async ({
 	let stripePaymentURL: string | null = null;
 	if (
 		order.orderDetails.status === "unpaid" ||
+    order.orderDetails.status === "pending" ||
 		order.orderDetails.status === "cancelled"
 	) {
 		try {
 			const response = await axios.get(
-				`${process.env.NEXT_PUBLIC_SERVER_URL}/next/retry-payment?orderId=${order.id}&locale=${locale}${providedSecret ? `&x=${providedSecret}` : ""}`,
+				`${process.env.NEXT_PUBLIC_SERVER_URL}/next/retry-payment?orderId=${order.id}&locale=${locale}${providedSecret ? `&x=${providedSecret}` : `&x=${order.orderDetails.orderSecret}`}`,
 			);
 			const result = RetryPaymentResponseSchema.safeParse(response.data);
 			if (result.success) {
@@ -340,8 +341,7 @@ const OrdersPage = async ({
 							</dd>
 						</dl>
 					)}
-					{(order.orderDetails.status === "unpaid" ||
-						order.orderDetails.status === "cancelled") &&
+					{(order.orderDetails.status === "unpaid" || order.orderDetails.status === "pending" || order.orderDetails.status === "cancelled") &&
 						stripePaymentURL && (
 							<div className="mt-6">
 								<a href={stripePaymentURL}>
@@ -411,12 +411,12 @@ const OrdersPage = async ({
 												)?.label
 											}
 										</p>
-										{product.description && (
+										{/* {product.description && (
 											<RichText
 												data={product.description}
 												className="mt-2 text-sm text-gray-600"
 											/>
-										)}
+										)} */}
 									</div>
 									<div className="mt-6 flex flex-1 items-end">
 										<dl className="flex space-x-4 divide-x divide-gray-200 text-sm sm:space-x-6">
