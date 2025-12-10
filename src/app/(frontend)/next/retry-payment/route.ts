@@ -43,6 +43,7 @@ export async function GET(req: Request) {
 
 		if (
 			order.orderDetails.status !== "unpaid" &&
+      order.orderDetails.status !== "pending" &&
 			order.orderDetails.status !== "cancelled"
 		) {
 			console.log(
