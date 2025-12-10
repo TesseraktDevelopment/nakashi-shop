@@ -14,7 +14,7 @@ export const Checkout = async ({ locale }: { locale: Locale }) => {
 		let CheckoutComponent: ReactNode = null;
 		switch (checkout.type) {
 			case "OneStepWithSummary":
-				CheckoutComponent = <MultiStepWithSummary locale={locale} />;
+				CheckoutComponent = <OneStepWithSummary locale={locale} />;
 				break;
 			case "MultiStepCheckoutForm":
 				CheckoutComponent = <MultiStepWithSummary locale={locale} />;
