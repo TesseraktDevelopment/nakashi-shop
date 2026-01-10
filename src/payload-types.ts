@@ -2858,6 +2858,7 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  logo?: (string | null) | Media;
   background?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -3477,6 +3478,7 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  logo?: T;
   background?: T;
   updatedAt?: T;
   createdAt?: T;

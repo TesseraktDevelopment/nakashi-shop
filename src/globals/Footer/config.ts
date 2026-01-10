@@ -42,6 +42,12 @@ export const Footer: GlobalConfig = {
 				},
 			},
 		},
+		{
+			name: "logo",
+			type: "upload",
+			relationTo: "media",
+			localized: true,
+		},
 		backgroundPicker,
 	],
 	hooks: {
