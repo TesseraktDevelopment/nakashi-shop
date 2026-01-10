@@ -200,9 +200,9 @@ export const DefaultHeader = ({
 			</div>
 
 			{/* Spodní řada: Desktop Navigace */}
-			{!isSearchOpened && (
 				<div className="container hidden lg:block">
-					<nav className="flex items-center justify-center border-t border-white/10 py-4">
+					<nav className={`flex items-center justify-center py-4 ${isSearchOpened ? "" : "border-t border-white/10"}`}>
+						{!isSearchOpened && (
 						<div className="flex items-center gap-8">
 							{data.navItems?.map(({ link }, i) => (
 								<CMSLink
@@ -213,9 +213,9 @@ export const DefaultHeader = ({
 								/>
 							))}
 						</div>
+						)}
 					</nav>
 				</div>
-			)}
 
 			{/* Mobile Navigace */}
 			<nav
