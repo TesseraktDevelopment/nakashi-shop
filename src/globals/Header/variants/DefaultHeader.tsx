@@ -88,7 +88,7 @@ export const DefaultHeader = ({
 		<header
 			className={classes}
 			style={{
-				background: data.background || "linear-gradient(180deg, #93C5FD 0%, #DBEAFE 100%)",
+				background: data.background || "linear-gradient(180deg, #212625 0%, #DBEAFE 100%)",
 			}}
 		>
 			{/* Horní lišta s výhodami by přišla sem - zatím ponecháno na CMS obsah */}
