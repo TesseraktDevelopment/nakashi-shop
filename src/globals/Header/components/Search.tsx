@@ -157,7 +157,7 @@ export const Search = () => {
 		<Command
 			ref={searchRef}
 			shouldFilter={false}
-			className="group absolute left-1/2 top-full h-fit w-screen -translate-x-1/2 overflow-visible border-b-0 px-4 shadow-md lg:top-1/2 lg:w-fit lg:min-w-[450px] lg:max-w-[550px] lg:-translate-y-1/2 lg:rounded-lg lg:px-0 xl:w-1/2"
+			className="group relative h-fit w-full overflow-visible border-b-0 rounded-full lg:rounded-full bg-white shadow-lg"
 		>
 			<CommandSearchInput
 				onFocus={() => setIsOpen(true)}
@@ -168,10 +168,11 @@ export const Search = () => {
 						router.push(`/search?search=${searchValue}`);
 					}
 				}}
+				autoFocus
 				value={searchValue}
 				searchValue={searchValue}
 				placeholder={t("search")}
-				className="h-fit border-b-0 lg:py-2"
+				className="h-10 lg:h-12 border-b-0 rounded-full px-6"
 			/>
 			<CommandList
 				className={twMerge(

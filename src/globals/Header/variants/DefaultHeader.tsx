@@ -1,8 +1,10 @@
 "use client";
 import {
 	HeartIcon,
+	MagnifyingGlassIcon,
 	ShoppingBagIcon,
 	UserIcon,
+	XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
@@ -16,6 +18,7 @@ import { useCart } from "@/stores/CartStore";
 import { useWishListState } from "@/stores/WishListStateStore";
 import { useWishList } from "@/stores/WishlistStore";
 import { cn } from "@/utilities/cn";
+import { LocaleSwitch } from "@/components/LocaleSwitch/LocaleSwitch";
 
 import { Search } from "../components/Search";
 
@@ -27,6 +30,7 @@ export const DefaultHeader = ({
 	disableCart?: boolean;
 }) => {
 	const [isMenuOpened, setisMenuOpened] = useState(false);
+	const [isSearchOpened, setIsSearchOpened] = useState(false);
 	const [scrollValue, setScrollValue] = useState(0);
 	const [scrollDown, setScrollDown] = useState(false);
 
@@ -75,111 +79,173 @@ export const DefaultHeader = ({
 	}, [cart]);
 
 	const classes = cn(
-		`sticky flex w-full top-0 justify-center md:px-12 transition-transform z-50`,
-		`${data.hideOnScroll && scrollDown ? "-translate-y-full md:-translate-y-full" : ""}`,
+		`sticky flex flex-col w-full top-0 justify-center transition-all z-50`,
+		data.hideOnScroll && scrollDown ? "-translate-y-full" : "translate-y-0",
+		scrollValue > 0 ? "shadow-sm bg-opacity-90 backdrop-blur-md" : "",
 	);
 
 	return (
 		<header
 			className={classes}
-			style={data.background ? { background: data.background } : {}}
+			style={{
+				background: data.background || "linear-gradient(180deg, #93C5FD 0%, #DBEAFE 100%)",
+			}}
 		>
-			<div
-				className={`container relative flex w-full items-center py-6 lg:gap-8 ${scrollValue > 0 ? "scrolled" : ""} ${isMenuOpened ? "opened" : ""}`}
-			>
-				<Link href="/" className="mr-auto">
-					{data.logo &&
-					typeof data.logo !== "string" &&
-					data.logo.url &&
-					data.logo.alt ? (
-						<Media
-							resource={data.logo}
-							className={cn(
-								isMenuOpened && "invert lg:invert-0",
-								"-my-7 h-[88px] w-full max-w-37.5",
-							)}
-							imgClassName="h-[88px] w-full max-w-37.5"
-						/>
-					) : (
-						<Logo />
-					)}
-				</Link>
-				<Search />
-				<button
-					aria-label="Toggle Menu"
-					className="z-20 order-1 ml-8 flex flex-col items-end justify-center gap-[6px] lg:hidden"
-					onClick={toggleMenu}
-				>
-					<div
-						className={`h-[3px] w-7 rounded-full bg-white transition-transform ${isMenuOpened && "absolute top-1/2 -translate-y-1/2 rotate-45 invert"}`}
-					/>
-					<div
-						className={`h-[3px] w-[22px] rounded-full bg-white transition-opacity ${isMenuOpened && "opacity-0"}`}
-					/>
-					<div
-						className={`h-[3px] w-7 rounded-full bg-white transition-transform ${isMenuOpened && "absolute top-1/2 -translate-y-1/2 -rotate-45 invert"}`}
-					/>
-				</button>
-				<nav
-					className={`absolute left-1/2 top-0 z-10 flex origin-bottom transition-opacity duration-300 lg:z-10 ${isMenuOpened ? "opacity-100" : "scale-y-0 opacity-0"} h-dvh w-screen -translate-x-1/2 flex-col items-start justify-between bg-white p-8 pb-16 md:p-12 lg:static lg:h-auto lg:w-fit lg:translate-x-0 lg:scale-100 lg:flex-row lg:bg-transparent lg:p-0 lg:opacity-100`}
-				>
-					<div className="flex flex-col items-start gap-12 pt-24 lg:flex-row lg:pt-0">
-						{data.navItems?.map(({ link }, i) => {
-							return (
-								<CMSLink
-									key={i}
-									{...link}
-									appearance="link"
-									className="text-black lg:text-white"
-								/>
-							);
-						})}
+			{/* Horní lišta s výhodami by přišla sem - zatím ponecháno na CMS obsah */}
+			
+			<div className="container relative flex w-full items-center py-4 lg:py-6 min-h-[80px]">
+				{isSearchOpened ? (
+					<div className="flex w-full items-center justify-center animate-in fade-in zoom-in duration-300">
+						<div className="flex w-full max-w-3xl items-center gap-4 px-4 lg:px-0">
+							<div className="flex-1">
+								<Search />
+							</div>
+							<button
+								onClick={() => setIsSearchOpened(false)}
+								className="text-white hover:rotate-90 transition-transform duration-200"
+								aria-label="Zavřít hledání"
+							>
+								<XMarkIcon width={28} height={28} />
+							</button>
+						</div>
 					</div>
-				</nav>
-				<div className="flex gap-5">
+				) : (
+					<>
+						{/* Levá část: Ikona hledání (1/3) */}
+						<div className="hidden lg:flex w-1/3 justify-start">
+							<button
+								onClick={() => setIsSearchOpened(true)}
+								className="text-white hover:opacity-70 transition-opacity"
+								aria-label="Otevřít hledání"
+							>
+								<MagnifyingGlassIcon width={24} height={24} />
+							</button>
+						</div>
+
+						{/* Střed: Logo (1/3) */}
+						<div className="flex w-1/3 shrink-0 items-center justify-center z-10">
+							<Link href="/">
+								{data.logo &&
+								typeof data.logo !== "string" &&
+								data.logo.url &&
+								data.logo.alt ? (
+									<Media
+										resource={data.logo}
+										className={cn(
+											isMenuOpened && "invert lg:invert-0",
+											"h-12 w-auto lg:h-16",
+										)}
+										imgClassName="h-full w-auto object-contain"
+									/>
+								) : (
+									<div className="text-2xl font-bold text-white lg:text-3xl">
+										<Logo />
+									</div>
+								)}
+							</Link>
+						</div>
+
+						{/* Pravá část: Ikony a Mobile Toggle (1/3) */}
+						<div className="flex w-1/3 items-center justify-end gap-3 lg:gap-5">
+
 					<Link
 						href="/account/orders"
 						aria-label="Účet"
-						className="-m-2 cursor-pointer p-2"
+						className="-m-2 cursor-pointer p-2 text-white"
 					>
-						<UserIcon color="white" width={24} height={24} />
+						<UserIcon width={24} height={24} />
 					</Link>
+					
 					{!disableCart && (
 						<>
 							<button
 								onClick={toggleWishList}
 								aria-label="Seznam přání"
-								className="relative -m-2 cursor-pointer p-2"
+								className="relative -m-2 cursor-pointer p-2 text-white"
 							>
-								{wishlist && wishlist.length > 0 ? (
-									<span className="absolute right-0 top-0 flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-main-600 text-xs text-white">
+								{wishlist && wishlist.length > 0 && (
+									<span className="absolute right-0 top-0 flex aspect-square h-4 w-4 items-center justify-center rounded-full bg-main-600 text-[10px] text-white">
 										{wishlist.length}
 									</span>
-								) : (
-									""
 								)}
-								<HeartIcon color="white" width={24} height={24} />
+								<HeartIcon width={24} height={24} />
 							</button>
 							<button
 								onClick={toggleCart}
 								aria-label="Košík"
-								className="relative -m-2 cursor-pointer p-2"
+								className="relative -m-2 cursor-pointer p-2 text-white"
 							>
-								{totalQuantity && totalQuantity > 0 ? (
-									<span className="absolute right-0 top-0 flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-main-600 text-xs text-white">
+								{totalQuantity > 0 && (
+									<span className="absolute right-0 top-0 flex aspect-square h-4 w-4 items-center justify-center rounded-full bg-main-600 text-[10px] text-white">
 										{totalQuantity}
 									</span>
-								) : (
-									""
 								)}
-								<ShoppingBagIcon color="white" width={24} height={24} />
+								<ShoppingBagIcon width={24} height={24} />
 							</button>
 						</>
 					)}
+
+					<button
+						aria-label="Toggle Menu"
+						className="z-20 flex flex-col items-end justify-center gap-[6px] lg:hidden"
+						onClick={toggleMenu}
+					>
+						<div className={`h-[2px] w-6 bg-white transition-all ${isMenuOpened && "translate-y-2 rotate-45"}`} />
+						<div className={`h-[2px] w-4 bg-white transition-all ${isMenuOpened && "opacity-0"}`} />
+						<div className={`h-[2px] w-6 bg-white transition-all ${isMenuOpened && "-translate-y-2 -rotate-45"}`} />
+					</button>
 				</div>
-				<CMSLink className="ml-auto hidden md:flex" />
-				<div className="backdrop_blur absolute left-1/2 -z-30 h-full w-full -translate-x-1/2" />
+					</>
+				)}
 			</div>
+
+			{/* Spodní řada: Desktop Navigace */}
+			{!isSearchOpened && (
+				<div className="container hidden lg:block">
+					<nav className="flex items-center justify-center border-t border-white/10 py-4">
+						<div className="flex items-center gap-8">
+							{data.navItems?.map(({ link }, i) => (
+								<CMSLink
+									key={i}
+									{...link}
+									appearance="link"
+									className="text-xs font-medium uppercase tracking-widest text-white hover:opacity-70 transition-opacity"
+								/>
+							))}
+						</div>
+					</nav>
+				</div>
+			)}
+
+			{/* Mobile Navigace */}
+			<nav
+				className={cn(
+					"fixed inset-0 z-[100] flex flex-col bg-white p-8 pt-24 transition-transform duration-300 lg:hidden",
+					isMenuOpened ? "translate-x-0" : "translate-x-full",
+				)}
+			>
+				<button
+					onClick={toggleMenu}
+					className="absolute right-8 top-8 text-black"
+					aria-label="Zavřít menu"
+				>
+					<XMarkIcon width={32} height={32} />
+				</button>
+
+				<div className="mb-8 block lg:hidden">
+					<Search />
+				</div>
+				<div className="flex flex-col gap-6">
+					{data.navItems?.map(({ link }, i) => (
+						<CMSLink
+							key={i}
+							{...link}
+							appearance="link"
+							className="text-xl font-semibold text-black"
+						/>
+					))}
+				</div>
+			</nav>
 		</header>
 	);
 };
