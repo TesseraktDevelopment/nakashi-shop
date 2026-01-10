@@ -66,6 +66,7 @@ export const WithInlinePriceSlider = ({
 							pricingComponent = <PriceClient pricing={product.pricing} />;
 						}
 
+						// TODO: media - bg-gray-200
 						return (
 							<CarouselItem
 								key={product.id}
@@ -73,7 +74,7 @@ export const WithInlinePriceSlider = ({
 							>
 								<Media
 									resource={product.images[0]}
-									className="aspect-square w-full overflow-clip rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:max-h-80"
+									className="aspect-square w-full overflow-clip rounded-md bg-white object-cover group-hover:opacity-75 lg:aspect-auto lg:max-h-80"
 								/>
 								<div className="mt-4 flex justify-between">
 									<div className="w-3/5">
