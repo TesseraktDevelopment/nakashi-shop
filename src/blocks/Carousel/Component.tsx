@@ -89,9 +89,7 @@ export const CarouselBlock = ({
 											slide.link.reference?.value.slug)) ? (
 										<Link
 											// @ts-expect-error - reference.value is not a string! TypeScript doesn't know that, it was checked above
-											href={
-												slide.link.url ?? `/${slide.link.reference?.value.slug}`
-											}
+											href={slide.link.url ?? `/${slide.link.reference?.value.slug}`}
 											target={slide.link.newTab ? "_blank" : "_self"}
 										>
 											<Media resource={slide.image} />
