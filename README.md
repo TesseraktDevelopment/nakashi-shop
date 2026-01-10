@@ -1,4 +1,4 @@
-# Nakashi Army
+# Nakashi Army Shop
 
 A modern ecommerce storefront for Nakashi Army, powered by Payload and Next.js. This is a fully functional online store tailored to deliver a unique shopping experience for Nakashi Army’s customers.
 
