@@ -5,27 +5,29 @@ import { z } from "zod";
 const ProductWithFilledVariantsSchema = z.object({
 	id: z.string(),
 	title: z.string(),
-	slug: z.string(),
+	slug: z.string().nullable().optional(),
 	quantity: z.number().min(1),
 	pricing: z
 		.array(z.object({ currency: z.string(), value: z.number() }))
+		.nullable()
 		.optional(),
 	variant: z
 		.object({
-			slug: z.string().optional(),
+			slug: z.string().nullable().optional(),
 			pricing: z
 				.array(z.object({ currency: z.string(), value: z.number() }))
+				.nullable()
 				.optional(),
 			stock: z.number().optional(),
-			image: z.object({ url: z.string().optional() }).optional(),
-			color: z.object({ label: z.string().optional() }).optional(),
-			size: z.object({ label: z.string().optional() }).optional(),
+			image: z.object({ url: z.string().nullable().optional() }).nullable().optional(),
+			color: z.object({ label: z.string().nullable().optional() }).nullable().optional(),
+			size: z.object({ label: z.string().nullable().optional() }).nullable().optional(),
 		})
 		.optional(),
-	enableVariants: z.boolean().optional(),
-	enableVariantPrices: z.boolean().optional(),
-	stock: z.number().optional(),
-	image: z.object({ url: z.string().optional() }).optional(),
+	enableVariants: z.boolean().nullable().optional(),
+	enableVariantPrices: z.boolean().nullable().optional(),
+	stock: z.number().nullable().optional(),
+	image: z.object({ url: z.string().nullable().optional() }).nullable().optional(),
 });
 
 // Definice schématu pro FilledCourier
@@ -35,7 +37,7 @@ const FilledCourierSchema = z.object({
 	turnaround: z.string(),
 	icon: z
 		.object({
-			url: z.string().optional(),
+			url: z.string().nullable().optional(),
 		})
 		.optional(),
 	pricing: z
@@ -65,32 +67,30 @@ export const CheckoutFormSchemaServer = z
 		individualInvoice: z.boolean().default(false),
 		invoice: z
 			.object({
-				name: z.string().optional(),
-				address: z.string().optional(),
-				city: z.string().optional(),
-				country: z.string().optional(),
-				region: z.string().optional(),
-				postalCode: z.string().optional(),
+				name: z.string(),
+				address: z.string(),
+				city: z.string(),
+				country: z.string(),
+				region: z.string(),
+				postalCode: z.string(),
 				tin: z.string().optional(),
 			})
 			.optional(),
-		shipping: z
-			.object({
-				id: z.string().optional(),
-				name: z.string().optional(),
-				address: z.string().optional(),
-				city: z.string().optional(),
-				country: z.string().optional(),
-				region: z.string().optional(),
-				postalCode: z.string().optional(),
-				phone: z.string().optional(),
-				email: z.string().email().optional(),
-				pickupPointID: z.string().optional(),
-				pickupPointName: z.string().optional(),
-				pickupPointBranchCode: z.string().optional(),
-				pickupPointAddress: z.string().optional(),
-			})
-			.optional(),
+		shipping: z.object({
+			id: z.string().optional(),
+			name: z.string(),
+			address: z.string(),
+			city: z.string(),
+			country: z.string(),
+			region: z.string(),
+			postalCode: z.string(),
+			phone: z.string(),
+			email: z.string().email(),
+			pickupPointID: z.string().optional(),
+			pickupPointName: z.string().optional(),
+			pickupPointBranchCode: z.string().optional(),
+			pickupPointAddress: z.string().optional(),
+		}),
 		deliveryMethod: z.string().optional(),
 		paymentMethod: z.string().optional(),
 		checkoutProducts: z.array(ProductWithFilledVariantsSchema).optional(),
