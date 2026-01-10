@@ -2858,6 +2858,7 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  background?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3476,6 +3477,7 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  background?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
