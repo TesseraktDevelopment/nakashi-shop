@@ -310,7 +310,7 @@ export const ProductForm = ({
 					className="fixed bottom-4 right-4 z-50 rounded-md bg-main-600 p-4 text-white shadow-lg"
 				>
 					<Toast.Title className="text-sm font-medium">
-						{t("added-to-cart", { count: totalQuantityInCart + quantity })}
+						{t("added-to-cart", { count: totalQuantityInCart + quantity - 1 })}
 					</Toast.Title>
 					<Toast.Description className="mt-1 text-xs">
 						{t("product-added-description", { name: product.title })}
