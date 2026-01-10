@@ -54,10 +54,10 @@ const config: Config = {
       },
       colors: {
         main: {
-          "400": "rgb(129 140 248 / var(--tw-bg-opacity, 1))",
-          "500": "rgb(99 102 241 / var(--tw-bg-opacity, 1))",
-          "600": "rgb(79 70 229 / var(--tw-bg-opacity, 1))",
-          "700": "rgb(67 56 202 / var(--tw-bg-opacity, 1))",
+400: "rgb(145 147 125 / var(--tw-bg-opacity, 1))",
+  500: "rgb(124 126 106 / var(--tw-bg-opacity, 1))",
+  600: "rgb(103 105  88 / var(--tw-bg-opacity, 1))",  // #676958
+  700: "rgb( 80  82  68 / var(--tw-bg-opacity, 1))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",

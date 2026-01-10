@@ -12,10 +12,10 @@
     "product-unavailable": "Produkt není k dispozici",
     "description": "Popis",
     "price": "Cena",
-    "color": "Barva",
-    "choose-color": "Vyberte barvu",
-    "size": "Velikost",
-    "choose-size": "Vyberte velikost",
+    "color": "Typ",
+    "choose-color": "Vyberte typ",
+    "size": "Varianta",
+    "choose-size": "Vyberte variantu",
     "product-info": "Informace o produktu",
     "reviews": "Recenze",
     "sizing-chart": "Zobrazit tabulku velikostí",
@@ -38,8 +38,8 @@
     "newest": "Nejnovější",
     "price-low-to-high": "Cena: od nejnižší",
     "price-high-to-low": "Cena: od nejvyšší",
-    "color": "Barva",
-    "size": "Velikost"
+    "color": "Typ",
+    "size": "Varianta"
   },
   "Cart": {
     "title": "Košík",
@@ -483,7 +483,7 @@
     "privacy-policy": "Zásady ochrany osobních údajů",
     "contact-us": "Pokud máte jakékoli dotazy, kontaktujte nás. (Pokud na tento e-mail odpovíte, nebudeme ho moci vidět.)",
     "auto-email-notice": "Na tento e-mail prosím neodpovídejte, byl vám zaslán automaticky v souvislosti s objednávkou. Tento e-mail slouží jako potvrzení o uzavření kupní smlouvy.",
-    "copyright": "© 2025 Nakashi Army. Všechna práva vyhrazena.",
+    "copyright": "© 2026 Nakashi Army. Všechna práva vyhrazena.",
     "company-address": "Nakashi Army s.r.o., Věčná 45, Praha 1, 110 00, Česká republika."
   },
   "Emails": {

@@ -61,6 +61,7 @@ import { AdminResetPassword as AdminResetPassword_f8d611a17c80018cb52bc9ecc1bbdd
 import { AdminDashboardNavLink as AdminDashboardNavLink_18419da7f6f55f332ebe4f081849b00b } from '@/components/(ecommerce)/AdminDashboardNavLink'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { AdminDashboard as AdminDashboard_5728d9308044ad41218b388eed983c05 } from '@/components/(ecommerce)/AdminDashboard'
+import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -125,5 +126,6 @@ export const importMap = {
   "@/components/AdminResetPassword#AdminResetPassword": AdminResetPassword_f8d611a17c80018cb52bc9ecc1bbddd2,
   "@/components/(ecommerce)/AdminDashboardNavLink#AdminDashboardNavLink": AdminDashboardNavLink_18419da7f6f55f332ebe4f081849b00b,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
-  "@/components/(ecommerce)/AdminDashboard#AdminDashboard": AdminDashboard_5728d9308044ad41218b388eed983c05
+  "@/components/(ecommerce)/AdminDashboard#AdminDashboard": AdminDashboard_5728d9308044ad41218b388eed983c05,
+  "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
 }

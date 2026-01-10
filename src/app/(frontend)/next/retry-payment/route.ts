@@ -73,7 +73,7 @@ export async function GET(req: Request) {
 			1,
 		)();
 		const stripe = new Stripe(stripeOptions?.secret ?? "", {
-			apiVersion: "2025-07-30.basil",
+			apiVersion: "2025-08-27.basil",
 		});
 
 		let stripePaymentURL: string | null = null;
