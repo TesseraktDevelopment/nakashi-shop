@@ -229,7 +229,7 @@ export const getStripePaymentURL = async ({
 			success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}?x=${orderSecret}`,
 			cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}?x=${orderSecret}&cancelled=true`,
 			automatic_tax: {
-				enabled: true,
+				enabled: false,
 			},
 			customer: customerId,
 			customer_update: customerId
