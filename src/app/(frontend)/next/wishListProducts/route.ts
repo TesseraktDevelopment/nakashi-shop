@@ -8,14 +8,16 @@ import config from "@payload-config";
 export async function POST(req: Request) {
 	try {
 		const payload = await getPayload({ config });
+
+		const body = await req.text();
+		if (!body) {
+			return Response.json({ status: 400, message: "Missing request body" });
+		}
+
 		const {
 			wishlist,
 			locale,
-		}: { wishlist: WishList | undefined; locale: Locale } =
-			(await req.json()) as {
-				wishlist: WishList | undefined;
-				locale: Locale;
-			};
+		}: { wishlist: WishList | undefined; locale: Locale } = JSON.parse(body);
 		if (!wishlist) {
 			return Response.json({ status: 200 });
 		}
