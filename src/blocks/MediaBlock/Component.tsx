@@ -15,7 +15,6 @@ import { cn } from "src/utilities/cn";
 
 import { Media } from "../../components/Media";
 
-import type { linkGroup as LinkGroupType } from "@/fields/linkGroup";
 import type { MediaBlock as MediaBlockProps } from "@/payload-types";
 import type { StaticImageData } from "next/image";
 
@@ -27,8 +26,6 @@ type Props = MediaBlockProps & {
 	imgClassName?: string;
 	staticImage?: StaticImageData;
 	disableInnerContainer?: boolean;
-	isLink?: boolean;
-	links?: (typeof LinkGroupType)[];
 };
 
 export const MediaBlock = (props: Props) => {
