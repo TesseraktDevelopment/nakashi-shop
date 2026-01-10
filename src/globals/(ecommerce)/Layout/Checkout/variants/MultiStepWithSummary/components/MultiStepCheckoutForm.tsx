@@ -215,9 +215,9 @@ export const MultiStepCheckoutForm = ({
 	);
 
 	useEffect(() => {
-		void debouncedFetchCartProducts(cart, shipping.country);
+		void debouncedFetchCartProducts(cart, shipping?.country ?? "cz");
 		return () => debouncedFetchCartProducts.cancel();
-	}, [cart, debouncedFetchCartProducts, shipping.country]);
+	}, [cart, debouncedFetchCartProducts, shipping?.country]);
 
 	const goToStep = (step: CheckoutStep) => {
 		setCurrentStep(step);
@@ -308,8 +308,8 @@ export const MultiStepCheckoutForm = ({
 			validateStep: validateCurrentStep,
 			deliveryMethods,
 			paymentMethods,
-			products: checkoutProducts,
-			totalPrice,
+			products: checkoutProducts ?? [],
+			totalPrice: totalPrice ?? [],
 			selectedDelivery,
 			completedSteps,
 		};

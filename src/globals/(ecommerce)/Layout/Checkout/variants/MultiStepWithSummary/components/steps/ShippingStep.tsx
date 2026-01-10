@@ -20,9 +20,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
+import { type CheckoutFormData } from "@/schemas/multiCheckoutForm.schema";
+import { type StepProps } from "./types";
 
-export const ShippingStep = () => {
+export const ShippingStep = (props: StepProps) => {
 	const t = useTranslations("CheckoutForm.form");
 	const form = useFormContext<CheckoutFormData>();
 

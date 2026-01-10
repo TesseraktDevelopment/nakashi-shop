@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
 
-import { type FilledCourier } from "./CheckoutForm";
+import { type FilledCourier } from "../../OneStepWithSummary/components/CheckoutForm";
 
 type InPostPoint = {
 	name?: string;

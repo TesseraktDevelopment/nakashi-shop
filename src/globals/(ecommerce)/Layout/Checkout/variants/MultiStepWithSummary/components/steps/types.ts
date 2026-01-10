@@ -1,7 +1,7 @@
 import { type UseFormReturn } from "react-hook-form";
 
 import { type Media, type Customer } from "@/payload-types";
-import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
+import { type CheckoutFormData } from "@/schemas/multiCheckoutForm.schema";
 import { type Currency } from "@/stores/Currency/types";
 
 export type StepProps = {

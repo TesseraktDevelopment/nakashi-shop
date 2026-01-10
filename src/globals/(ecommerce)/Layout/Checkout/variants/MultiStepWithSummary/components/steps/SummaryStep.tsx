@@ -4,14 +4,14 @@ import { useTranslations } from "next-intl";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { type ProductWithFilledVariants } from "@/globals/(ecommerce)/Layout/Cart/variants/SlideOver";
-import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
+import { type CheckoutFormData } from "@/schemas/multiCheckoutForm.schema";
 import { type Currency } from "@/stores/Currency/types";
 
-import { type FilledCourier } from "./types";
+import { type FilledCourier, type StepProps } from "./types";
 
 import { OrderSummary } from "../OrderSummary";
 
-export const SummaryStep = () => {
+export const SummaryStep = (props: StepProps) => {
 	const t = useTranslations("CheckoutForm.form");
 	const form = useFormContext<CheckoutFormData>();
 

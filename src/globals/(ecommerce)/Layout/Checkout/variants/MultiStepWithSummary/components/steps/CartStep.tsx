@@ -21,7 +21,7 @@ export const CartStep = ({
 	totalPrice?: { currency: Currency; value: number }[];
 	deliveryMethods?: FilledCourier[];
 	selectedDelivery?: string;
-	completedSteps: unknown[][];
+	completedSteps: string[];
 }) => {
 	const { cart } = useCart();
 	const t = useTranslations("CheckoutSteps.cart");
